@@ -8,8 +8,8 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2020/12/05/fabu1ous/2020-12-05/</loc>
-        <lastmod>2020-12-05T08:44:19.595Z</lastmod>
+        <loc>https://hackyboiz.github.io/2020/12/06/fabu1ous/x64-stack-alignment/</loc>
+        <lastmod>2020-12-06T03:24:11.039Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -17,7 +17,15 @@
 
     <url>
         <loc>https://hackyboiz.github.io/2020/12/04/l0ch/2020-12-04/</loc>
-        <lastmod>2020-12-05T08:38:14.288Z</lastmod>
+        <lastmod>2020-12-06T03:24:02.114Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://hackyboiz.github.io/2020/12/05/fabu1ous/2020-12-05/</loc>
+        <lastmod>2020-12-06T03:24:02.113Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
