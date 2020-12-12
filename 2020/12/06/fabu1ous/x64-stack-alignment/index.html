@@ -241,7 +241,7 @@
 <p>이놈 때문에 18.04 이전 버전에서 익스 되는 BOF 공격코드가 18.04 이후 버전에서는 사용할 수 없는 경우도 있다고 합니다.</p>
 <p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/3.png" srcset="/img/loading.gif"></p>
 <p><em>故 Fabu1ous의 네이버 블로그 (2018.10 ~ 2019.12)</em></p>
-<p>지금까지 푼 포너블 문제만 백몇 개쯤 되고 수없이 많은 system(“/bin/sh”)을 호출해 봤는데 어째서 이 사실을 이제야 알게 된 거지?</p>
+<p>지금까지 푼 포너블 문제만 백몇 개쯤 되고 수없이 많은 <code>system(&quot;/bin/sh&quot;)</code>을 호출해 봤는데 어째서 이 사실을 이제야 알게 된 거지?</p>
 <p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/4.png" srcset="/img/loading.gif"></p>
 <p>작년(2019) 크리스마스 CTF에서 단순 ROP문제를 익스 못해서 화났던 기억이 머리를 스치고 지나갔습니다. 분명 로컬에선 익스가 되던 게 리모트 익스가 안돼서 팀원에게 코드를 넘겨주고 다른 문제 보러 갔었죠. 그때 못 풀었던 ROP문제는 solo_test란 문제였는데 그때 로컬 환경이 우분투 16.04였습니다… 후…</p>
 <p>대회 끝나고 바로 며칠 뒤에 이 주제에 대한 라업이 하나 올라왔는데 1년이 지난 지금에서야 찾아본 제 자신이 너무 밉네요. ROP문제라고 대수롭지 않게 그냥 넘겨버린 것에 반성하며 지금이라도 공부해봅시다.</p>
@@ -253,7 +253,7 @@
 <p>Linux 64 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://software.intel.com/sites/default/files/article/402129/mpx-linux64-abi.pdf">ABI</a>( Application binary interface )에 따르면 프로그램의 흐름( control )이 함수의 entry로 옮겨지는 시점에선 스택 포인터(rsp)+8이 항상 16의 배수여야 합니다.</p>
 <p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/6.png" srcset="/img/loading.gif"></p>
 <p>방금 전엔 RSP를 16의 배수로 유지하는 게 stack alignment라 해놓고 갑자기 RSP+8이 16의 배수라니, 뭐라는 거야?</p>
-<p>무슨 소린지 모르겠죠? 사실 설명이 뭐 같이 쓰여있어서 그렇지 사실 아주 간단합니다.</p>
+<p>무슨 소린지 모르겠죠? 설명이 뭐 같이 쓰여있어서 그렇지 사실 아주 간단합니다.</p>
 <pre><code class="hljs c"><span class="hljs-comment">// test.c</span>
 
 <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
@@ -280,7 +280,7 @@ $ gdb -q <span class="hljs-built_in">test</span></code></pre>
 <p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/8.png" srcset="/img/loading.gif"></p>
 <pre><code class="hljs bash">pwndbg&gt; r</code></pre>
 
-<p>정상적으로 호출된 main() 함수의 entry point입니다. 아직 프롤로그를 실행하기 전이니 RSP+8은 16의 배수겠죠?</p>
+<p>정상적으로 호출된 <code>main()</code> 함수의 entry point입니다. 아직 프롤로그를 실행하기 전이니 RSP+8은 16의 배수겠죠?</p>
 <p>RSP : <code>0x7fffffffe038</code></p>
 <p>RSP+8 : <code>0x7fffffffe040</code></p>
 <p>위 스크린샷을 보면 RSP+8은 <code>0x7fffffffe040</code>이므로 16의 배수가 맞습니다.</p>
@@ -299,12 +299,12 @@ $ gdb -q <span class="hljs-built_in">test</span></code></pre>
 </ol>
 <p>사실, 함수를 호출할 때 2번 과정에서 잠시 stack align이 깨지고 3번에서 다시 stack align이 맞춰집니다. 여기서 2번만 똑 떼서 “이 것만 지키시면 stack align입니다.”라고 설명을 써놔서 헷갈리는 겁니다. 이래도 이해 안 되시면 4번만 기억하세요. 4번만 신경 써줘도 공격 코드를 짜는데 아무 지장이 없을 겁니다. 더 자세한 설명은 조금 이따 하겠습니다.</p>
 <h1 id="MOVAPS"><a href="#MOVAPS" class="headerlink" title="MOVAPS"></a>MOVAPS</h1><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/11.png" srcset="/img/loading.gif"></p>
-<p>이 규칙을 꼭 지켜야 하는가? 물론 아닙니다. 방금 전에도 설명했듯이 유연하게 어겼다가 지켰다가 할 수 있습니다. 그리고 stack alignment는 효율을 높이기 위해 유지한다고도 설명했다시피 지키지 않아도 프로그램이 동작하는데 아무 문제없습니다. 다만 효율이 좀 떨어질 뿐… 물론 예외가 존재하는데 몇몇 intel/AMD cpu에서 [SSE instruction](<a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.oracle.com/cd/E26502_01/html/E28388/eojde.html#:~:text=SSE">https://docs.oracle.com/cd/E26502_01/html/E28388/eojde.html#:~:text=SSE</a> instructions are an extension,MXSCR state management instructions)을 실행할 때  stack alignment가 깨져있으면 segmentation fault가 발생합니다.</p>
+<p>이 규칙을 꼭 지켜야 하는가? 물론 아닙니다. 방금 전에도 설명했듯이 유연하게 어겼다가 지켰다가 할 수 있습니다. 그리고 stack alignment는 효율을 높이기 위해 유지한다고도 설명했다시피 지키지 않아도 프로그램이 동작하는데 아무 문제없습니다. 다만 효율이 좀 떨어질 뿐… 물론 예외가 존재하는데 몇몇 intel/AMD cpu에서 SSE instruction을 실행할 때  stack alignment가 깨져있으면 segmentation fault가 발생합니다.</p>
 <p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/12.png" srcset="/img/loading.gif"></p>
 <p>그리고 <a target="_blank" rel="external nofollow noopener noreferrer" href="http://qcd.phys.cmu.edu/QCDcluster/intel/vtune/reference/vc181.htm">MOVAPS</a>가 바로 SSE intruction 중 하나입니다. XMM 레지스터끼리 혹은 XMM 레지스터와 메모리 사이에서 double quadword( 16byte ) 크기의 데이터를 옮기는 인스트럭션인데, 메모리의 align 여부를 강제합니다.</p>
 <pre><code class="hljs c">&lt;do_system+<span class="hljs-number">364</span>&gt; movaps xmmword ptr [rsp + <span class="hljs-number">0x50</span>], xmm0</code></pre>
 
-<p>XMM 레지스터와 메모리 사이에서 데이터를 옮길 때, 메모리의 align이 깨져있으면 general protection( #GP / SIGSEGV ) fault를 발생시킵니다. 그리고 Ubuntu 18.04부터 이 movaps 인스트럭션이 do_system()을 포함한 여러 멀티미디어 오퍼레이션에 추가되어 exploit을 작성할 때 stack alignment를 신경 써야 합니다.</p>
+<p>XMM 레지스터와 메모리 사이에서 데이터를 옮길 때, 메모리의 align이 깨져있으면 general protection( #GP / SIGSEGV ) fault를 발생시킵니다. 그리고 Ubuntu 18.04부터 이 movaps 인스트럭션이 <code>do_system()</code>을 포함한 여러 멀티미디어 오퍼레이션에 추가되어 exploit을 작성할 때 stack alignment를 신경 써야 합니다.</p>
 <h1 id="JMP-vs-CALL-vs-RET"><a href="#JMP-vs-CALL-vs-RET" class="headerlink" title="JMP vs CALL vs RET"></a>JMP vs CALL vs RET</h1><p>그래서 Exploit이랑 stack align이 깨지는 거랑 무슨 상관인데? 그래서 왜 16.04에선 쉘을 띄우던 공격 코드가 18.04부턴 작동 안 하는 건데? 이거를 이해하려면 우선 control intsruction들의 차이를 알아야 합니다. 생각보다 모르는 사람이 많더라고… 각 인스트럭션마다 스택의 변화, 더 자세히 말하자면 RSP의 변화가 어떤지 알아야 합니다.</p>
 <h2 id="1-JMP"><a href="#1-JMP" class="headerlink" title="1. JMP"></a>1. JMP</h2><blockquote>
 <p>Transfers program control to a different point in the instruction stream <strong>without</strong> recording <strong>return information</strong>.</p>
@@ -369,21 +369,21 @@ p.sendline(payload)
 p.interactive()
 $ python3 bof.py</code></pre>
 
-<p>main()의 return 주소를 win() 함수의 entry point로 덮어쓰는 공격 코드입니다.</p>
+<p><code>main()</code>의 return 주소를 <code>win()</code> 함수의 entry point로 덮어쓰는 공격 코드입니다.</p>
 <h2 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h2><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/17.png" srcset="/img/loading.gif"></p>
 <pre><code class="hljs bash">pwndbg&gt; bp main+45
 pwndbg&gt; c</code></pre>
 
-<p>main()의 ret에 break point를 걸고 win() 함수가 호출된 후의 stack 상황을 봅시다.</p>
+<p><code>main()</code>의 ret에 break point를 걸고 <code>win()</code> 함수가 호출된 후의 stack 상황을 봅시다.</p>
 <p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/18.png" srcset="/img/loading.gif"></p>
 <pre><code class="hljs bash">pwndbg&gt; ni</code></pre>
 
-<p>ret으로 함수 win()의 entry point에 도달하면</p>
+<p>ret으로 함수 <code>win()</code>의 entry point에 도달하면</p>
 <p>프롤로그를 실행하고 나면 stack alignment가 깨지게 됩니다.</p>
 <p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/19.png" srcset="/img/loading.gif"></p>
-<p>컴퓨터는 stack이 항상 align 돼있다고 가정하고 그 상태를 유지하려고 합니다. 즉, win()에서 깨져버린 alignment를 깨진 상태로 유지하게 되고, win() 이후에 호출되는 함수들의 stack alignment는 깨진 상태가 됩니다.</p>
+<p>컴퓨터는 stack이 항상 align 돼있다고 가정하고 그 상태를 유지하려고 합니다. 즉, <code>win()</code>에서 깨져버린 alignment를 깨진 상태로 유지하게 되고, <code>win()</code> 이후에 호출되는 함수들의 stack alignment는 깨진 상태가 됩니다.</p>
 <p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/20.png" srcset="/img/loading.gif"></p>
-<p>그리고 결국 do_system()을 실행하다 movaps에 걸려 segmentation fault를 띄우고 exploit은 실패하게 됩니다.</p>
+<p>그리고 결국 <code>do_system()</code>을 실행하다 movaps에 걸려 segmentation fault를 띄우고 exploit은 실패하게 됩니다.</p>
 <h1 id="RET-sled"><a href="#RET-sled" class="headerlink" title="RET sled"></a>RET sled</h1><p>지금까지 설명한 내용을 이해하셨다면 앞으로 공격 코드를 짜실 때 아무 문제없을 거라 생각합니다. 그래도 여기서 글을 마무리 짓긴 애매하니 해결 방법을 알아보죠.</p>
 <pre><code class="hljs python"><span class="hljs-comment">#bof2.py</span>
 
@@ -472,6 +472,12 @@ p.interactive()</code></pre>
               <div class="post-prevnext row">
                 <article class="post-prev col-6">
                   
+                  
+                  <a href="/2020/12/07/idioth/2020-12-07/">
+                    <i class="iconfont icon-arrowleft"></i>
+                    <span class="hidden-mobile">[하루한줄] CVE-2020-17521: Apache Groovy Information Disclosure</span>
+                    <span class="visible-mobile">Previous</span>
+                  </a>
                   
                 </article>
                 <article class="post-next col-6">
