@@ -297,7 +297,6 @@ write(<span class="hljs-number">1</span>, buffer, <span class="hljs-keyword">siz
 <p><img src="/2020/12/29/l0ch/address_book/8.png" srcset="/img/loading.gif"></p>
 <p>몇번 실행해보면 객체간 offset 에 패턴이 있습니다. offset을 계산해서 city+16 에 Recycle Bin의 주소로 head 를 overwrite하고 2번 메뉴로 출력하면 vtable 주소를 구할 수 있습니다.</p>
 <p><img src="/2020/12/29/l0ch/address_book/9.png" srcset="/img/loading.gif"></p>
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a911dc27-9eb4-468b-8ba8-df4fcc9d778e/Untitled.png" srcset="/img/loading.gif" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a911dc27-9eb4-468b-8ba8-df4fcc9d778e/Untitled.png"></p>
 <p><code>Recycle Bin</code>의 vtable offset은 0x6960이니 leak한 vtable에 offset만큼 빼면 imagebase가 나오겠군요!</p>
 <p>이제 imagebase를 구했으니 dll 주소를 구하는건 쉽습니다!</p>
 <p>구하고싶은 dll의 아무 함수나 IAT 테이블에서 offset을 찾고, imagebase+offset 주소에 존재하는 dll 함수 주소를 leak하면 되죠. <code>ntdll</code>부터 구해보겠습니다.</p>
