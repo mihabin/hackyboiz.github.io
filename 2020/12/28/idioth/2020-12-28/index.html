@@ -239,7 +239,8 @@
 <li>Wemin 1.962 이하 버전</li>
 </ul>
 <h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Webmin에서 Remote Command Execution 취약점이 발견되었습니다. 해당 취약점을 통해 패키지 업데이트 모듈을 사용할 수 있는 모든 유저가 root 권한으로 arbitrary command를 실행할 수 있습니다. <a target="_blank" rel="external nofollow noopener noreferrer" href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-12840">CVE-2019-12840</a>에 대한 필터링은 package name 변수가 system command 안에 직접적으로 들어가므로 URL encoding을 통해 우회할 수 있습니다.(ex. command line을 한 줄 아래에서 실행)</p>
-<p><code>u</code> 파라미터는 <code>update.cgi</code>에서 <code>@pkgs</code> 변수에 들어가서 여러 연산을 수행합니다. <code>update.cgi</code>의 함수들은 <code>package-updates-lib.pl</code>에서 호출되는데, 그중 <code>package_install(package-name, [system], [new-install])</code>은 update system이나 Wemin을 통해 패키지를 설치할 수 있고 업데이트된 패키지 목록을 반환합니다. 패지키를 설치할 때 CVE-2019-12840에 대한 조치로 <code>s/\\(-)|\\(.)/string/g;</code> 필터링이 걸려있습니다. 패키지 이름은 http request 변수이므로 <code>%0a</code>나 <code>%0c</code> 등을 통해 escape가 가능합니다. 패키지 이름 뒤에 <code>%7c</code> 등으로 pipe나 <code>.</code>을 추가하면 그 부분에 <code>\</code> 백 슬래시가 추가되어 명령 실행이 불가능하지만 <code>%0a%7c</code> 등으로 새로운 command line에서 실행하면 <code>\</code>가 무시되고 정상적으로 arbitrary command execution이 가능합니다.</p>
+<p><code>u</code> 파라미터는 <code>update.cgi</code>에서 <code>@pkgs</code> 변수에 들어가서 여러 연산을 수행합니다. <code>update.cgi</code>의 함수들은 <code>package-updates-lib.pl</code>에서 호출되는데, 그중 <code>package_install(package-name, [system], [new-install])</code>은 update system이나 Wemin을 통해 패키지를 설치할 수 있고 업데이트된 패키지 목록을 반환합니다.</p>
+<p>패지키를 설치할 때 CVE-2019-12840에 대한 조치로 <code>s/\\(-)|\\(.)/string/g;</code> 필터링이 걸려있습니다. 패키지 이름은 http request 변수이므로 <code>%0a</code>나 <code>%0c</code> 등을 통해 escape가 가능합니다. 패키지 이름 뒤에 <code>%7c</code> 등으로 pipe나 <code>.</code>을 추가하면 그 부분에 <code>\</code> 백 슬래시가 추가되어 명령 실행이 불가능하지만 <code>%0a%7c</code> 등으로 새로운 command line에서 실행하면 <code>\</code>가 무시되고 정상적으로 arbitrary command execution이 가능합니다.</p>
 <p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://pentest.com.tr/blog/webmin_pu_escape_bypass_rce.rb">해당 취약점에 대한 Metasploit code</a></p>
 
             </div>
@@ -304,6 +305,12 @@
               <div class="post-prevnext row">
                 <article class="post-prev col-6">
                   
+                  
+                  <a href="/2020/12/29/l0ch/2020-12-29/">
+                    <i class="iconfont icon-arrowleft"></i>
+                    <span class="hidden-mobile">[하루한줄] CVE-2020-7468: FreeBSD local privilege escalation</span>
+                    <span class="visible-mobile">Previous</span>
+                  </a>
                   
                 </article>
                 <article class="post-next col-6">

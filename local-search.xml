@@ -4,11 +4,48 @@
   
   
   <entry>
+    <title>[하루한줄] CVE-2020-7468: FreeBSD local privilege escalation</title>
+    <link href="/2020/12/29/l0ch/2020-12-29/"/>
+    <url>/2020/12/29/l0ch/2020-12-29/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.zerodayinitiative.com/blog/2020/12/21/cve-2020-7468-turning-imprisonment-to-advantage-in-the-freebsd-ftpd-chroot-jail">CVE-2020-7468: TURNING IMPRISONMENT TO ADVANTAGE IN THE FREEBSD FTPD CHROOT JAIL</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>FreeBSD ftpd</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>FreeBSD의 ftp 데몬에서 root 로 권한 상승이 가능한 취약점이 발견되었습니다.</p><p>취약점은 <code>chroot</code> 함수의 로그인 처리 부분의 결함으로 인해 발생합니다.</p><p><code>chroot</code> 함수에서 <code>chdir</code>이 실패할 경우 ftpd는 <code>chroot</code>의 jail에서 새로운 로그인 연결을 기다립니다. 이를 이용해 강제로 <code>chdir</code>이 실패하도록 유도하면 해커가 업로드한 파일을 시스템 파일인 것처럼 속일 수 있습니다.</p><p>취약점의 상세 공격 단계는 다음과 같습니다.</p><ol><li>해커가 FTP 유저 계정으로 로그인합니다.</li><li><code>etc/spwd.db</code> 에 임의의 root 패스워드를 설정해 업로드합니다.</li><li><code>chmod 0</code> 으로 홈 디렉터리에 대한 권한을 변경하고 유저 계정으로 다시 로그인합니다.</li><li>3번으로 인해 로그인 중 <code>chdir</code>이 실패하고 <code>ftpd chroot jail</code> 내부에서 새로운 연결을 기다립니다. 이후 모든 시스템 파일 액세스는 해커 계정의 홈 디렉터리를 기준으로 이루어집니다.</li><li>결과적으로 이후 root로 로그인할 때 해커가 업로드한 <code>etc/spwd.db</code> 의 root 패스워드 테이블을 참조해 패스워드를 검증하고 해커가 root 계정에 접근할 수 있습니다.</li></ol><p>해당 취약점을 악용하면 리버스쉘을 실행시키는 명령어를 포함한 파일을 업로드해 root 권한으로 쉘을 실행하고, chroot jail을 벗어나 임의의 명령어 또한 실행할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>lpe</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>FreeBSD</tag>
+      
+      <tag>local privilege escalation</tag>
+      
+      <tag>ftpd</tag>
+      
+      <tag>chroot</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[하루한줄] CVE-2020-35606: Arbitrary Command Execution in Webmin</title>
     <link href="/2020/12/28/idioth/2020-12-28/"/>
     <url>/2020/12/28/idioth/2020-12-28/</url>
     
-    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.pentest.com.tr/exploits/Webmin-1962-PU-Escape-Bypass-Remote-Command-Execution.html">Webmin-1962-PU-Escape-Bypass-Remote-Command-Exectuion</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Wemin 1.962 이하 버전</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Webmin에서 Remote Command Execution 취약점이 발견되었습니다. 해당 취약점을 통해 패키지 업데이트 모듈을 사용할 수 있는 모든 유저가 root 권한으로 arbitrary command를 실행할 수 있습니다. <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-12840">CVE-2019-12840</a>에 대한 필터링은 package name 변수가 system command 안에 직접적으로 들어가므로 URL encoding을 통해 우회할 수 있습니다.(ex. command line을 한 줄 아래에서 실행)</p><p><code>u</code> 파라미터는 <code>update.cgi</code>에서 <code>@pkgs</code> 변수에 들어가서 여러 연산을 수행합니다. <code>update.cgi</code>의 함수들은 <code>package-updates-lib.pl</code>에서 호출되는데, 그중 <code>package_install(package-name, [system], [new-install])</code>은 update system이나 Wemin을 통해 패키지를 설치할 수 있고 업데이트된 패키지 목록을 반환합니다. 패지키를 설치할 때 CVE-2019-12840에 대한 조치로 <code>s/\\(-)|\\(.)/string/g;</code> 필터링이 걸려있습니다. 패키지 이름은 http request 변수이므로 <code>%0a</code>나 <code>%0c</code> 등을 통해 escape가 가능합니다. 패키지 이름 뒤에 <code>%7c</code> 등으로 pipe나 <code>.</code>을 추가하면 그 부분에 <code>\</code> 백 슬래시가 추가되어 명령 실행이 불가능하지만 <code>%0a%7c</code> 등으로 새로운 command line에서 실행하면 <code>\</code>가 무시되고 정상적으로 arbitrary command execution이 가능합니다.</p><p><a href="https://pentest.com.tr/blog/webmin_pu_escape_bypass_rce.rb">해당 취약점에 대한 Metasploit code</a></p>]]></content>
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.pentest.com.tr/exploits/Webmin-1962-PU-Escape-Bypass-Remote-Command-Execution.html">Webmin-1962-PU-Escape-Bypass-Remote-Command-Exectuion</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Wemin 1.962 이하 버전</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Webmin에서 Remote Command Execution 취약점이 발견되었습니다. 해당 취약점을 통해 패키지 업데이트 모듈을 사용할 수 있는 모든 유저가 root 권한으로 arbitrary command를 실행할 수 있습니다. <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-12840">CVE-2019-12840</a>에 대한 필터링은 package name 변수가 system command 안에 직접적으로 들어가므로 URL encoding을 통해 우회할 수 있습니다.(ex. command line을 한 줄 아래에서 실행)</p><p><code>u</code> 파라미터는 <code>update.cgi</code>에서 <code>@pkgs</code> 변수에 들어가서 여러 연산을 수행합니다. <code>update.cgi</code>의 함수들은 <code>package-updates-lib.pl</code>에서 호출되는데, 그중 <code>package_install(package-name, [system], [new-install])</code>은 update system이나 Wemin을 통해 패키지를 설치할 수 있고 업데이트된 패키지 목록을 반환합니다.</p><p>패지키를 설치할 때 CVE-2019-12840에 대한 조치로 <code>s/\\(-)|\\(.)/string/g;</code> 필터링이 걸려있습니다. 패키지 이름은 http request 변수이므로 <code>%0a</code>나 <code>%0c</code> 등을 통해 escape가 가능합니다. 패키지 이름 뒤에 <code>%7c</code> 등으로 pipe나 <code>.</code>을 추가하면 그 부분에 <code>\</code> 백 슬래시가 추가되어 명령 실행이 불가능하지만 <code>%0a%7c</code> 등으로 새로운 command line에서 실행하면 <code>\</code>가 무시되고 정상적으로 arbitrary command execution이 가능합니다.</p><p><a href="https://pentest.com.tr/blog/webmin_pu_escape_bypass_rce.rb">해당 취약점에 대한 Metasploit code</a></p>]]></content>
     
     
     <categories>
@@ -249,9 +286,9 @@
     
     <tags>
       
-      <tag>bypass</tag>
-      
       <tag>idioth</tag>
+      
+      <tag>bypass</tag>
       
       <tag>evasion</tag>
       
@@ -573,8 +610,6 @@
     
     <tags>
       
-      <tag>arbitrary file download</tag>
-      
       <tag>idioth</tag>
       
       <tag>lolbin</tag>
@@ -582,6 +617,8 @@
       <tag>lolbas</tag>
       
       <tag>appinstaller</tag>
+      
+      <tag>arbitrary file download</tag>
       
     </tags>
     
@@ -773,11 +810,11 @@
       
       <tag>cve</tag>
       
+      <tag>arbitrary file download</tag>
+      
       <tag>L0ch</tag>
       
       <tag>path traversal</tag>
-      
-      <tag>arbitrary file download</tag>
       
     </tags>
     
@@ -932,9 +969,9 @@
     
     <tags>
       
-      <tag>bypass</tag>
-      
       <tag>idioth</tag>
+      
+      <tag>bypass</tag>
       
       <tag>evasion</tag>
       
@@ -1243,9 +1280,9 @@
       
       <tag>android</tag>
       
-      <tag>L0ch</tag>
-      
       <tag>arbitrary code execution</tag>
+      
+      <tag>L0ch</tag>
       
       <tag>google</tag>
       
@@ -1280,13 +1317,13 @@
       
       <tag>rce</tag>
       
-      <tag>arbitrary code execution</tag>
-      
       <tag>idioth</tag>
       
       <tag>openoffice</tag>
       
       <tag>libreoffice</tag>
+      
+      <tag>arbitrary code execution</tag>
       
     </tags>
     
@@ -1719,9 +1756,9 @@
       
       <tag>cve</tag>
       
-      <tag>use after free</tag>
-      
       <tag>rce</tag>
+      
+      <tag>use after free</tag>
       
       <tag>L0ch</tag>
       
@@ -2090,9 +2127,9 @@
       
       <tag>cve</tag>
       
-      <tag>outlook</tag>
-      
       <tag>rce</tag>
+      
+      <tag>outlook</tag>
       
       <tag>idioth</tag>
       
