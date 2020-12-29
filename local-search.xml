@@ -1103,9 +1103,9 @@
       
       <tag>idioth</tag>
       
-      <tag>dos</tag>
-      
       <tag>argument injection</tag>
+      
+      <tag>dos</tag>
       
       <tag>checkpoint</tag>
       
@@ -1810,13 +1810,13 @@
       
       <tag>idioth</tag>
       
+      <tag>dos</tag>
+      
       <tag>apache</tag>
       
       <tag>tomcat</tag>
       
       <tag>websocket</tag>
-      
-      <tag>dos</tag>
       
     </tags>
     
@@ -2317,9 +2317,9 @@
       
       <tag>cve</tag>
       
-      <tag>local</tag>
-      
       <tag>eop</tag>
+      
+      <tag>local</tag>
       
       <tag>windows</tag>
       
