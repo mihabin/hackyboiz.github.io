@@ -290,7 +290,7 @@
 <li>arbitrary file upload가 가능하며 해당 파일이 어디에 저장되는지 알 수 있음</li>
 </ul>
 <p>현재 arbitrary file upload가 가능하며 파일이 업로드되는 위치도 알 수 있으므로 <code>conf/context.xml</code>을 통해 PersistenceManager를 사용 중인지, 사용 중이라면 FileStore로 Directory를 지정해서 저장하는지, 저장한다면 session이 저장되는 경로는 어딘지 확인합시다.(아까 위에서 sessions 폴더를 본 것 같긴 한데)</p>
-<p><code>detail.jsp?file=..././..././..././conf/context.xml</code>로 접근하면 <code>conf/context.xml</code>의 내용을 확인할 수 있다.</p>
+<p><code>detail.jsp?file=..././..././..././conf/context.xml</code>로 접근하면 <code>conf/context.xml</code>의 내용을 확인할 수 있습니다.</p>
 <p><img src="/2020/12/29/idioth/christmasctf2020-gift/image13.png" srcset="/img/loading.gif"></p>
 <p>PersistentManager, FileStore를 사용하며 session이 저장되는 경로는 <code>/usr/local/tomcat/sessions</code>네요.</p>
 <p>해당 취약점은 session을 deserialize 하면서 일어나는 취약점이므로 gadget도 확인해봅시다.</p>
