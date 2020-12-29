@@ -235,7 +235,7 @@
   
   
   <entry>
-    <title>[Write-Up] Christmas CTF 2020 - Picky Eater</title>
+    <title>[Write-Up] Christmas CTF 2020 - baby-RudOlPh</title>
     <link href="/2020/12/29/l0ch/baby_rudolph/"/>
     <url>/2020/12/29/l0ch/baby_rudolph/</url>
     
@@ -940,9 +940,9 @@
       
       <tag>cve</tag>
       
-      <tag>toctou</tag>
-      
       <tag>lpe</tag>
+      
+      <tag>toctou</tag>
       
     </tags>
     
@@ -1070,13 +1070,13 @@
       
       <tag>cve</tag>
       
+      <tag>toctou</tag>
+      
       <tag>razer</tag>
       
       <tag>chroma</tag>
       
       <tag>race condition</tag>
-      
-      <tag>toctou</tag>
       
     </tags>
     
@@ -1229,11 +1229,11 @@
       
       <tag>cve</tag>
       
-      <tag>race condition</tag>
+      <tag>lpe</tag>
       
       <tag>toctou</tag>
       
-      <tag>lpe</tag>
+      <tag>race condition</tag>
       
       <tag>idioth</tag>
       
