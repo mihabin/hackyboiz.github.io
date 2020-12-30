@@ -9,8 +9,42 @@
     <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>hack &amp; life</description>
-    <pubDate>Tue, 29 Dec 2020 12:01:08 GMT</pubDate>
+    <pubDate>Wed, 30 Dec 2020 08:39:32 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] Windows Installer EoP 6th patch bypass</title>
+      <link>https://hackyboiz.github.io/2020/12/30/fabu1ous/2020-12-30/</link>
+      <guid>https://hackyboiz.github.io/2020/12/30/fabu1ous/2020-12-30/</guid>
+      <pubDate>Wed, 30 Dec 2020 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://halove23.blogspot.com/2020/12/oh-so-you-have-anti</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://halove23.blogspot.com/2020/12/oh-so-you-have-antivirus-nameevery-bug.html">Disclosing about 8 0-day vulnerability</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Windows installer</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p><a href="https://hackyboiz.github.io/2020/10/21/fabu1ous/2020-10-21/">CVE-2020-16902</a>에 대한 패치 우회가 공개되었습니다. CVE-2019-1415로 처음 제보된 Windows Installer EoP 취약점의 6번째 패치 우회입니다. </p><p>CVE-2020-16902의 내용은 다음과 같습니다. Windows Installer는 설치 작업 실패를 대비해 설치 작업 중 삭제되는 파일과 롤백 스크립트를<code> C:\Config.Msi</code> 디렉터리에 백업합니다. 백업 전에 <code>C:\Config.Msi</code> 디렉터리를 삭제하고 재생성하는 로직이 있는데 <code>Setsecurity()</code>의 race condition 취약점 패턴이 남아있어 악용이 가능합니다.</p><p>따라서 <code>C:\Config.Msi</code>를 삭제하고 <code>C:\Config.Msi</code>이 여전히 존재한다면(race-con 트리거 조건) <code>C:\Config.Msi</code> 대신 <code>C:\windows\install\config.msi</code>에 롤백 파일을 백업하도록 패치되었습니다. </p><p>하지만 다음과 같은 이유로 우회가 가능합니다. 만약 <code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\Folders\C:\Config.Msi</code> 레지스트리 키가 존재하면 그대로 <code>C:\Config.Msi</code>를 백업에 사용합니다.  <code>C:\Config.Msi</code>를 삭제한 후 <code>C:\Config.Msi</code>의 삭제 여부를 한번 더 체크한 다음 <code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\Folders\C:\Config.Msi</code> 레지스트리 키를 삭제합니다.  <code>C:\Config.Msi</code>가 삭제된 직후 <code>C:\Config.Msi</code>를 생성하면 레지스트리 키가 삭제되지 않습니다. Windows Installer는 <code>C:\Config.Msi</code>를 백업에 사용하게 되고 이전 취약점들을 그대로 악용할 수 있습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/eop/">eop</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/race-condition/">race condition</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/toctou/">toctou</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2020/12/30/fabu1ous/2020-12-30/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>[Write-Up] Christmas CTF 2020 - Match Maker</title>
@@ -665,38 +699,6 @@
       
       
       <comments>https://hackyboiz.github.io/2020/12/12/fabu1ous/2020-12-12/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2020-17049: Kerberos Bronze Bit Attack</title>
-      <link>https://hackyboiz.github.io/2020/12/11/l0ch/2020-12-11/</link>
-      <guid>https://hackyboiz.github.io/2020/12/11/l0ch/2020-12-11/</guid>
-      <pubDate>Fri, 11 Dec 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://blog.netspi.com/cve-2020-17049-kerberos-bronze-bi</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.netspi.com/cve-2020-17049-kerberos-bronze-bit-attack/">CVE-2020-17049: Kerberos Bronze Bit Attack – Practical Exploitation</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>standard Windows versions since 2000</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Kerberos는 Windows Active Directory 도메인 내에서 사용자, 서버 및 기타 리소스를 서로 인증하는 데 사용되는 프로토콜입니다.<br>Kerberos의 기존 공격 방법인 Golden Ticket 및 Silver Ticket 공격의 변형인 Bronze Bit 공격이 공개되었습니다.</p><blockquote><p>Golden/Silver Ticket 공격<br>내부 네트워크에 침입한 이후 동일한 네트워크의 Kerberos 인증시스템을 사용하는 다른 시스템의 자격 증명을 위조하는 공격기법</p></blockquote><br><p>Bronze Bit는 Microsoft가 Kerberos 프로토콜에 추가 한 <code>S4U2self</code> 및 <code>S4U2proxy</code> 프로토콜을 악용하며 Kerberos 프로세스가 변조된 서비스 티켓을 감지할 수 없어 발생합니다. 공격을 위해서는 다음 조건이 만족되어야 합니다.</p><ol><li>해커는 내부 네트워크의 시스템 하나(Service1)를 장악해 Active Directory 내에 접근 권한이 있어야 합니다.</li><li>침입한 시스템인 Service1에 대한 암호 해시가 필요합니다.</li><li>Service1에는 다른 시스템(Service2)에 대한 제한된 신뢰 관계가 있습니다.</li></ol><p>위 조건이 만족되면 해커는 다음과 같은 공격이 가능합니다.</p><ol><li>사용자를 식별하고 티켓을 반환하는 <code>S4U2self</code> 에서 User2의 Service1 서비스 티켓을 가져옵니다. 이때 <code>force-forwardable</code> 옵션을 사용하면 반환하는 서비스 티켓이 전달 가능한 티켓으로 변환됩니다.</li><li>Service1의 해시로 티켓을 복호화하고 플래그 값의 두 번째 비트를 0→1 로 변경한 뒤 다시 암호화합니다. </li><li>조작된 티켓은 <code>S4U2proxy</code> 에서 전송되고 Service2에 대한 서비스 티켓이 User2로 반환되어 <code>User2.ccache</code>의 디스크에 기록됩니다.</li><li>해커는 Service1 유저(User1) 권한으로 Service2 유저(User2)의 Kerberos 서비스 티켓을 얻을 수 있어 User2 권한으로 Service2에 액세스가 가능합니다.</li></ol><p>이는 Golden/Silver Ticket과 유사한 공격 방법이지만 단일 비트 플립을 이용했기 때문에 Bronze Bit로 명명되었습니다.</p><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://blog.netspi.com/cve-2020-17049-kerberos-bronze-bit-theory/">https://blog.netspi.com/cve-2020-17049-kerberos-bronze-bit-theory/</a></p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/kerberos/">kerberos</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/bronze-bit/">bronze bit</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/12/11/l0ch/2020-12-11/#disqus_thread</comments>
       
     </item>
     

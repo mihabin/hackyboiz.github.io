@@ -4,6 +4,39 @@
   
   
   <entry>
+    <title>[하루한줄] Windows Installer EoP 6th patch bypass</title>
+    <link href="/2020/12/30/fabu1ous/2020-12-30/"/>
+    <url>/2020/12/30/fabu1ous/2020-12-30/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://halove23.blogspot.com/2020/12/oh-so-you-have-antivirus-nameevery-bug.html">Disclosing about 8 0-day vulnerability</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Windows installer</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p><a href="https://hackyboiz.github.io/2020/10/21/fabu1ous/2020-10-21/">CVE-2020-16902</a>에 대한 패치 우회가 공개되었습니다. CVE-2019-1415로 처음 제보된 Windows Installer EoP 취약점의 6번째 패치 우회입니다. </p><p>CVE-2020-16902의 내용은 다음과 같습니다. Windows Installer는 설치 작업 실패를 대비해 설치 작업 중 삭제되는 파일과 롤백 스크립트를<code> C:\Config.Msi</code> 디렉터리에 백업합니다. 백업 전에 <code>C:\Config.Msi</code> 디렉터리를 삭제하고 재생성하는 로직이 있는데 <code>Setsecurity()</code>의 race condition 취약점 패턴이 남아있어 악용이 가능합니다.</p><p>따라서 <code>C:\Config.Msi</code>를 삭제하고 <code>C:\Config.Msi</code>이 여전히 존재한다면(race-con 트리거 조건) <code>C:\Config.Msi</code> 대신 <code>C:\windows\install\config.msi</code>에 롤백 파일을 백업하도록 패치되었습니다. </p><p>하지만 다음과 같은 이유로 우회가 가능합니다. 만약 <code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\Folders\C:\Config.Msi</code> 레지스트리 키가 존재하면 그대로 <code>C:\Config.Msi</code>를 백업에 사용합니다.  <code>C:\Config.Msi</code>를 삭제한 후 <code>C:\Config.Msi</code>의 삭제 여부를 한번 더 체크한 다음 <code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\Folders\C:\Config.Msi</code> 레지스트리 키를 삭제합니다.  <code>C:\Config.Msi</code>가 삭제된 직후 <code>C:\Config.Msi</code>를 생성하면 레지스트리 키가 삭제되지 않습니다. Windows Installer는 <code>C:\Config.Msi</code>를 백업에 사용하게 되고 이전 취약점들을 그대로 악용할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Fabu1ous</tag>
+      
+      <tag>eop</tag>
+      
+      <tag>windows</tag>
+      
+      <tag>race condition</tag>
+      
+      <tag>toctou</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[Write-Up] Christmas CTF 2020 - Match Maker</title>
     <link href="/2020/12/29/fabu1ous/match-maker/"/>
     <url>/2020/12/29/fabu1ous/match-maker/</url>
