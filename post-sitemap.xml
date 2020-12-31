@@ -8,16 +8,8 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2020/12/30/fabu1ous/2020-12-30/</loc>
-        <lastmod>2020-12-30T08:39:32.286Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://hackyboiz.github.io/2020/12/29/l0ch/baby_rudolph/</loc>
-        <lastmod>2020-12-30T08:39:25.651Z</lastmod>
+        <loc>https://hackyboiz.github.io/2020/12/31/idioth/2020-12-31/</loc>
+        <lastmod>2020-12-31T06:48:29.177Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -25,7 +17,15 @@
 
     <url>
         <loc>https://hackyboiz.github.io/2020/12/29/l0ch/picky_eater/</loc>
-        <lastmod>2020-12-30T08:37:52.238Z</lastmod>
+        <lastmod>2020-12-31T06:31:00.500Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://hackyboiz.github.io/2020/12/29/l0ch/baby_rudolph/</loc>
+        <lastmod>2020-12-31T06:31:00.436Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -33,7 +33,55 @@
 
     <url>
         <loc>https://hackyboiz.github.io/2020/12/29/l0ch/address_book/</loc>
-        <lastmod>2020-12-30T08:37:52.237Z</lastmod>
+        <lastmod>2020-12-31T06:31:00.321Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://hackyboiz.github.io/2020/12/29/idioth/christmasctf2020-gift/</loc>
+        <lastmod>2020-12-31T06:31:00.305Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://hackyboiz.github.io/2020/12/29/fabu1ous/oil-system/</loc>
+        <lastmod>2020-12-31T06:31:00.260Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://hackyboiz.github.io/2020/12/29/fabu1ous/no-g/</loc>
+        <lastmod>2020-12-31T06:31:00.240Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://hackyboiz.github.io/2020/12/29/fabu1ous/match-maker/</loc>
+        <lastmod>2020-12-31T06:31:00.063Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://hackyboiz.github.io/2020/12/30/fabu1ous/2020-12-30/</loc>
+        <lastmod>2020-12-31T06:31:00.057Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://hackyboiz.github.io/2020/12/19/fabu1ous/2020-12-19/</loc>
+        <lastmod>2020-12-31T06:31:00.051Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -48,48 +96,8 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2020/12/29/idioth/christmasctf2020-gift/</loc>
-        <lastmod>2020-12-30T08:37:52.198Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>https://hackyboiz.github.io/2020/12/29/idioth/christmasctf2020-angrforge/</loc>
         <lastmod>2020-12-30T08:37:52.196Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://hackyboiz.github.io/2020/12/29/fabu1ous/oil-system/</loc>
-        <lastmod>2020-12-30T08:37:52.187Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://hackyboiz.github.io/2020/12/29/fabu1ous/no-g/</loc>
-        <lastmod>2020-12-30T08:37:52.184Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://hackyboiz.github.io/2020/12/29/fabu1ous/match-maker/</loc>
-        <lastmod>2020-12-30T08:37:52.175Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://hackyboiz.github.io/2020/12/19/fabu1ous/2020-12-19/</loc>
-        <lastmod>2020-12-30T08:37:52.174Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -208,7 +216,7 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2020/11/30/idioth/2020-11-30/</loc>
+        <loc>https://hackyboiz.github.io/2020/12/03/idioth/2020-12-03/</loc>
         <lastmod>2020-12-29T08:36:21.350Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -216,7 +224,7 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2020/12/03/idioth/2020-12-03/</loc>
+        <loc>https://hackyboiz.github.io/2020/11/30/idioth/2020-11-30/</loc>
         <lastmod>2020-12-29T08:36:21.350Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -392,7 +400,7 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2020/11/06/l0ch/2020-11-06/</loc>
+        <loc>https://hackyboiz.github.io/2020/11/03/l0ch/11-03_1day1line/</loc>
         <lastmod>2020-11-22T06:33:02.258Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -400,7 +408,7 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2020/11/03/l0ch/11-03_1day1line/</loc>
+        <loc>https://hackyboiz.github.io/2020/11/06/l0ch/2020-11-06/</loc>
         <lastmod>2020-11-22T06:33:02.258Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
