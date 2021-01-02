@@ -9,7 +9,7 @@
 
     <url>
         <loc>https://hackyboiz.github.io/2020/12/29/l0ch/address_book/</loc>
-        <lastmod>2021-01-01T08:29:09.941Z</lastmod>
+        <lastmod>2021-01-02T08:57:18.802Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -17,7 +17,23 @@
 
     <url>
         <loc>https://hackyboiz.github.io/2021/01/01/l0ch/2021-01-01/</loc>
-        <lastmod>2021-01-01T08:29:09.940Z</lastmod>
+        <lastmod>2021-01-02T08:57:18.787Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://hackyboiz.github.io/2020/12/31/idioth/2020-12-31/</loc>
+        <lastmod>2021-01-02T08:57:18.782Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://hackyboiz.github.io/2021/01/02/fabu1ous/2021-01-02/</loc>
+        <lastmod>2021-01-02T08:57:18.777Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -58,14 +74,6 @@
     <url>
         <loc>https://hackyboiz.github.io/2020/12/29/idioth/christmasctf2020-angrforge/</loc>
         <lastmod>2021-01-01T08:26:35.705Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://hackyboiz.github.io/2020/12/31/idioth/2020-12-31/</loc>
-        <lastmod>2021-01-01T08:26:35.704Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

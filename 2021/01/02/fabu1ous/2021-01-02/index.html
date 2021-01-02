@@ -19,14 +19,14 @@
   <meta name="google-site-verification" content="DXkyiaX95-ws53Tyt0m91_umRf4gfV2qJIQZ5zQDIO4">
 
   <meta property="og:type" content="website"> 
-  <meta property="og:title" content="[하루한줄] CVE-2020-17057 : Microsoft Windows Uninitialized Pointer EoP - hackyboiz">
+  <meta property="og:title" content="[하루한줄] CVE-2020-10148: SolarWinds Orion API auth bypass to RCE - hackyboiz">
   <meta property="og:description" content="hack &amp; life">
   <meta property="og:image" content="/img/favicon.ico">
   <meta property="og:url" content="https://hackyboiz.github.io/">
 
-  <link rel="canonical" href="https://hackyboiz.github.io/2021/01/01/l0ch/2021-01-01/">
+  <link rel="canonical" href="https://hackyboiz.github.io/2021/01/02/fabu1ous/2021-01-02/">
 
-  <title>[하루한줄] CVE-2020-17057 : Microsoft Windows Uninitialized Pointer EoP - hackyboiz</title>
+  <title>[하루한줄] CVE-2020-10148: SolarWinds Orion API auth bypass to RCE - hackyboiz</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
 
@@ -178,8 +178,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2021-01-01 18:00" pubdate>
-      2021년 1월 1일 오후
+    <time datetime="2021-01-02 18:00" pubdate>
+      2021년 1월 2일 오후
     </time>
   </div>
 
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      133 자
+      142 자
     </span>
   
 
@@ -231,16 +231,17 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">[하루한줄] CVE-2020-17057 : Microsoft Windows Uninitialized Pointer EoP</h1>
+            <h1 style="display: none">[하루한줄] CVE-2020-10148: SolarWinds Orion API auth bypass to RCE</h1>
             
             <div class="markdown-body" id="post-body">
-              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://blogs.360.cn/post/CVE-2020-17057%20detail%20and%20exploit.html">CVE-2020-17057 Microsoft Windows DirectComposition Uninitialized Pointer Privilege Escalation Vulnerability</a></p>
-<h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Microsoft Windows</p>
-<h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Microsoft가 2년 전에 발견한 취약점을 패치함으로써 취약점의 세부 정보가 공개되었습니다. 해당 취약점은 Windows 커널 모드의 그래픽 구성 요소인 <code>DirectComposition</code> 에서 발생하는 초기화되지 않은 pool 메모리 참조입니다.</p>
-<p><code>DirectComposition</code> 은 리소스 생성/해제/속성 설정 등의 작업을 수행하는 <code>NtDCompositionProcessChannelBatchBuffer</code> syscall을 사용합니다.</p>
-<p><code>DirectComposition::CInteractionTrackerMarshaler::SetBufferProperty</code> 에서는 한 쌍의 리소스 객체를 처리합니다. 첫 번째 리소스 객체가 초기화되고 두 번째 리소스 객체 타입이 <code>0x57</code>이 아니라면 두 번째 리소스 객체가 초기화되지 않습니다.</p>
-<p>이후 <code>DirectComposition::CInteractionTrackerMarshaler::ReleaseManipulationReferences</code> 에서 할당된 한 쌍의 리소스 객체를 해제하기 위해 별도의 검증 없이<code>DirectComposition::CApplicationChannel::ReleaseResource</code> 을 호출하는데, 이때 초기화되지 않은 두 번째 리소스 객체 포인터를 참조하게 되어 커널 크래시가 발생합니다.</p>
-<p>이를 악용하면 리소스 객체 포인터 테이블을 spray 해 임의 객체를 해제하는 등 해제된 메모리를 조작할 수 있습니다.</p>
+              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://nvd.nist.gov/vuln/detail/CVE-2020-10148">CVE-2020-10148</a></p>
+<h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul>
+<li>2019.4 HF 6 이전 버전</li>
+<li>2020.2.1 HF 2 이전 버전</li>
+</ul>
+<h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>SolarWinds Orion platform에서 API 인증 우회를 통한 원격 코드 실행 취약점이 패치되었습니다. FireEye가 작년 12월 공개한 Sunburst backdoor로 인해 SolarWinds Orion platform은 큰 이슈가 되었습니다. 그 후 SolarWinds Orion platform에 대한 깊은 분석이 진행되면서 발견된 취약점 중 하나가 CVE-2020-10148입니다.</p>
+<p>SolarWinds Orion platform은 시스템 모니터링 및 관리 목적으로 만들어진 infrastructure입니다. 사용자는 Orion Website를 통해 서버에 설치된 Orion에 접근해 서버를 관리할 수 있으며 SolarWinds Orion API를 요청해 SolarWinds Orion platform을 사용할 수 있습니다.</p>
+<p>URI를 통해 Orion 서버에 요청을 보낼 때 <code>Request.PathInfo</code> 파라미터에 <code>WebResource.adx</code>, <code>ScriptResource.adx</code>, <code>i18n.ashx</code>, <code>Skipi18n</code>등의 값을 지정하면 SolarWinds가 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.microsoft.com/en-us/dotnet/api/system.web.httpcontext.skipauthorization?view=netframework-4.8">SkipAuthorization</a> flag를 설정합니다. 이로 인해 해커가 인증 절차를 건너뛰고 API 커멘드를 실행할 수 있게 됩니다.</p>
 
             </div>
             <hr>
@@ -258,15 +259,13 @@
                 <div class="post-meta">
                   <i class="iconfont icon-tags"></i>
                   
+                  <a class="hover-with-bg" href="/tags/Fabu1ous/">Fabu1ous</a>
+                  
                   <a class="hover-with-bg" href="/tags/cve/">cve</a>
                   
-                  <a class="hover-with-bg" href="/tags/eop/">eop</a>
+                  <a class="hover-with-bg" href="/tags/rce/">rce</a>
                   
-                  <a class="hover-with-bg" href="/tags/windows/">windows</a>
-                  
-                  <a class="hover-with-bg" href="/tags/L0ch/">L0ch</a>
-                  
-                  <a class="hover-with-bg" href="/tags/uninitialized-pointer/">uninitialized pointer</a>
+                  <a class="hover-with-bg" href="/tags/authentication-bypass/">authentication bypass</a>
                   
                 </div>
                 
@@ -275,16 +274,16 @@
               <div class="post-metas mb-3">
                 <a class="hover-with-bg" style="display: flex;" href="/author">
                   <div class="link-avatar-page">
-                    <img src="/img/profile_L0ch.jpg" srcset="/img/loading.gif" alt="L0ch">
+                    <img src="/img/profile_Fabu1ous.jpg" srcset="/img/loading.gif" alt="Fabu1ous">
                   </div>
 
                   <div class="link-text">
-                    <div class="link-title">L0ch</div>
+                    <div class="link-title">Fabu1ous</div>
                   </div>
                 </a>
                 <div class="link-text">
                   <div class="link-more">
-                    <a href="/tags/L0ch">
+                    <a href="/tags/Fabu1ous">
                       Read more
                       <i class="iconfont icon-arrowdown"></i>
                     </a>
@@ -305,18 +304,12 @@
                 <article class="post-prev col-6">
                   
                   
-                  <a href="/2021/01/02/fabu1ous/2021-01-02/">
-                    <i class="iconfont icon-arrowleft"></i>
-                    <span class="hidden-mobile">[하루한줄] CVE-2020-10148: SolarWinds Orion API auth bypass to RCE</span>
-                    <span class="visible-mobile">Previous</span>
-                  </a>
-                  
                 </article>
                 <article class="post-next col-6">
                   
                   
-                  <a href="/2020/12/31/idioth/2020-12-31/">
-                    <span class="hidden-mobile">[하루한줄] CVE-2020-0986: Windows splWOW64 Elevation of Privilege</span>
+                  <a href="/2021/01/01/l0ch/2021-01-01/">
+                    <span class="hidden-mobile">[하루한줄] CVE-2020-17057 : Microsoft Windows Uninitialized Pointer EoP</span>
                     <span class="visible-mobile">Next</span>
                     <i class="iconfont icon-arrowright"></i>
                   </a>
@@ -335,8 +328,8 @@
     <div id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'https://hackyboiz.github.io/2021/01/01/l0ch/2021-01-01/';
-        this.page.identifier = '/2021/01/01/l0ch/2021-01-01/';
+        this.page.url = 'https://hackyboiz.github.io/2021/01/02/fabu1ous/2021-01-02/';
+        this.page.identifier = '/2021/01/02/fabu1ous/2021-01-02/';
       };
       function loadDisqus() {
         (function () {
@@ -482,7 +475,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "[하루한줄] CVE-2020-17057 : Microsoft Windows Uninitialized Pointer EoP&nbsp;",
+        "[하루한줄] CVE-2020-10148: SolarWinds Orion API auth bypass to RCE&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

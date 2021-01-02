@@ -19,14 +19,14 @@
   <meta name="google-site-verification" content="DXkyiaX95-ws53Tyt0m91_umRf4gfV2qJIQZ5zQDIO4">
 
   <meta property="og:type" content="website"> 
-  <meta property="og:title" content="Archives - hackyboiz">
+  <meta property="og:title" content="hackyboiz">
   <meta property="og:description" content="hack &amp; life">
   <meta property="og:image" content="/img/favicon.ico">
   <meta property="og:url" content="https://hackyboiz.github.io/">
 
-  <link rel="canonical" href="https://hackyboiz.github.io/archives/page/8/">
+  <link rel="canonical" href="https://hackyboiz.github.io/page/9/">
 
-  <title>Archives - hackyboiz</title>
+  <title>hackyboiz</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
 
@@ -183,78 +183,91 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
-<div class="list-group">
-  <p class="h4">81 posts in total.</p>
-  <hr>
-  
+
+  <div class="row mx-auto index-card">
     
-      
-      <p class="h5">2020</p>
     
-    <a href="/2020/10/25/idioth/angryghidra/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">[Research] AngryGhidra를 사용해보자!</span>
-      <time style="float: right;">10-25</time>
-    </a>
-  
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/10/18/idioth/sstf-rc-four/" target="_self">
+          <img src="/2020/10/18/idioth/sstf-rc-four/image.png" srcset="/img/loading.gif" alt="[Write-Up] SSTF RC_four">
+        </a>
+      </div>
     
-    <a href="/2020/10/24/fabu1ous/2020-10-24/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">[하루한줄] CVE-2020-15999: Chrome 0-day, Heap buffer overflow</span>
-      <time style="float: right;">10-24</time>
-    </a>
-  
-    
-    <a href="/2020/10/23/l0ch/10-23_1day1line/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">[하루한줄] Bypassing NTFS permissions to read any files as unprivileged user</span>
-      <time style="float: right;">10-23</time>
-    </a>
-  
-    
-    <a href="/2020/10/22/idioth/gfxdownloadwrapper/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">[하루한줄] GfxDownloadWrapper.exe LOLBIN을 이용한 Assembly Loading</span>
-      <time style="float: right;">10-22</time>
-    </a>
-  
-    
-    <a href="/2020/10/21/fabu1ous/2020-10-21/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">[하루한줄] CVE-2020-16902: Windows Installer EoP</span>
-      <time style="float: right;">10-21</time>
-    </a>
-  
-    
-    <a href="/2020/10/20/l0ch/Discord_RCE/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">[하루한줄] Discord Desktop app RCE</span>
-      <time style="float: right;">10-20</time>
-    </a>
-  
-    
-    <a href="/2020/10/19/idioth/cve-2020-16947/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">[하루한줄] CVE-2020-16947: Outlook 365 Remote Command Execution</span>
-      <time style="float: right;">10-19</time>
-    </a>
-  
-    
-    <a href="/2020/10/18/fabu1ous/sstf-eat-the-pie/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">[Write-Up] SSTF eat-the-pie</span>
-      <time style="float: right;">10-18</time>
-    </a>
-  
-    
-    <a href="/2020/10/18/fabu1ous/sstf-t-express/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">[Write-Up] SSTF T-express</span>
-      <time style="float: right;">10-18</time>
-    </a>
-  
-    
-    <a href="/2020/10/18/idioth/sstf-crackme101/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">[Write-Up] SSTF CrackMe101</span>
-      <time style="float: right;">10-18</time>
-    </a>
-  
-</div>
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/10/18/idioth/sstf-rc-four/">[Write-Up] SSTF RC_four</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/18/idioth/sstf-rc-four/">
+          
+          
+            
+          
+          Intro
+압축을 풀면 challenge.py와 output.txt 파일을 볼 수 있습니다.
+
+output.txt 파일에는 암호화된 것으로 추측되는 문자열이 2줄 존재합니다.
+challenge.py 분석from Crypto.Cipher import ARC4
+from secret import key, flag
+from binascii import hexlif
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-user-fill"></i>
+            <a href="/tags/idioth">
+              idioth
+            </a>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-18 15:00" pubdate>
+              2020-10-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Write-Up/">Write-Up</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/samsung/">samsung</a>
+            
+              <a href="/tags/ctf/">ctf</a>
+            
+              <a href="/tags/sstf/">sstf</a>
+            
+              <a href="/tags/idioth/">idioth</a>
+            
+              <a href="/tags/crypto/">crypto</a>
+            
+              <a href="/tags/rc4/">rc4</a>
+            
+              <a href="/tags/decrypt/">decrypt</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/archives/page/7/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/6/">6</a><a class="page-number" href="/archives/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/archives/page/9/">9</a><a class="extend next" rel="next" href="/archives/page/9/"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/8/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span>
     </span>
   </nav>
   
@@ -353,7 +366,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Archive&nbsp;",
+        "Welcome to Hackyboiz&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

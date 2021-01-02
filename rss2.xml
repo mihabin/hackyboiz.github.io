@@ -9,8 +9,40 @@
     <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>hack &amp; life</description>
-    <pubDate>Fri, 01 Jan 2021 08:29:09 GMT</pubDate>
+    <pubDate>Sat, 02 Jan 2021 08:57:18 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] CVE-2020-10148: SolarWinds Orion API auth bypass to RCE</title>
+      <link>https://hackyboiz.github.io/2021/01/02/fabu1ous/2021-01-02/</link>
+      <guid>https://hackyboiz.github.io/2021/01/02/fabu1ous/2021-01-02/</guid>
+      <pubDate>Sat, 02 Jan 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://nvd.nist.gov/vuln/detail/CVE-2020-10148&quot;&gt;CVE-2020</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://nvd.nist.gov/vuln/detail/CVE-2020-10148">CVE-2020-10148</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>2019.4 HF 6 이전 버전</li><li>2020.2.1 HF 2 이전 버전</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>SolarWinds Orion platform에서 API 인증 우회를 통한 원격 코드 실행 취약점이 패치되었습니다. FireEye가 작년 12월 공개한 Sunburst backdoor로 인해 SolarWinds Orion platform은 큰 이슈가 되었습니다. 그 후 SolarWinds Orion platform에 대한 깊은 분석이 진행되면서 발견된 취약점 중 하나가 CVE-2020-10148입니다.</p><p>SolarWinds Orion platform은 시스템 모니터링 및 관리 목적으로 만들어진 infrastructure입니다. 사용자는 Orion Website를 통해 서버에 설치된 Orion에 접근해 서버를 관리할 수 있으며 SolarWinds Orion API를 요청해 SolarWinds Orion platform을 사용할 수 있습니다.</p><p>URI를 통해 Orion 서버에 요청을 보낼 때 <code>Request.PathInfo</code> 파라미터에 <code>WebResource.adx</code>, <code>ScriptResource.adx</code>, <code>i18n.ashx</code>, <code>Skipi18n</code>등의 값을 지정하면 SolarWinds가 <a href="https://docs.microsoft.com/en-us/dotnet/api/system.web.httpcontext.skipauthorization?view=netframework-4.8">SkipAuthorization</a> flag를 설정합니다. 이로 인해 해커가 인증 절차를 건너뛰고 API 커멘드를 실행할 수 있게 됩니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/rce/">rce</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/authentication-bypass/">authentication bypass</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/01/02/fabu1ous/2021-01-02/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>[하루한줄] CVE-2020-17057 : Microsoft Windows Uninitialized Pointer EoP</title>
@@ -660,42 +692,6 @@
       
       
       <comments>https://hackyboiz.github.io/2020/12/15/l0ch/2020-12-15/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] Windows Server DNS Resolver Spoofing 취약점 권고</title>
-      <link>https://hackyboiz.github.io/2020/12/14/idioth/2020-12-14/</link>
-      <guid>https://hackyboiz.github.io/2020/12/14/idioth/2020-12-14/</guid>
-      <pubDate>Mon, 14 Dec 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://dirteam.com/sander/2020/12/10/dns-spoofing-vulner</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://dirteam.com/sander/2020/12/10/dns-spoofing-vulnerability-sad-dns-important-cve-2020-25705-adv200013/">Spoofing Vulnerability in DNS Resolver (SAD DNS, Important, CVE-2020-25705, ADV200013)</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Windows Server 2008 R2</li><li>Windows Server 2012</li><li>Windows Server 2012 R2</li><li>Windows Server 2016</li><li>Windows Server 2019</li><li>Windows Server, version 1903</li><li>Windows Server, version 1909</li><li>Windows Server, version 2004</li><li>Windows Server, version 20H2</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>2020년 12월 8일에 마이크로소프트에서 DNS Resolver addressing spoofing 취약점에 대한 보안 공지(<a href="https://msrc.microsoft.com/update-guide/vulnerability/ADV200013">ADV200013</a>)가 발표됐습니다. 마이크로소프트는 해당 취약점을 통한 DNS cache poisoning attack을 막기 위해 DNS UDP 패킷의 크기를 제한하는 권고를 했습니다.</p><p>해당 취약점은 Windows TCP/IP stack에 제공되는 DNS Resolver Component에 존재합니다. DNS Resolver에 영향을 미치는 IP 조각화에 의해 DNS cache poisoning 취약점이 발생하며 해당 취약점을 exploit 한 해커는 DNS forwarder나 DNS Resolver에 의해 cache 된 DNS packet을 스푸핑 할 수 있습니다. 취약점을 성공적으로 exploit 하면 해커는 수정된 DNS record를 사용하여 해커의 웹사이트로 redirect 시킬 수 있습니다.</p><p>해당 취약점을 방지하기 위해 <code>MaximumUdpPacketSize</code> 레지스트리 값을 1,221 bytes로 수정해야 합니다. 수정된 후 DNS Resolver는 1,221 bytes보다 큰 모든 response를 TCP로 받아서 Windows Server 기반 DNS server에서 해당 취약점을 악용하려는 시도를 막을 수 있습니다.</p><p>DNS server가 실행되는 모든 Windows Server에서 관리자 권한 파워 쉘이나 원격 세션을 통한 아래의 명령줄을 실행하면 UDP 패킷 크기의 레지스트리 값을 변경할 수 있습니다.</p><pre><code class="hljs powershell"><span class="hljs-variable">$RegPath</span> = <span class="hljs-string">&quot;HKLM:\System\CurrentControlSet\Services\DNS\Parameters&quot;</span><span class="hljs-built_in">New-ItemProperty</span> <span class="hljs-literal">-Path</span> <span class="hljs-variable">$RegPath</span> <span class="hljs-literal">-Name</span> MaximumUdpPacketSize `<span class="hljs-literal">-Value</span> <span class="hljs-number">1221</span> <span class="hljs-literal">-PropertyType</span> DWORD <span class="hljs-literal">-Force</span><span class="hljs-built_in">Restart-Service</span> DNS</code></pre>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/sad-dns/">sad dns</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/dns-cache-poisoning/">dns cache poisoning</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/dns-resolver/">dns resolver</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/windows-server/">windows server</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/adv200013/">adv200013</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/12/14/idioth/2020-12-14/#disqus_thread</comments>
       
     </item>
     
