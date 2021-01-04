@@ -4,6 +4,39 @@
   
   
   <entry>
+    <title>[하루한줄] CVE-2020-29583: Zyxel 방화벽, VPN 제품에서 백도어 계정 발견</title>
+    <link href="/2021/01/04/idioth/2021-01-04/"/>
+    <url>/2021/01/04/idioth/2021-01-04/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://thehackernews.com/2021/01/secret-backdoor-account-found-in.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+TheHackersNews+(The+Hackers+News+-+Cyber+Security+Blog)">Secret Backdoor Account Found in Several Zyxel Firewall, VPN Products</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>방화벽<ul><li>ZLD V4.60 펌웨어를 사용하는 ATP, USG, USG FLEX, VPN 시리즈</li></ul></li><li>AP 컨트롤러<ul><li>NXC 2500, NXC5500</li></ul></li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Zyxel은 해커가 펌웨어에 하드 코딩된 undocumented account(FTP를 통한 자동 펌웨어 업데이트 제공을 위한 계정)를 통해 관리자 권한으로 로그인하고 네트워크 장비를 손상시킬 수 있는 취약점에 대한 패치를 발표했습니다.</p><p>이 취약점은 CVE-2020-29583으로 undocumented account인 <code>zyfwp</code>와 수정할 수 없는 비밀번호 <code>PrOw! aN_fXp</code>가 평문으로 저장되어 있으며 해당 계정을 통해 해커가 SSH 서버나 웹 인터페이스에 관리자 권한으로 접근할 수 있습니다.</p><pre><code class="hljs routeros">$ ssh zyfwp@192.168.1.252Password: Pr*******XpRouter&gt; show<span class="hljs-built_in"> users </span>current<span class="hljs-literal">No</span>: 1  Name: zyfwp  Type: admin(<span class="hljs-built_in">..</span>.)Router&gt;</code></pre><p>이 취약점을 악용해 해커는 방화벽의 설정을 조작하여 특정 트래픽을 허용하거나 막을 수 있고, 트래픽을 가로채거나 VPN 계정을 생성하여 네트워크에 대한 접근 권한을 가질 수 있습니다.</p><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.eyecontrol.nl/blog/undocumented-user-account-in-zyxel-products.html">https://www.eyecontrol.nl/blog/undocumented-user-account-in-zyxel-products.html</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>idioth</tag>
+      
+      <tag>zyxel</tag>
+      
+      <tag>backdoor</tag>
+      
+      <tag>undocumented account</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[Daily-Life] 크리스마스 CTF 2020 운영 후기</title>
     <link href="/2021/01/03/idioth/christmasctf2020-review/"/>
     <url>/2021/01/03/idioth/christmasctf2020-review/</url>
