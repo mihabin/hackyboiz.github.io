@@ -4,6 +4,39 @@
   
   
   <entry>
+    <title>[하루한줄] CVE-2020-35489 : Unrestricted File Upload Vulnerability in WordPress Plugin</title>
+    <link href="/2021/01/05/l0ch/2021-01-05/"/>
+    <url>/2021/01/05/l0ch/2021-01-05/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.wpsec.com/contact-form-7-vulnerability/">https://blog.wpsec.com/contact-form-7-vulnerability/</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Contact Form ≤ 7 5.3.1</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>WordPress 플러그인인 Contact Form 7은 폼메일 플러그인으로 폼메일 양식을 쉽게 생성할 수 있어 인기 있는 플러그인 중 하나입니다. 해당 플러그인에서 허용되지 않은 확장자 필터링을 우회해 업로드할 수 있는 취약점이 발견되었습니다.</p><p>취약점의 세부 정보는 다음과 같습니다.</p><ol><li>해커는 특수 문자가 포함된 이중 확장자 파일을 업로드할 수 있습니다. ex) <code>mal.php .jpg</code> (공백  = \t)</li><li>Contact Form 7은 업로드된 파일 이름에서 특수 문자를 제거하지 않아 첫 번째 확장자 이후 구분 문자로 인해 두 번째 파일 확장자를 버립니다.</li><li>결과적으로 업로드되는 파일 이름은 <code>mal.php</code>가 되고 업로드에 성공합니다.</li><li>해커는 임의 코드 실행을 통해 업로드된 파일에 접근 및 실행이 가능합니다.</li></ol><p>해커는 이를 악용해 서버에 웹쉘과 같은 파일을 제한 없이 업로드할 수 있습니다.</p><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/dn9uy3n/Check-WP-CVE-2020-35489">https://github.com/dn9uy3n/Check-WP-CVE-2020-35489</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>unrestricted file upload</tag>
+      
+      <tag>wordpress</tag>
+      
+      <tag>plugin</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[하루한줄] CVE-2020-29583: Zyxel 방화벽, VPN 제품에서 백도어 계정 발견</title>
     <link href="/2021/01/04/idioth/2021-01-04/"/>
     <url>/2021/01/04/idioth/2021-01-04/</url>
@@ -297,39 +330,6 @@
   
   
   <entry>
-    <title>[Write-Up] Christmas CTF 2020 - angrforge</title>
-    <link href="/2020/12/29/idioth/christmasctf2020-angrforge/"/>
-    <url>/2020/12/29/idioth/christmasctf2020-angrforge/</url>
-    
-    <content type="html"><![CDATA[<h1 id="출제-의도"><a href="#출제-의도" class="headerlink" title="출제 의도"></a>출제 의도</h1><p>angr를 통해 입력 값을 뽑아내는 것이 의도인 문제였습니다. 이 문제는 여러 번의 수정을 거쳤습니다. 원래 이 문제도 arm 환경에서 angr를 돌리는 문제로 낼 예정이었는데 arm에서 제대로 동작하지 않아서 arm은 포기. 그리고 원래 처음에는 c++로 냈었는데 검수 후 수정을 했더니 simulation manager를 돌려도 값이 제대로 나오지 않아서 c로 옮기는 과정에서 연산 몇 개를 뺐습니다..ㅠ</p><h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><pre><code class="hljs apache"><span class="hljs-attribute">idioth</span>@ubuntu:~/Desktop$ file angrforge<span class="hljs-attribute">angrforge</span>: ELF <span class="hljs-number">64</span>-bit LSB shared object, x<span class="hljs-number">86</span>-<span class="hljs-number">64</span>, version <span class="hljs-number">1</span> (SYSV), dynamically linked,<span class="hljs-attribute">interpreter</span> /lib<span class="hljs-number">64</span>/ld-linux-x<span class="hljs-number">86</span>-<span class="hljs-number">64</span>.so.<span class="hljs-number">2</span>,<span class="hljs-attribute">BuildID</span>[sha<span class="hljs-number">1</span>]=<span class="hljs-number">1162</span>ed<span class="hljs-number">229</span>a<span class="hljs-number">12133</span>d<span class="hljs-number">07</span>de<span class="hljs-number">26301</span>dad<span class="hljs-number">1</span>ada<span class="hljs-number">34</span>a<span class="hljs-number">9</span>c<span class="hljs-number">3</span>ff, for GNU/Linux <span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>, stripped</code></pre><p>64bit ELF 파일이며, stripped 되어있습니다.</p><pre><code class="hljs c"><span class="hljs-function">undefined8 <span class="hljs-title">FUN_00103be1</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span><span class="hljs-function"></span><span class="hljs-function"></span>&#123;  <span class="hljs-keyword">int</span> iVar1;  <span class="hljs-keyword">long</span> in_FS_OFFSET;  undefined8 local_58;  undefined8 local_50;  undefined8 local_48;  undefined8 local_40;  undefined8 local_38;  undefined8 local_30;  undefined8 local_28;  undefined local_20;  <span class="hljs-keyword">long</span> local_10;    local_10 = *(<span class="hljs-keyword">long</span> *)(in_FS_OFFSET + <span class="hljs-number">0x28</span>);  local_58 = <span class="hljs-number">0</span>;  local_50 = <span class="hljs-number">0</span>;  local_48 = <span class="hljs-number">0</span>;  local_40 = <span class="hljs-number">0</span>;  local_38 = <span class="hljs-number">0</span>;  local_30 = <span class="hljs-number">0</span>;  local_28 = <span class="hljs-number">0</span>;  local_20 = <span class="hljs-number">0</span>;  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;General Angerforge, the Dark Iron responsible for stealing my computer.&quot;</span>);  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;But I\&#x27;m just a programmer.. so Call me my best warrior friend.&quot;</span>);  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;If you call my friend, I will give you a good reward.&quot;</span>);  fgets((<span class="hljs-keyword">char</span> *)&amp;local_58,<span class="hljs-number">0x39</span>,<span class="hljs-built_in">stdin</span>);  FUN_00103a48(&amp;local_58);  iVar1 = FUN_001039f7(&amp;local_58);  <span class="hljs-keyword">if</span> (iVar1 == <span class="hljs-number">1</span>) &#123;    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;OMG, Thank you for your good works :)&quot;</span>);  &#125;  <span class="hljs-keyword">else</span> &#123;    FUN_001039d9();  &#125;  <span class="hljs-keyword">if</span> (local_10 != *(<span class="hljs-keyword">long</span> *)(in_FS_OFFSET + <span class="hljs-number">0x28</span>)) &#123;                    <span class="hljs-comment">/* WARNING: Subroutine does not return */</span>    __stack_chk_fail();  &#125;  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><p>ghidra를 통해 디컴파일을 한 후 main을 확인해보면, <code>0x39(57)</code>만큼의 입력 값을 받아서 <code>FUN_00103a48</code>을 호출하고, <code>FUN_001039f7</code>을 통해 문자열을 체크하는 것을 확인할 수 있습니다.</p><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">FUN_00103a48</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *param_1)</span></span><span class="hljs-function"></span><span class="hljs-function"></span>&#123;  <span class="hljs-keyword">size_t</span> sVar1;    sVar1 = <span class="hljs-built_in">strlen</span>(param_1);  <span class="hljs-keyword">if</span> (sVar1 &lt; (ulong)(<span class="hljs-keyword">long</span>)(<span class="hljs-keyword">int</span>)((DAT_00106014 | DAT_00106010) + <span class="hljs-number">5</span>)) &#123;    FUN_001033e9(param_1);    FUN_00103481(param_1);    FUN_00103519(param_1);    FUN_001035b1(param_1);    FUN_00103649(param_1);    FUN_001036e1(param_1);    FUN_00103779(param_1);    FUN_00103811(param_1);    FUN_001038a9(param_1);    FUN_00103941(param_1);  &#125;  <span class="hljs-keyword">else</span> &#123;    FUN_001011c9(param_1);    FUN_00101396(param_1);    FUN_00101563(param_1);    FUN_00101730(param_1);    FUN_001018fd(param_1);    FUN_00101abf(param_1);    FUN_00101bbf(param_1);    FUN_00101cce(param_1);    FUN_00101dce(param_1);    FUN_00101eee(param_1);    FUN_001022cb(param_1);    FUN_00102589(param_1);    FUN_00102847(param_1);    FUN_00102b05(param_1);    FUN_00102dc3(param_1);    FUN_00102ef9(param_1);    FUN_00103035(param_1);    FUN_00103171(param_1);    FUN_001032ad(param_1);  &#125;  <span class="hljs-keyword">return</span>;&#125;</code></pre><p><code>FUN_00103a48</code> 함수는 입력 값을 받아서, 길이에 따라서 여러 가지 다른 sub 함수를 수행합니다. 각 sub 함수의 연산은 서로 다른 바이트에 영향을 미치지 않고 함수가 다른 함수를 호출하는 로직도 있어서 상당히 복잡하게 얽혀있습니다. c++에는 곱 연산 같은 것도 넣었는데 c로 급하게 옮기면서 보니 바이트가 증발하더군요..ㅠ <del>시간 부족으로 인한 역 연산 가능 로직</del></p><pre><code class="hljs c"><span class="hljs-function">undefined8 <span class="hljs-title">FUN_001039f7</span><span class="hljs-params">(<span class="hljs-keyword">long</span> param_1)</span></span><span class="hljs-function"></span>&#123;  <span class="hljs-keyword">int</span> local_c;    local_c = <span class="hljs-number">0</span>;  <span class="hljs-keyword">while</span>( <span class="hljs-literal">true</span> ) &#123;    <span class="hljs-keyword">if</span> (<span class="hljs-number">0x37</span> &lt; local_c) &#123;      <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;    &#125;    <span class="hljs-keyword">if</span> (*(<span class="hljs-keyword">char</span> *)(param_1 + local_c) != (&amp;DAT_00104080)[local_c]) <span class="hljs-keyword">break</span>;    local_c = local_c + <span class="hljs-number">1</span>;  &#125;  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><p><code>FUN_001039f7</code>에서는 0x38만큼 <code>DAT_00104080</code>과 값을 비교하여 맞으면 <code>1</code>, 아닐 시 <code>0</code>을 리턴해줍니다.</p><p><code>\n</code>을 제외한 문자열의 길이는 56이고, <code>stdin</code>을 통해 입력 값이 들어가므로 입력 값 56과 <code>stdin</code>을 처리하는 state를 구성하여 simulation manager를 돌리면 값을 구할 수 있습니다.</p><pre><code class="hljs python"><span class="hljs-keyword">import</span> angr<span class="hljs-keyword">import</span> claripyp = angr.Project(<span class="hljs-string">&#x27;./angrforge&#x27;</span>)flag_chars = [claripy.BVS(<span class="hljs-string">&#x27;flag_%d&#x27;</span> % i, <span class="hljs-number">8</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">56</span>)]flag = claripy.Concat(*flag_chars + [claripy.BVV(<span class="hljs-string">b&#x27;\n&#x27;</span>)])st = p.factory.full_init_state(    stdin = flag,    add_options = angr.options.unicorn,)<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> flag_chars:    st.solver.add(i != <span class="hljs-number">0</span>)    st.solver.add(i != <span class="hljs-number">10</span>)sm = p.factory.simulation_manager(st)sm.run()<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> sm.deadended:    <span class="hljs-keyword">if</span> <span class="hljs-string">b&#x27;OMG&#x27;</span> <span class="hljs-keyword">in</span> i.posix.dumps(<span class="hljs-number">1</span>):        print(i.posix.dumps(<span class="hljs-number">0</span>))</code></pre><pre><code class="hljs apache"><span class="hljs-attribute">idioth</span>@ubuntu:~/Desktop$ python<span class="hljs-number">3</span> solve.py<span class="hljs-attribute">WARNING</span> | <span class="hljs-number">2020</span>-<span class="hljs-number">12</span>-<span class="hljs-number">28</span> <span class="hljs-number">20</span>:<span class="hljs-number">50</span>:<span class="hljs-number">44</span>,<span class="hljs-number">086</span> | cle.loader | The main binary is a position-independent executable.<span class="hljs-attribute">It</span> is being loaded with a base address of <span class="hljs-number">0</span>x<span class="hljs-number">400000</span>.<span class="hljs-attribute">WARNING</span> | <span class="hljs-number">2020</span>-<span class="hljs-number">12</span>-<span class="hljs-number">28</span> <span class="hljs-number">20</span>:<span class="hljs-number">50</span>:<span class="hljs-number">45</span>,<span class="hljs-number">089</span> | angr.simos.simos | stdin is constrained to <span class="hljs-number">57</span> bytes (has_end=True).<span class="hljs-attribute">If</span> you are only providing the first <span class="hljs-number">57</span> bytes instead of the entire stdin,<span class="hljs-attribute">please</span> use stdin=SimFileStream(name=&#x27;stdin&#x27;, content=your_first_n_bytes, has_end=False).<span class="hljs-attribute">b</span>&#x27;XMAS&#123;h<span class="hljs-number">3</span>_<span class="hljs-number">1</span>s_b<span class="hljs-number">1</span>o<span class="hljs-number">0</span>d<span class="hljs-number">3</span>lf_d<span class="hljs-number">3</span>athkni<span class="hljs-number">9</span>ht_wh<span class="hljs-number">0</span>_will_kill_<span class="hljs-number">4</span>ngrf<span class="hljs-number">0</span>rge&#125;\n&#x27;</code></pre><p>Flag : XMAS{h3_1s_b1o0d3lf_d3athkni9ht_wh0_will_kill_4ngrf0rge}</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>Write-Up</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>ctf</tag>
-      
-      <tag>idioth</tag>
-      
-      <tag>reversing</tag>
-      
-      <tag>angr</tag>
-      
-      <tag>christmas ctf 2020</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>[Write-Up] Christmas CTF 2020 - gift</title>
     <link href="/2020/12/29/idioth/christmasctf2020-gift/"/>
     <url>/2020/12/29/idioth/christmasctf2020-gift/</url>
@@ -389,13 +389,46 @@
       
       <tag>idioth</tag>
       
-      <tag>reversing</tag>
-      
       <tag>christmas ctf 2020</tag>
+      
+      <tag>reversing</tag>
       
       <tag>arm</tag>
       
       <tag>crackme</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[Write-Up] Christmas CTF 2020 - angrforge</title>
+    <link href="/2020/12/29/idioth/christmasctf2020-angrforge/"/>
+    <url>/2020/12/29/idioth/christmasctf2020-angrforge/</url>
+    
+    <content type="html"><![CDATA[<h1 id="출제-의도"><a href="#출제-의도" class="headerlink" title="출제 의도"></a>출제 의도</h1><p>angr를 통해 입력 값을 뽑아내는 것이 의도인 문제였습니다. 이 문제는 여러 번의 수정을 거쳤습니다. 원래 이 문제도 arm 환경에서 angr를 돌리는 문제로 낼 예정이었는데 arm에서 제대로 동작하지 않아서 arm은 포기. 그리고 원래 처음에는 c++로 냈었는데 검수 후 수정을 했더니 simulation manager를 돌려도 값이 제대로 나오지 않아서 c로 옮기는 과정에서 연산 몇 개를 뺐습니다..ㅠ</p><h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><pre><code class="hljs apache"><span class="hljs-attribute">idioth</span>@ubuntu:~/Desktop$ file angrforge<span class="hljs-attribute">angrforge</span>: ELF <span class="hljs-number">64</span>-bit LSB shared object, x<span class="hljs-number">86</span>-<span class="hljs-number">64</span>, version <span class="hljs-number">1</span> (SYSV), dynamically linked,<span class="hljs-attribute">interpreter</span> /lib<span class="hljs-number">64</span>/ld-linux-x<span class="hljs-number">86</span>-<span class="hljs-number">64</span>.so.<span class="hljs-number">2</span>,<span class="hljs-attribute">BuildID</span>[sha<span class="hljs-number">1</span>]=<span class="hljs-number">1162</span>ed<span class="hljs-number">229</span>a<span class="hljs-number">12133</span>d<span class="hljs-number">07</span>de<span class="hljs-number">26301</span>dad<span class="hljs-number">1</span>ada<span class="hljs-number">34</span>a<span class="hljs-number">9</span>c<span class="hljs-number">3</span>ff, for GNU/Linux <span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>, stripped</code></pre><p>64bit ELF 파일이며, stripped 되어있습니다.</p><pre><code class="hljs c"><span class="hljs-function">undefined8 <span class="hljs-title">FUN_00103be1</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span><span class="hljs-function"></span><span class="hljs-function"></span>&#123;  <span class="hljs-keyword">int</span> iVar1;  <span class="hljs-keyword">long</span> in_FS_OFFSET;  undefined8 local_58;  undefined8 local_50;  undefined8 local_48;  undefined8 local_40;  undefined8 local_38;  undefined8 local_30;  undefined8 local_28;  undefined local_20;  <span class="hljs-keyword">long</span> local_10;    local_10 = *(<span class="hljs-keyword">long</span> *)(in_FS_OFFSET + <span class="hljs-number">0x28</span>);  local_58 = <span class="hljs-number">0</span>;  local_50 = <span class="hljs-number">0</span>;  local_48 = <span class="hljs-number">0</span>;  local_40 = <span class="hljs-number">0</span>;  local_38 = <span class="hljs-number">0</span>;  local_30 = <span class="hljs-number">0</span>;  local_28 = <span class="hljs-number">0</span>;  local_20 = <span class="hljs-number">0</span>;  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;General Angerforge, the Dark Iron responsible for stealing my computer.&quot;</span>);  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;But I\&#x27;m just a programmer.. so Call me my best warrior friend.&quot;</span>);  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;If you call my friend, I will give you a good reward.&quot;</span>);  fgets((<span class="hljs-keyword">char</span> *)&amp;local_58,<span class="hljs-number">0x39</span>,<span class="hljs-built_in">stdin</span>);  FUN_00103a48(&amp;local_58);  iVar1 = FUN_001039f7(&amp;local_58);  <span class="hljs-keyword">if</span> (iVar1 == <span class="hljs-number">1</span>) &#123;    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;OMG, Thank you for your good works :)&quot;</span>);  &#125;  <span class="hljs-keyword">else</span> &#123;    FUN_001039d9();  &#125;  <span class="hljs-keyword">if</span> (local_10 != *(<span class="hljs-keyword">long</span> *)(in_FS_OFFSET + <span class="hljs-number">0x28</span>)) &#123;                    <span class="hljs-comment">/* WARNING: Subroutine does not return */</span>    __stack_chk_fail();  &#125;  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><p>ghidra를 통해 디컴파일을 한 후 main을 확인해보면, <code>0x39(57)</code>만큼의 입력 값을 받아서 <code>FUN_00103a48</code>을 호출하고, <code>FUN_001039f7</code>을 통해 문자열을 체크하는 것을 확인할 수 있습니다.</p><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">FUN_00103a48</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *param_1)</span></span><span class="hljs-function"></span><span class="hljs-function"></span>&#123;  <span class="hljs-keyword">size_t</span> sVar1;    sVar1 = <span class="hljs-built_in">strlen</span>(param_1);  <span class="hljs-keyword">if</span> (sVar1 &lt; (ulong)(<span class="hljs-keyword">long</span>)(<span class="hljs-keyword">int</span>)((DAT_00106014 | DAT_00106010) + <span class="hljs-number">5</span>)) &#123;    FUN_001033e9(param_1);    FUN_00103481(param_1);    FUN_00103519(param_1);    FUN_001035b1(param_1);    FUN_00103649(param_1);    FUN_001036e1(param_1);    FUN_00103779(param_1);    FUN_00103811(param_1);    FUN_001038a9(param_1);    FUN_00103941(param_1);  &#125;  <span class="hljs-keyword">else</span> &#123;    FUN_001011c9(param_1);    FUN_00101396(param_1);    FUN_00101563(param_1);    FUN_00101730(param_1);    FUN_001018fd(param_1);    FUN_00101abf(param_1);    FUN_00101bbf(param_1);    FUN_00101cce(param_1);    FUN_00101dce(param_1);    FUN_00101eee(param_1);    FUN_001022cb(param_1);    FUN_00102589(param_1);    FUN_00102847(param_1);    FUN_00102b05(param_1);    FUN_00102dc3(param_1);    FUN_00102ef9(param_1);    FUN_00103035(param_1);    FUN_00103171(param_1);    FUN_001032ad(param_1);  &#125;  <span class="hljs-keyword">return</span>;&#125;</code></pre><p><code>FUN_00103a48</code> 함수는 입력 값을 받아서, 길이에 따라서 여러 가지 다른 sub 함수를 수행합니다. 각 sub 함수의 연산은 서로 다른 바이트에 영향을 미치지 않고 함수가 다른 함수를 호출하는 로직도 있어서 상당히 복잡하게 얽혀있습니다. c++에는 곱 연산 같은 것도 넣었는데 c로 급하게 옮기면서 보니 바이트가 증발하더군요..ㅠ <del>시간 부족으로 인한 역 연산 가능 로직</del></p><pre><code class="hljs c"><span class="hljs-function">undefined8 <span class="hljs-title">FUN_001039f7</span><span class="hljs-params">(<span class="hljs-keyword">long</span> param_1)</span></span><span class="hljs-function"></span>&#123;  <span class="hljs-keyword">int</span> local_c;    local_c = <span class="hljs-number">0</span>;  <span class="hljs-keyword">while</span>( <span class="hljs-literal">true</span> ) &#123;    <span class="hljs-keyword">if</span> (<span class="hljs-number">0x37</span> &lt; local_c) &#123;      <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;    &#125;    <span class="hljs-keyword">if</span> (*(<span class="hljs-keyword">char</span> *)(param_1 + local_c) != (&amp;DAT_00104080)[local_c]) <span class="hljs-keyword">break</span>;    local_c = local_c + <span class="hljs-number">1</span>;  &#125;  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><p><code>FUN_001039f7</code>에서는 0x38만큼 <code>DAT_00104080</code>과 값을 비교하여 맞으면 <code>1</code>, 아닐 시 <code>0</code>을 리턴해줍니다.</p><p><code>\n</code>을 제외한 문자열의 길이는 56이고, <code>stdin</code>을 통해 입력 값이 들어가므로 입력 값 56과 <code>stdin</code>을 처리하는 state를 구성하여 simulation manager를 돌리면 값을 구할 수 있습니다.</p><pre><code class="hljs python"><span class="hljs-keyword">import</span> angr<span class="hljs-keyword">import</span> claripyp = angr.Project(<span class="hljs-string">&#x27;./angrforge&#x27;</span>)flag_chars = [claripy.BVS(<span class="hljs-string">&#x27;flag_%d&#x27;</span> % i, <span class="hljs-number">8</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">56</span>)]flag = claripy.Concat(*flag_chars + [claripy.BVV(<span class="hljs-string">b&#x27;\n&#x27;</span>)])st = p.factory.full_init_state(    stdin = flag,    add_options = angr.options.unicorn,)<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> flag_chars:    st.solver.add(i != <span class="hljs-number">0</span>)    st.solver.add(i != <span class="hljs-number">10</span>)sm = p.factory.simulation_manager(st)sm.run()<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> sm.deadended:    <span class="hljs-keyword">if</span> <span class="hljs-string">b&#x27;OMG&#x27;</span> <span class="hljs-keyword">in</span> i.posix.dumps(<span class="hljs-number">1</span>):        print(i.posix.dumps(<span class="hljs-number">0</span>))</code></pre><pre><code class="hljs apache"><span class="hljs-attribute">idioth</span>@ubuntu:~/Desktop$ python<span class="hljs-number">3</span> solve.py<span class="hljs-attribute">WARNING</span> | <span class="hljs-number">2020</span>-<span class="hljs-number">12</span>-<span class="hljs-number">28</span> <span class="hljs-number">20</span>:<span class="hljs-number">50</span>:<span class="hljs-number">44</span>,<span class="hljs-number">086</span> | cle.loader | The main binary is a position-independent executable.<span class="hljs-attribute">It</span> is being loaded with a base address of <span class="hljs-number">0</span>x<span class="hljs-number">400000</span>.<span class="hljs-attribute">WARNING</span> | <span class="hljs-number">2020</span>-<span class="hljs-number">12</span>-<span class="hljs-number">28</span> <span class="hljs-number">20</span>:<span class="hljs-number">50</span>:<span class="hljs-number">45</span>,<span class="hljs-number">089</span> | angr.simos.simos | stdin is constrained to <span class="hljs-number">57</span> bytes (has_end=True).<span class="hljs-attribute">If</span> you are only providing the first <span class="hljs-number">57</span> bytes instead of the entire stdin,<span class="hljs-attribute">please</span> use stdin=SimFileStream(name=&#x27;stdin&#x27;, content=your_first_n_bytes, has_end=False).<span class="hljs-attribute">b</span>&#x27;XMAS&#123;h<span class="hljs-number">3</span>_<span class="hljs-number">1</span>s_b<span class="hljs-number">1</span>o<span class="hljs-number">0</span>d<span class="hljs-number">3</span>lf_d<span class="hljs-number">3</span>athkni<span class="hljs-number">9</span>ht_wh<span class="hljs-number">0</span>_will_kill_<span class="hljs-number">4</span>ngrf<span class="hljs-number">0</span>rge&#125;\n&#x27;</code></pre><p>Flag : XMAS{h3_1s_b1o0d3lf_d3athkni9ht_wh0_will_kill_4ngrf0rge}</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Write-Up</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>ctf</tag>
+      
+      <tag>idioth</tag>
+      
+      <tag>christmas ctf 2020</tag>
+      
+      <tag>reversing</tag>
+      
+      <tag>angr</tag>
       
     </tags>
     
@@ -2709,39 +2742,6 @@
   
   
   <entry>
-    <title>[Write-Up] SSTF CrackMe101</title>
-    <link href="/2020/10/18/idioth/sstf-crackme101/"/>
-    <url>/2020/10/18/idioth/sstf-crackme101/</url>
-    
-    <content type="html"><![CDATA[<h1 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h1><p><img src="/2020/10/18/idioth/sstf-crackme101/image.png"></p><p>64bit elf 파일임을 알 수 있습니다. Ubuntu 20.04 64bit에서 실행을 해보겠습니다.</p><p><img src="/2020/10/18/idioth/sstf-crackme101/image1.png"></p><p>Password를 입력하고 정상적인 패스워드를 입력했을 시 플래그가 나오는 형식으로 생각할 수 있습니다.</p><p>Ghidra를 사용하여 crackme101이 어떤 식으로 구동되는지 확인해보도록 하겠습니다.</p><h1 id="crackme101-분석"><a href="#crackme101-분석" class="headerlink" title="crackme101 분석"></a>crackme101 분석</h1><pre><code class="hljs cpp"><span class="hljs-function">undefined8 <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span><span class="hljs-function"></span><span class="hljs-function"></span>&#123;  <span class="hljs-keyword">int</span> iVar1;  <span class="hljs-keyword">size_t</span> sVar2;  <span class="hljs-keyword">long</span> in_FS_OFFSET;  <span class="hljs-keyword">int</span> local_88;  <span class="hljs-keyword">char</span> local_78 [<span class="hljs-number">104</span>];  <span class="hljs-keyword">long</span> local_10;    local_10 = *(<span class="hljs-keyword">long</span> *)(in_FS_OFFSET + <span class="hljs-number">0x28</span>);  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter the password! : &quot;</span>);  __isoc99_scanf(&amp;DAT_0010206e,local_78);  sVar2 = <span class="hljs-built_in">strlen</span>(local_78);  iVar1 = (<span class="hljs-keyword">int</span>)sVar2;  getMaskedStr(local_78,local_78,local_78);  local_88 = <span class="hljs-number">0</span>;  <span class="hljs-keyword">while</span> ((local_88 &lt; iVar1 &amp;&amp;         (<span class="hljs-string">&quot;Dtd&gt;=mhpNCqz?N!j(Z?B644[.$~96b6zjS*2t&amp;&quot;</span>[local_88] == local_78[(iVar1 - local_88) + <span class="hljs-number">-1</span>])))  &#123;    local_88 = local_88 + <span class="hljs-number">1</span>;  &#125;  <span class="hljs-keyword">if</span> (local_88 != iVar1) &#123;    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;Login Failed!&quot;</span>);    <span class="hljs-keyword">if</span> (local_10 != *(<span class="hljs-keyword">long</span> *)(in_FS_OFFSET + <span class="hljs-number">0x28</span>)) &#123;                    <span class="hljs-comment">/* WARNING: Subroutine does not return */</span>      __stack_chk_fail();    &#125;    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  &#125;  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;Successfully logged in!\nGood job!&quot;</span>);                    <span class="hljs-comment">/* WARNING: Subroutine does not return */</span>  <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);&#125;</code></pre><p>입력된 패스워드는 <code>local_78</code>에 들어가게 되고 <code>iVar1</code>는 입력한 패스워드의 길이가 됩니다.</p><p><code>getMaskedStr</code> 함수에서 인자를 모두 <code>local_78</code>로 받아서 어떠한 작업을 수행한 후 “Dtd&gt;=mhpNCqz?N!j(Z?B644[.$~96b6zjS*2t&amp;” 문자열과 <code>ocal_78</code> 문자열을 뒷부분의 배열부터 <code>iVar1</code>의 크기만큼 비교합니다.</p><p><code>local_88</code>과 <code>iVar1</code>이 같아야 하려면 while 문의 조건인 각 문자열이 동일해야 하므로 <code>getMaskedStr</code> 함수를 통과한 <code>local_78</code>의 값이 어떠한 값인지 먼저 알아야 합니다.</p><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">getMaskedStr</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *param_1,<span class="hljs-keyword">long</span> param_2)</span></span><span class="hljs-function"></span><span class="hljs-function"></span>&#123;  <span class="hljs-keyword">size_t</span> sVar1;  <span class="hljs-keyword">int</span> local_18;    sVar1 = <span class="hljs-built_in">strlen</span>(param_1);  local_18 = <span class="hljs-number">0</span>;  <span class="hljs-keyword">while</span> (local_18 &lt; (<span class="hljs-keyword">int</span>)sVar1) &#123;    *(byte *)(param_2 + local_18) =         param_1[local_18] ^ <span class="hljs-string">&quot;u7fl(3JC=UkJGEhPk&#123;q`/X5UzTI.t&amp;A]2[rPM9&quot;</span>[local_18];    local_18 = local_18 + <span class="hljs-number">1</span>;  &#125;  *(undefined *)(param_2 + (<span class="hljs-keyword">int</span>)sVar1) = <span class="hljs-number">0</span>;  <span class="hljs-keyword">return</span>;&#125;</code></pre><p>인자로 받은 param은 입력받은 패스워드 값이 될 것입니다.</p><p>문자열의 길이만큼 “u7fl(3JC=UkJGEhPk{q`/X5UzTI.t&amp;A]2[rPM9”문자열과 동일한 index끼리 xor 연산을 수행하는 것을 볼 수 있습니다.</p><p>따라서 패스워드 check가 어떠한 식으로 진행이 되는지 요약해보면</p><ol><li>패스워드를 입력을 받는다.</li><li><code>getMaskedStr</code> 함수를 통해 “u7fl(3JC=UkJGEhPk{q`/X5UzTI.t&amp;A]2[rPM9” 문자열과 동일한 인덱스끼리 xor 연산을 수행</li><li>수행한 결과를 뒤집어서 “Dtd&gt;=mhpNCqz?N!j(Z?B644[.$~96b6zjS*2t&amp;”과 맞는지 검사</li><li>맞으면 Correct</li></ol><p>그러면 저희가 복호화할 시나리오는</p><ol><li><p>최종적으로 나올 값은 “Dtd&gt;=mhpNCqz?N!j(Z?B644[.$~96b6zjS*2t&amp;”이므로 해당 문자열과 “u7fl(3JC=UkJGEhPk{q`/X5UzTI.t&amp;A]2[rPM9”를 뒤집은 문자열을 xor 연산</p></li><li><p>나온 문자열을 다시 뒤집음</p></li><li><p>Get Flag!!</p></li></ol><h1 id="Decode-Code"><a href="#Decode-Code" class="headerlink" title="Decode Code"></a>Decode Code</h1><pre><code class="hljs python">key1 = <span class="hljs-string">&quot;u7fl(3JC=UkJGEhPk&#123;q`/X5UzTI.t&amp;A]2[rPM9&quot;</span>cmp_key = <span class="hljs-string">&quot;Dtd&gt;=mhpNCqz?N!j(Z?B644[.$~96b6zjS*2t&amp;&quot;</span>result1 = <span class="hljs-string">&quot;&quot;</span>revkey = key1[::<span class="hljs-number">-1</span>]<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(key1)):    result1 += chr(ord(cmp_key[i]) ^ ord(revkey[i]))print(result1[::<span class="hljs-number">-1</span>])</code></pre><p><img src="/2020/10/18/idioth/sstf-crackme101/image2.png"></p><p>Flag : SCTF{Y0u_cR4ck3d_M3_up_t4k3_7h15_fL49}</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>Write-Up</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>samsung</tag>
-      
-      <tag>ctf</tag>
-      
-      <tag>sstf</tag>
-      
-      <tag>idioth</tag>
-      
-      <tag>reversing</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>[Write-Up] SSTF RC_four</title>
     <link href="/2020/10/18/idioth/sstf-rc-four/"/>
     <url>/2020/10/18/idioth/sstf-rc-four/</url>
@@ -2771,6 +2771,39 @@
       <tag>rc4</tag>
       
       <tag>decrypt</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[Write-Up] SSTF CrackMe101</title>
+    <link href="/2020/10/18/idioth/sstf-crackme101/"/>
+    <url>/2020/10/18/idioth/sstf-crackme101/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h1><p><img src="/2020/10/18/idioth/sstf-crackme101/image.png"></p><p>64bit elf 파일임을 알 수 있습니다. Ubuntu 20.04 64bit에서 실행을 해보겠습니다.</p><p><img src="/2020/10/18/idioth/sstf-crackme101/image1.png"></p><p>Password를 입력하고 정상적인 패스워드를 입력했을 시 플래그가 나오는 형식으로 생각할 수 있습니다.</p><p>Ghidra를 사용하여 crackme101이 어떤 식으로 구동되는지 확인해보도록 하겠습니다.</p><h1 id="crackme101-분석"><a href="#crackme101-분석" class="headerlink" title="crackme101 분석"></a>crackme101 분석</h1><pre><code class="hljs cpp"><span class="hljs-function">undefined8 <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span><span class="hljs-function"></span><span class="hljs-function"></span>&#123;  <span class="hljs-keyword">int</span> iVar1;  <span class="hljs-keyword">size_t</span> sVar2;  <span class="hljs-keyword">long</span> in_FS_OFFSET;  <span class="hljs-keyword">int</span> local_88;  <span class="hljs-keyword">char</span> local_78 [<span class="hljs-number">104</span>];  <span class="hljs-keyword">long</span> local_10;    local_10 = *(<span class="hljs-keyword">long</span> *)(in_FS_OFFSET + <span class="hljs-number">0x28</span>);  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Enter the password! : &quot;</span>);  __isoc99_scanf(&amp;DAT_0010206e,local_78);  sVar2 = <span class="hljs-built_in">strlen</span>(local_78);  iVar1 = (<span class="hljs-keyword">int</span>)sVar2;  getMaskedStr(local_78,local_78,local_78);  local_88 = <span class="hljs-number">0</span>;  <span class="hljs-keyword">while</span> ((local_88 &lt; iVar1 &amp;&amp;         (<span class="hljs-string">&quot;Dtd&gt;=mhpNCqz?N!j(Z?B644[.$~96b6zjS*2t&amp;&quot;</span>[local_88] == local_78[(iVar1 - local_88) + <span class="hljs-number">-1</span>])))  &#123;    local_88 = local_88 + <span class="hljs-number">1</span>;  &#125;  <span class="hljs-keyword">if</span> (local_88 != iVar1) &#123;    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;Login Failed!&quot;</span>);    <span class="hljs-keyword">if</span> (local_10 != *(<span class="hljs-keyword">long</span> *)(in_FS_OFFSET + <span class="hljs-number">0x28</span>)) &#123;                    <span class="hljs-comment">/* WARNING: Subroutine does not return */</span>      __stack_chk_fail();    &#125;    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  &#125;  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;Successfully logged in!\nGood job!&quot;</span>);                    <span class="hljs-comment">/* WARNING: Subroutine does not return */</span>  <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);&#125;</code></pre><p>입력된 패스워드는 <code>local_78</code>에 들어가게 되고 <code>iVar1</code>는 입력한 패스워드의 길이가 됩니다.</p><p><code>getMaskedStr</code> 함수에서 인자를 모두 <code>local_78</code>로 받아서 어떠한 작업을 수행한 후 “Dtd&gt;=mhpNCqz?N!j(Z?B644[.$~96b6zjS*2t&amp;” 문자열과 <code>ocal_78</code> 문자열을 뒷부분의 배열부터 <code>iVar1</code>의 크기만큼 비교합니다.</p><p><code>local_88</code>과 <code>iVar1</code>이 같아야 하려면 while 문의 조건인 각 문자열이 동일해야 하므로 <code>getMaskedStr</code> 함수를 통과한 <code>local_78</code>의 값이 어떠한 값인지 먼저 알아야 합니다.</p><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">getMaskedStr</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *param_1,<span class="hljs-keyword">long</span> param_2)</span></span><span class="hljs-function"></span><span class="hljs-function"></span>&#123;  <span class="hljs-keyword">size_t</span> sVar1;  <span class="hljs-keyword">int</span> local_18;    sVar1 = <span class="hljs-built_in">strlen</span>(param_1);  local_18 = <span class="hljs-number">0</span>;  <span class="hljs-keyword">while</span> (local_18 &lt; (<span class="hljs-keyword">int</span>)sVar1) &#123;    *(byte *)(param_2 + local_18) =         param_1[local_18] ^ <span class="hljs-string">&quot;u7fl(3JC=UkJGEhPk&#123;q`/X5UzTI.t&amp;A]2[rPM9&quot;</span>[local_18];    local_18 = local_18 + <span class="hljs-number">1</span>;  &#125;  *(undefined *)(param_2 + (<span class="hljs-keyword">int</span>)sVar1) = <span class="hljs-number">0</span>;  <span class="hljs-keyword">return</span>;&#125;</code></pre><p>인자로 받은 param은 입력받은 패스워드 값이 될 것입니다.</p><p>문자열의 길이만큼 “u7fl(3JC=UkJGEhPk{q`/X5UzTI.t&amp;A]2[rPM9”문자열과 동일한 index끼리 xor 연산을 수행하는 것을 볼 수 있습니다.</p><p>따라서 패스워드 check가 어떠한 식으로 진행이 되는지 요약해보면</p><ol><li>패스워드를 입력을 받는다.</li><li><code>getMaskedStr</code> 함수를 통해 “u7fl(3JC=UkJGEhPk{q`/X5UzTI.t&amp;A]2[rPM9” 문자열과 동일한 인덱스끼리 xor 연산을 수행</li><li>수행한 결과를 뒤집어서 “Dtd&gt;=mhpNCqz?N!j(Z?B644[.$~96b6zjS*2t&amp;”과 맞는지 검사</li><li>맞으면 Correct</li></ol><p>그러면 저희가 복호화할 시나리오는</p><ol><li><p>최종적으로 나올 값은 “Dtd&gt;=mhpNCqz?N!j(Z?B644[.$~96b6zjS*2t&amp;”이므로 해당 문자열과 “u7fl(3JC=UkJGEhPk{q`/X5UzTI.t&amp;A]2[rPM9”를 뒤집은 문자열을 xor 연산</p></li><li><p>나온 문자열을 다시 뒤집음</p></li><li><p>Get Flag!!</p></li></ol><h1 id="Decode-Code"><a href="#Decode-Code" class="headerlink" title="Decode Code"></a>Decode Code</h1><pre><code class="hljs python">key1 = <span class="hljs-string">&quot;u7fl(3JC=UkJGEhPk&#123;q`/X5UzTI.t&amp;A]2[rPM9&quot;</span>cmp_key = <span class="hljs-string">&quot;Dtd&gt;=mhpNCqz?N!j(Z?B644[.$~96b6zjS*2t&amp;&quot;</span>result1 = <span class="hljs-string">&quot;&quot;</span>revkey = key1[::<span class="hljs-number">-1</span>]<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(key1)):    result1 += chr(ord(cmp_key[i]) ^ ord(revkey[i]))print(result1[::<span class="hljs-number">-1</span>])</code></pre><p><img src="/2020/10/18/idioth/sstf-crackme101/image2.png"></p><p>Flag : SCTF{Y0u_cR4ck3d_M3_up_t4k3_7h15_fL49}</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Write-Up</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>samsung</tag>
+      
+      <tag>ctf</tag>
+      
+      <tag>sstf</tag>
+      
+      <tag>idioth</tag>
+      
+      <tag>reversing</tag>
       
     </tags>
     

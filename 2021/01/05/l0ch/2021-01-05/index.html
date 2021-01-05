@@ -19,14 +19,14 @@
   <meta name="google-site-verification" content="DXkyiaX95-ws53Tyt0m91_umRf4gfV2qJIQZ5zQDIO4">
 
   <meta property="og:type" content="website"> 
-  <meta property="og:title" content="[Write-Up] Christmas CTF 2020 - angrforge - hackyboiz">
+  <meta property="og:title" content="[하루한줄] CVE-2020-35489 : Unrestricted File Upload Vulnerability in WordPress Plugin - hackyboiz">
   <meta property="og:description" content="hack &amp; life">
   <meta property="og:image" content="/img/favicon.ico">
   <meta property="og:url" content="https://hackyboiz.github.io/">
 
-  <link rel="canonical" href="https://hackyboiz.github.io/2020/12/29/idioth/christmasctf2020-angrforge/">
+  <link rel="canonical" href="https://hackyboiz.github.io/2021/01/05/l0ch/2021-01-05/">
 
-  <title>[Write-Up] Christmas CTF 2020 - angrforge - hackyboiz</title>
+  <title>[하루한줄] CVE-2020-35489 : Unrestricted File Upload Vulnerability in WordPress Plugin - hackyboiz</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
 
@@ -178,8 +178,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-12-29 21:00" pubdate>
-      2020년 12월 29일 오후
+    <time datetime="2021-01-05 18:00" pubdate>
+      2021년 1월 5일 오후
     </time>
   </div>
 
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      663 자
+      131 자
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      2
        분
     </span>
   
@@ -231,153 +231,21 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">[Write-Up] Christmas CTF 2020 - angrforge</h1>
+            <h1 style="display: none">[하루한줄] CVE-2020-35489 : Unrestricted File Upload Vulnerability in WordPress Plugin</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="출제-의도"><a href="#출제-의도" class="headerlink" title="출제 의도"></a>출제 의도</h1><p>angr를 통해 입력 값을 뽑아내는 것이 의도인 문제였습니다. 이 문제는 여러 번의 수정을 거쳤습니다. 원래 이 문제도 arm 환경에서 angr를 돌리는 문제로 낼 예정이었는데 arm에서 제대로 동작하지 않아서 arm은 포기. 그리고 원래 처음에는 c++로 냈었는데 검수 후 수정을 했더니 simulation manager를 돌려도 값이 제대로 나오지 않아서 c로 옮기는 과정에서 연산 몇 개를 뺐습니다..ㅠ</p>
-<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><pre><code class="hljs apache"><span class="hljs-attribute">idioth</span>@ubuntu:~/Desktop$ file angrforge
-<span class="hljs-attribute">angrforge</span>: ELF <span class="hljs-number">64</span>-bit LSB shared object, x<span class="hljs-number">86</span>-<span class="hljs-number">64</span>, version <span class="hljs-number">1</span> (SYSV), dynamically linked,
-<span class="hljs-attribute">interpreter</span> /lib<span class="hljs-number">64</span>/ld-linux-x<span class="hljs-number">86</span>-<span class="hljs-number">64</span>.so.<span class="hljs-number">2</span>,
-<span class="hljs-attribute">BuildID</span>[sha<span class="hljs-number">1</span>]=<span class="hljs-number">1162</span>ed<span class="hljs-number">229</span>a<span class="hljs-number">12133</span>d<span class="hljs-number">07</span>de<span class="hljs-number">26301</span>dad<span class="hljs-number">1</span>ada<span class="hljs-number">34</span>a<span class="hljs-number">9</span>c<span class="hljs-number">3</span>ff, for GNU/Linux <span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>, stripped</code></pre>
-
-<p>64bit ELF 파일이며, stripped 되어있습니다.</p>
-<pre><code class="hljs c"><span class="hljs-function">undefined8 <span class="hljs-title">FUN_00103be1</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>
-<span class="hljs-function"></span>
-<span class="hljs-function"></span>&#123;
-  <span class="hljs-keyword">int</span> iVar1;
-  <span class="hljs-keyword">long</span> in_FS_OFFSET;
-  undefined8 local_58;
-  undefined8 local_50;
-  undefined8 local_48;
-  undefined8 local_40;
-  undefined8 local_38;
-  undefined8 local_30;
-  undefined8 local_28;
-  undefined local_20;
-  <span class="hljs-keyword">long</span> local_10;
-  
-  local_10 = *(<span class="hljs-keyword">long</span> *)(in_FS_OFFSET + <span class="hljs-number">0x28</span>);
-  local_58 = <span class="hljs-number">0</span>;
-  local_50 = <span class="hljs-number">0</span>;
-  local_48 = <span class="hljs-number">0</span>;
-  local_40 = <span class="hljs-number">0</span>;
-  local_38 = <span class="hljs-number">0</span>;
-  local_30 = <span class="hljs-number">0</span>;
-  local_28 = <span class="hljs-number">0</span>;
-  local_20 = <span class="hljs-number">0</span>;
-  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;General Angerforge, the Dark Iron responsible for stealing my computer.&quot;</span>);
-  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;But I\&#x27;m just a programmer.. so Call me my best warrior friend.&quot;</span>);
-  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;If you call my friend, I will give you a good reward.&quot;</span>);
-  fgets((<span class="hljs-keyword">char</span> *)&amp;local_58,<span class="hljs-number">0x39</span>,<span class="hljs-built_in">stdin</span>);
-  FUN_00103a48(&amp;local_58);
-  iVar1 = FUN_001039f7(&amp;local_58);
-  <span class="hljs-keyword">if</span> (iVar1 == <span class="hljs-number">1</span>) &#123;
-    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;OMG, Thank you for your good works :)&quot;</span>);
-  &#125;
-  <span class="hljs-keyword">else</span> &#123;
-    FUN_001039d9();
-  &#125;
-  <span class="hljs-keyword">if</span> (local_10 != *(<span class="hljs-keyword">long</span> *)(in_FS_OFFSET + <span class="hljs-number">0x28</span>)) &#123;
-                    <span class="hljs-comment">/* WARNING: Subroutine does not return */</span>
-    __stack_chk_fail();
-  &#125;
-  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-&#125;</code></pre>
-
-<p>ghidra를 통해 디컴파일을 한 후 main을 확인해보면, <code>0x39(57)</code>만큼의 입력 값을 받아서 <code>FUN_00103a48</code>을 호출하고, <code>FUN_001039f7</code>을 통해 문자열을 체크하는 것을 확인할 수 있습니다.</p>
-<pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">FUN_00103a48</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *param_1)</span></span>
-<span class="hljs-function"></span>
-<span class="hljs-function"></span>&#123;
-  <span class="hljs-keyword">size_t</span> sVar1;
-  
-  sVar1 = <span class="hljs-built_in">strlen</span>(param_1);
-  <span class="hljs-keyword">if</span> (sVar1 &lt; (ulong)(<span class="hljs-keyword">long</span>)(<span class="hljs-keyword">int</span>)((DAT_00106014 | DAT_00106010) + <span class="hljs-number">5</span>)) &#123;
-    FUN_001033e9(param_1);
-    FUN_00103481(param_1);
-    FUN_00103519(param_1);
-    FUN_001035b1(param_1);
-    FUN_00103649(param_1);
-    FUN_001036e1(param_1);
-    FUN_00103779(param_1);
-    FUN_00103811(param_1);
-    FUN_001038a9(param_1);
-    FUN_00103941(param_1);
-  &#125;
-  <span class="hljs-keyword">else</span> &#123;
-    FUN_001011c9(param_1);
-    FUN_00101396(param_1);
-    FUN_00101563(param_1);
-    FUN_00101730(param_1);
-    FUN_001018fd(param_1);
-    FUN_00101abf(param_1);
-    FUN_00101bbf(param_1);
-    FUN_00101cce(param_1);
-    FUN_00101dce(param_1);
-    FUN_00101eee(param_1);
-    FUN_001022cb(param_1);
-    FUN_00102589(param_1);
-    FUN_00102847(param_1);
-    FUN_00102b05(param_1);
-    FUN_00102dc3(param_1);
-    FUN_00102ef9(param_1);
-    FUN_00103035(param_1);
-    FUN_00103171(param_1);
-    FUN_001032ad(param_1);
-  &#125;
-  <span class="hljs-keyword">return</span>;
-&#125;</code></pre>
-
-<p><code>FUN_00103a48</code> 함수는 입력 값을 받아서, 길이에 따라서 여러 가지 다른 sub 함수를 수행합니다. 각 sub 함수의 연산은 서로 다른 바이트에 영향을 미치지 않고 함수가 다른 함수를 호출하는 로직도 있어서 상당히 복잡하게 얽혀있습니다. c++에는 곱 연산 같은 것도 넣었는데 c로 급하게 옮기면서 보니 바이트가 증발하더군요..ㅠ <del>시간 부족으로 인한 역 연산 가능 로직</del></p>
-<pre><code class="hljs c"><span class="hljs-function">undefined8 <span class="hljs-title">FUN_001039f7</span><span class="hljs-params">(<span class="hljs-keyword">long</span> param_1)</span></span>
-<span class="hljs-function"></span>&#123;
-  <span class="hljs-keyword">int</span> local_c;
-  
-  local_c = <span class="hljs-number">0</span>;
-  <span class="hljs-keyword">while</span>( <span class="hljs-literal">true</span> ) &#123;
-    <span class="hljs-keyword">if</span> (<span class="hljs-number">0x37</span> &lt; local_c) &#123;
-      <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
-    &#125;
-    <span class="hljs-keyword">if</span> (*(<span class="hljs-keyword">char</span> *)(param_1 + local_c) != (&amp;DAT_00104080)[local_c]) <span class="hljs-keyword">break</span>;
-    local_c = local_c + <span class="hljs-number">1</span>;
-  &#125;
-  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-&#125;</code></pre>
-
-<p><code>FUN_001039f7</code>에서는 0x38만큼 <code>DAT_00104080</code>과 값을 비교하여 맞으면 <code>1</code>, 아닐 시 <code>0</code>을 리턴해줍니다.</p>
-<p><code>\n</code>을 제외한 문자열의 길이는 56이고, <code>stdin</code>을 통해 입력 값이 들어가므로 입력 값 56과 <code>stdin</code>을 처리하는 state를 구성하여 simulation manager를 돌리면 값을 구할 수 있습니다.</p>
-<pre><code class="hljs python"><span class="hljs-keyword">import</span> angr
-<span class="hljs-keyword">import</span> claripy
-
-p = angr.Project(<span class="hljs-string">&#x27;./angrforge&#x27;</span>)
-
-flag_chars = [claripy.BVS(<span class="hljs-string">&#x27;flag_%d&#x27;</span> % i, <span class="hljs-number">8</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">56</span>)]
-flag = claripy.Concat(*flag_chars + [claripy.BVV(<span class="hljs-string">b&#x27;\n&#x27;</span>)])
-
-st = p.factory.full_init_state(
-    stdin = flag,
-    add_options = angr.options.unicorn,
-)
-
-<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> flag_chars:
-    st.solver.add(i != <span class="hljs-number">0</span>)
-    st.solver.add(i != <span class="hljs-number">10</span>)
-
-sm = p.factory.simulation_manager(st)
-sm.run()
-
-<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> sm.deadended:
-    <span class="hljs-keyword">if</span> <span class="hljs-string">b&#x27;OMG&#x27;</span> <span class="hljs-keyword">in</span> i.posix.dumps(<span class="hljs-number">1</span>):
-        print(i.posix.dumps(<span class="hljs-number">0</span>))</code></pre>
-
-<pre><code class="hljs apache"><span class="hljs-attribute">idioth</span>@ubuntu:~/Desktop$ python<span class="hljs-number">3</span> solve.py
-<span class="hljs-attribute">WARNING</span> | <span class="hljs-number">2020</span>-<span class="hljs-number">12</span>-<span class="hljs-number">28</span> <span class="hljs-number">20</span>:<span class="hljs-number">50</span>:<span class="hljs-number">44</span>,<span class="hljs-number">086</span> | cle.loader | The main binary is a position-independent executable.
-<span class="hljs-attribute">It</span> is being loaded with a base address of <span class="hljs-number">0</span>x<span class="hljs-number">400000</span>.
-<span class="hljs-attribute">WARNING</span> | <span class="hljs-number">2020</span>-<span class="hljs-number">12</span>-<span class="hljs-number">28</span> <span class="hljs-number">20</span>:<span class="hljs-number">50</span>:<span class="hljs-number">45</span>,<span class="hljs-number">089</span> | angr.simos.simos | stdin is constrained to <span class="hljs-number">57</span> bytes (has_end=True).
-<span class="hljs-attribute">If</span> you are only providing the first <span class="hljs-number">57</span> bytes instead of the entire stdin,
-<span class="hljs-attribute">please</span> use stdin=SimFileStream(name=&#x27;stdin&#x27;, content=your_first_n_bytes, has_end=False).
-<span class="hljs-attribute">b</span>&#x27;XMAS&#123;h<span class="hljs-number">3</span>_<span class="hljs-number">1</span>s_b<span class="hljs-number">1</span>o<span class="hljs-number">0</span>d<span class="hljs-number">3</span>lf_d<span class="hljs-number">3</span>athkni<span class="hljs-number">9</span>ht_wh<span class="hljs-number">0</span>_will_kill_<span class="hljs-number">4</span>ngrf<span class="hljs-number">0</span>rge&#125;\n&#x27;</code></pre>
-
-<p>Flag : XMAS{h3_1s_b1o0d3lf_d3athkni9ht_wh0_will_kill_4ngrf0rge}</p>
+              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://blog.wpsec.com/contact-form-7-vulnerability/">https://blog.wpsec.com/contact-form-7-vulnerability/</a></p>
+<h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Contact Form ≤ 7 5.3.1</p>
+<h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>WordPress 플러그인인 Contact Form 7은 폼메일 플러그인으로 폼메일 양식을 쉽게 생성할 수 있어 인기 있는 플러그인 중 하나입니다. 해당 플러그인에서 허용되지 않은 확장자 필터링을 우회해 업로드할 수 있는 취약점이 발견되었습니다.</p>
+<p>취약점의 세부 정보는 다음과 같습니다.</p>
+<ol>
+<li>해커는 특수 문자가 포함된 이중 확장자 파일을 업로드할 수 있습니다. ex) <code>mal.php .jpg</code> (공백  = \t)</li>
+<li>Contact Form 7은 업로드된 파일 이름에서 특수 문자를 제거하지 않아 첫 번째 확장자 이후 구분 문자로 인해 두 번째 파일 확장자를 버립니다.</li>
+<li>결과적으로 업로드되는 파일 이름은 <code>mal.php</code>가 되고 업로드에 성공합니다.</li>
+<li>해커는 임의 코드 실행을 통해 업로드된 파일에 접근 및 실행이 가능합니다.</li>
+</ol>
+<p>해커는 이를 악용해 서버에 웹쉘과 같은 파일을 제한 없이 업로드할 수 있습니다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/dn9uy3n/Check-WP-CVE-2020-35489">https://github.com/dn9uy3n/Check-WP-CVE-2020-35489</a></p>
 
             </div>
             <hr>
@@ -387,7 +255,7 @@ sm.run()
                 <div class="post-meta mr-3">
                   <i class="iconfont icon-category"></i>
                   
-                  <a class="hover-with-bg" href="/categories/Write-Up/">Write-Up</a>
+                  <a class="hover-with-bg" href="/categories/1day1line/">1day1line</a>
                   
                 </div>
                 
@@ -395,15 +263,15 @@ sm.run()
                 <div class="post-meta">
                   <i class="iconfont icon-tags"></i>
                   
-                  <a class="hover-with-bg" href="/tags/ctf/">ctf</a>
+                  <a class="hover-with-bg" href="/tags/cve/">cve</a>
                   
-                  <a class="hover-with-bg" href="/tags/idioth/">idioth</a>
+                  <a class="hover-with-bg" href="/tags/L0ch/">L0ch</a>
                   
-                  <a class="hover-with-bg" href="/tags/christmas-ctf-2020/">christmas ctf 2020</a>
+                  <a class="hover-with-bg" href="/tags/unrestricted-file-upload/">unrestricted file upload</a>
                   
-                  <a class="hover-with-bg" href="/tags/reversing/">reversing</a>
+                  <a class="hover-with-bg" href="/tags/wordpress/">wordpress</a>
                   
-                  <a class="hover-with-bg" href="/tags/angr/">angr</a>
+                  <a class="hover-with-bg" href="/tags/plugin/">plugin</a>
                   
                 </div>
                 
@@ -412,16 +280,16 @@ sm.run()
               <div class="post-metas mb-3">
                 <a class="hover-with-bg" style="display: flex;" href="/author">
                   <div class="link-avatar-page">
-                    <img src="/img/profile_idioth.jpg" srcset="/img/loading.gif" alt="idioth">
+                    <img src="/img/profile_L0ch.jpg" srcset="/img/loading.gif" alt="L0ch">
                   </div>
 
                   <div class="link-text">
-                    <div class="link-title">idioth</div>
+                    <div class="link-title">L0ch</div>
                   </div>
                 </a>
                 <div class="link-text">
                   <div class="link-more">
-                    <a href="/tags/idioth">
+                    <a href="/tags/L0ch">
                       Read more
                       <i class="iconfont icon-arrowdown"></i>
                     </a>
@@ -442,18 +310,12 @@ sm.run()
                 <article class="post-prev col-6">
                   
                   
-                  <a href="/2020/12/29/idioth/christmasctf2020-lock/">
-                    <i class="iconfont icon-arrowleft"></i>
-                    <span class="hidden-mobile">[Write-Up] Christmas CTF 2020 - lock</span>
-                    <span class="visible-mobile">Previous</span>
-                  </a>
-                  
                 </article>
                 <article class="post-next col-6">
                   
                   
-                  <a href="/2020/12/29/l0ch/address_book/">
-                    <span class="hidden-mobile">[Write-Up] Christmas CTF 2020 - Address Book</span>
+                  <a href="/2021/01/04/idioth/2021-01-04/">
+                    <span class="hidden-mobile">[하루한줄] CVE-2020-29583: Zyxel 방화벽, VPN 제품에서 백도어 계정 발견</span>
                     <span class="visible-mobile">Next</span>
                     <i class="iconfont icon-arrowright"></i>
                   </a>
@@ -472,8 +334,8 @@ sm.run()
     <div id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'https://hackyboiz.github.io/2020/12/29/idioth/christmasctf2020-angrforge/';
-        this.page.identifier = '/2020/12/29/idioth/christmasctf2020-angrforge/';
+        this.page.url = 'https://hackyboiz.github.io/2021/01/05/l0ch/2021-01-05/';
+        this.page.identifier = '/2021/01/05/l0ch/2021-01-05/';
       };
       function loadDisqus() {
         (function () {
@@ -619,7 +481,7 @@ sm.run()
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "[Write-Up] Christmas CTF 2020 - angrforge&nbsp;",
+        "[하루한줄] CVE-2020-35489 : Unrestricted File Upload Vulnerability in WordPress Plugin&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
