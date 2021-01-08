@@ -4,6 +4,39 @@
   
   
   <entry>
+    <title>[하루한줄] CVE-2020-29669 : WIFI SD Hub Privilege Escalation Plugin</title>
+    <link href="/2021/01/08/l0ch/2021-01-08/"/>
+    <url>/2021/01/08/l0ch/2021-01-08/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://github.com/code-byter/CVE-2020-29669">https://github.com/code-byter/CVE-2020-29669</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Macally WIFISD2-2A82 Travel Router (펌웨어 버전 : 2.000.010)</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>무선 미디어 공유가 가능한 WIFI SD 허브인 Macally WIFISD2-2A82 제품에서 root로 권한 상승이 가능한 취약점이 공개되었습니다.</p><p>취약점의 세부 공격 단계는 아래와 같습니다.</p><ol><li>해커는 웹 인터페이스에서 게스트 계정으로 로그인합니다.</li><li>패스워드 재설정 페이지에서 admin의 패스워드로 설정할 값을 입력합니다.</li><li>BurpSuite로 해당 요청에서 <code>name</code> 필드값을 admin으로 변경해 요청하면 admin의 패스워드가 재설정됩니다.</li><li>telnet을 통해 admin과 재설정한 패스워드를 입력해 접속하면 <code>/etc/passwd</code> 의 root를 포함한 모든 계정의 패스워드 해시를 유출할 수 있습니다.</li></ol><p>해당 취약점을 악용하면 패스워드 해시를 크래킹해 root 쉘에 접근할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>eop</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>router</tag>
+      
+      <tag>wifi sd</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[하루한줄] SoftMaker Office TextMaker에서 발견된 세 가지 취약점</title>
     <link href="/2021/01/07/idioth/2021-01-07/"/>
     <url>/2021/01/07/idioth/2021-01-07/</url>
@@ -290,9 +323,9 @@
       
       <tag>windows</tag>
       
-      <tag>toctou</tag>
-      
       <tag>race condition</tag>
+      
+      <tag>toctou</tag>
       
     </tags>
     
@@ -1237,9 +1270,9 @@
       
       <tag>cve</tag>
       
-      <tag>lpe</tag>
-      
       <tag>toctou</tag>
+      
+      <tag>lpe</tag>
       
     </tags>
     
@@ -1367,13 +1400,13 @@
       
       <tag>cve</tag>
       
-      <tag>toctou</tag>
-      
       <tag>razer</tag>
       
       <tag>chroma</tag>
       
       <tag>race condition</tag>
+      
+      <tag>toctou</tag>
       
     </tags>
     
@@ -1526,11 +1559,11 @@
       
       <tag>cve</tag>
       
-      <tag>lpe</tag>
+      <tag>race condition</tag>
       
       <tag>toctou</tag>
       
-      <tag>race condition</tag>
+      <tag>lpe</tag>
       
       <tag>idioth</tag>
       
@@ -2717,9 +2750,9 @@
       
       <tag>cve</tag>
       
-      <tag>outlook</tag>
-      
       <tag>rce</tag>
+      
+      <tag>outlook</tag>
       
       <tag>idioth</tag>
       

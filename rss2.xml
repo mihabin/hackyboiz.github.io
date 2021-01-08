@@ -9,8 +9,42 @@
     <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>hack &amp; life</description>
-    <pubDate>Thu, 07 Jan 2021 08:31:01 GMT</pubDate>
+    <pubDate>Fri, 08 Jan 2021 08:51:06 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] CVE-2020-29669 : WIFI SD Hub Privilege Escalation Plugin</title>
+      <link>https://hackyboiz.github.io/2021/01/08/l0ch/2021-01-08/</link>
+      <guid>https://hackyboiz.github.io/2021/01/08/l0ch/2021-01-08/</guid>
+      <pubDate>Fri, 08 Jan 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/code-byter/CVE-2020-29669&quot;&gt;https://git</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://github.com/code-byter/CVE-2020-29669">https://github.com/code-byter/CVE-2020-29669</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Macally WIFISD2-2A82 Travel Router (펌웨어 버전 : 2.000.010)</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>무선 미디어 공유가 가능한 WIFI SD 허브인 Macally WIFISD2-2A82 제품에서 root로 권한 상승이 가능한 취약점이 공개되었습니다.</p><p>취약점의 세부 공격 단계는 아래와 같습니다.</p><ol><li>해커는 웹 인터페이스에서 게스트 계정으로 로그인합니다.</li><li>패스워드 재설정 페이지에서 admin의 패스워드로 설정할 값을 입력합니다.</li><li>BurpSuite로 해당 요청에서 <code>name</code> 필드값을 admin으로 변경해 요청하면 admin의 패스워드가 재설정됩니다.</li><li>telnet을 통해 admin과 재설정한 패스워드를 입력해 접속하면 <code>/etc/passwd</code> 의 root를 포함한 모든 계정의 패스워드 해시를 유출할 수 있습니다.</li></ol><p>해당 취약점을 악용하면 패스워드 해시를 크래킹해 root 쉘에 접근할 수 있습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/eop/">eop</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/router/">router</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/wifi-sd/">wifi sd</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/01/08/l0ch/2021-01-08/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>[하루한줄] SoftMaker Office TextMaker에서 발견된 세 가지 취약점</title>
@@ -309,9 +343,9 @@
       
       <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
       
-      <category domain="https://hackyboiz.github.io/tags/toctou/">toctou</category>
-      
       <category domain="https://hackyboiz.github.io/tags/race-condition/">race condition</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/toctou/">toctou</category>
       
       
       <comments>https://hackyboiz.github.io/2020/12/30/fabu1ous/2020-12-30/#disqus_thread</comments>
@@ -662,40 +696,6 @@
       
       
       <comments>https://hackyboiz.github.io/2020/12/29/l0ch/2020-12-29/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2020-35606: Arbitrary Command Execution in Webmin</title>
-      <link>https://hackyboiz.github.io/2020/12/28/idioth/2020-12-28/</link>
-      <guid>https://hackyboiz.github.io/2020/12/28/idioth/2020-12-28/</guid>
-      <pubDate>Mon, 28 Dec 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.pentest.com.tr/exploits/Webmin-1962-PU-Escape</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.pentest.com.tr/exploits/Webmin-1962-PU-Escape-Bypass-Remote-Command-Execution.html">Webmin-1962-PU-Escape-Bypass-Remote-Command-Exectuion</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Wemin 1.962 이하 버전</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Webmin에서 Remote Command Execution 취약점이 발견되었습니다. 해당 취약점을 통해 패키지 업데이트 모듈을 사용할 수 있는 모든 유저가 root 권한으로 arbitrary command를 실행할 수 있습니다. <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-12840">CVE-2019-12840</a>에 대한 필터링은 package name 변수가 system command 안에 직접적으로 들어가므로 URL encoding을 통해 우회할 수 있습니다.(ex. command line을 한 줄 아래에서 실행)</p><p><code>u</code> 파라미터는 <code>update.cgi</code>에서 <code>@pkgs</code> 변수에 들어가서 여러 연산을 수행합니다. <code>update.cgi</code>의 함수들은 <code>package-updates-lib.pl</code>에서 호출되는데, 그중 <code>package_install(package-name, [system], [new-install])</code>은 update system이나 Wemin을 통해 패키지를 설치할 수 있고 업데이트된 패키지 목록을 반환합니다.</p><p>패지키를 설치할 때 CVE-2019-12840에 대한 조치로 <code>s/\\(-)|\\(.)/string/g;</code> 필터링이 걸려있습니다. 패키지 이름은 http request 변수이므로 <code>%0a</code>나 <code>%0c</code> 등을 통해 escape가 가능합니다. 패키지 이름 뒤에 <code>%7c</code> 등으로 pipe나 <code>.</code>을 추가하면 그 부분에 <code>\</code> 백 슬래시가 추가되어 명령 실행이 불가능하지만 <code>%0a%7c</code> 등으로 새로운 command line에서 실행하면 <code>\</code>가 무시되고 정상적으로 arbitrary command execution이 가능합니다.</p><p><a href="https://pentest.com.tr/blog/webmin_pu_escape_bypass_rce.rb">해당 취약점에 대한 Metasploit code</a></p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/command-execution/">command execution</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/cve-2019-12840/">cve-2019-12840</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/webmin/">webmin</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/12/28/idioth/2020-12-28/#disqus_thread</comments>
       
     </item>
     
