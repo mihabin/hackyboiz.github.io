@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>[하루한줄] PsExec 0-day LPE non-official patch</title>
+    <link href="/2021/01/09/fabu1ous/2021-01-09/"/>
+    <url>/2021/01/09/fabu1ous/2021-01-09/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.0patch.com/2021/01/local-privilege-escalation-0day-in.html">LPE 0day in PsExec</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Windows xp ~ Windows 10</p><p>PsExec v1.72</p><p>PsExec v2.2</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>PsExec를 사용하는 시스템에서 System 권한을 획득할 수 있는 전형적인 named pipe hijacking <a href="https://hackyboiz.github.io/2020/12/10/idioth/2020-12-10/">취약점</a>이 패치되었습니다. 해커는 PsExec가 기존에 존재하는 named pipe를 재사용할 때 권한 설정을 변경하지 않는다는 점을 악용해 System권한을 갖는 named pipe를 사용할 수 있게 되고 System 권한으로 임의의 프로세스를 생성할 수 있습니다.</p><p>0Patch는 이 취약점에 대한 패치를 공개하고 무료로 배포하고 있습니다. PsExec 서비스는 원격 request를 받아 처리하는 thread를 생성할 때 <code>CreateNamedPipe()</code>를 호출합니다. 0Patch가 공개한 패치에선 <code>CreateNamedPipe()</code>가 호출되기 전 <code>FILE_FLAG_FIRST_PIPE_INSTANCE</code> 플레그 값을 사용해 <code>CreateNamedPipe()</code>를 한 번 더 호출하는 것으로 동일한 이름의 named pipe가 존재하는지 확인합니다. 만약 동일한 이름의 named pipe가 이미 존재하면 Psexesvc.exe를 종료합니다.</p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psexec">https://docs.microsoft.com/en-us/sysinternals/downloads/psexec</a></p><p><a href="https://github.com/tenable/poc/blob/master/Microsoft/Sysinternals/PsExecEscalate.cpp">https://github.com/tenable/poc/blob/master/Microsoft/Sysinternals/PsExecEscalate.cpp</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Fabu1ous</tag>
+      
+      <tag>lpe</tag>
+      
+      <tag>named pipe</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[하루한줄] CVE-2020-29669 : WIFI SD Hub Privilege Escalation Plugin</title>
     <link href="/2021/01/08/l0ch/2021-01-08/"/>
     <url>/2021/01/08/l0ch/2021-01-08/</url>
@@ -1012,9 +1041,9 @@
       
       <tag>lpe</tag>
       
-      <tag>idioth</tag>
-      
       <tag>named pipe</tag>
+      
+      <tag>idioth</tag>
       
       <tag>psexec</tag>
       
@@ -1800,13 +1829,13 @@
       
       <tag>lpe</tag>
       
+      <tag>named pipe</tag>
+      
       <tag>idioth</tag>
       
       <tag>dll hijacking</tag>
       
       <tag>dll search order</tag>
-      
-      <tag>named pipe</tag>
       
       <tag>impersonation attack</tag>
       

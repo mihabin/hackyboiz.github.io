@@ -9,8 +9,38 @@
     <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>hack &amp; life</description>
-    <pubDate>Fri, 08 Jan 2021 08:51:06 GMT</pubDate>
+    <pubDate>Sat, 09 Jan 2021 09:00:33 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] PsExec 0-day LPE non-official patch</title>
+      <link>https://hackyboiz.github.io/2021/01/09/fabu1ous/2021-01-09/</link>
+      <guid>https://hackyboiz.github.io/2021/01/09/fabu1ous/2021-01-09/</guid>
+      <pubDate>Sat, 09 Jan 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://blog.0patch.com/2021/01/local-privilege-escalatio</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.0patch.com/2021/01/local-privilege-escalation-0day-in.html">LPE 0day in PsExec</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Windows xp ~ Windows 10</p><p>PsExec v1.72</p><p>PsExec v2.2</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>PsExec를 사용하는 시스템에서 System 권한을 획득할 수 있는 전형적인 named pipe hijacking <a href="https://hackyboiz.github.io/2020/12/10/idioth/2020-12-10/">취약점</a>이 패치되었습니다. 해커는 PsExec가 기존에 존재하는 named pipe를 재사용할 때 권한 설정을 변경하지 않는다는 점을 악용해 System권한을 갖는 named pipe를 사용할 수 있게 되고 System 권한으로 임의의 프로세스를 생성할 수 있습니다.</p><p>0Patch는 이 취약점에 대한 패치를 공개하고 무료로 배포하고 있습니다. PsExec 서비스는 원격 request를 받아 처리하는 thread를 생성할 때 <code>CreateNamedPipe()</code>를 호출합니다. 0Patch가 공개한 패치에선 <code>CreateNamedPipe()</code>가 호출되기 전 <code>FILE_FLAG_FIRST_PIPE_INSTANCE</code> 플레그 값을 사용해 <code>CreateNamedPipe()</code>를 한 번 더 호출하는 것으로 동일한 이름의 named pipe가 존재하는지 확인합니다. 만약 동일한 이름의 named pipe가 이미 존재하면 Psexesvc.exe를 종료합니다.</p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psexec">https://docs.microsoft.com/en-us/sysinternals/downloads/psexec</a></p><p><a href="https://github.com/tenable/poc/blob/master/Microsoft/Sysinternals/PsExecEscalate.cpp">https://github.com/tenable/poc/blob/master/Microsoft/Sysinternals/PsExecEscalate.cpp</a></p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/lpe/">lpe</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/named-pipe/">named pipe</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/01/09/fabu1ous/2021-01-09/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>[하루한줄] CVE-2020-29669 : WIFI SD Hub Privilege Escalation Plugin</title>
@@ -658,44 +688,6 @@
       
       
       <comments>https://hackyboiz.github.io/2020/12/29/l0ch/picky_eater/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2020-7468: FreeBSD local privilege escalation</title>
-      <link>https://hackyboiz.github.io/2020/12/29/l0ch/2020-12-29/</link>
-      <guid>https://hackyboiz.github.io/2020/12/29/l0ch/2020-12-29/</guid>
-      <pubDate>Tue, 29 Dec 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.zerodayinitiative.com/blog/2020/12/21/cve-202</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.zerodayinitiative.com/blog/2020/12/21/cve-2020-7468-turning-imprisonment-to-advantage-in-the-freebsd-ftpd-chroot-jail">CVE-2020-7468: TURNING IMPRISONMENT TO ADVANTAGE IN THE FREEBSD FTPD CHROOT JAIL</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>FreeBSD ftpd</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>FreeBSD의 ftp 데몬에서 root 로 권한 상승이 가능한 취약점이 발견되었습니다.</p><p>취약점은 <code>chroot</code> 함수의 로그인 처리 부분의 결함으로 인해 발생합니다.</p><p><code>chroot</code> 함수에서 <code>chdir</code>이 실패할 경우 ftpd는 <code>chroot</code>의 jail에서 새로운 로그인 연결을 기다립니다. 이를 이용해 강제로 <code>chdir</code>이 실패하도록 유도하면 해커가 업로드한 파일을 시스템 파일인 것처럼 속일 수 있습니다.</p><p>취약점의 상세 공격 단계는 다음과 같습니다.</p><ol><li>해커가 FTP 유저 계정으로 로그인합니다.</li><li><code>etc/spwd.db</code> 에 임의의 root 패스워드를 설정해 업로드합니다.</li><li><code>chmod 0</code> 으로 홈 디렉터리에 대한 권한을 변경하고 유저 계정으로 다시 로그인합니다.</li><li>3번으로 인해 로그인 중 <code>chdir</code>이 실패하고 <code>ftpd chroot jail</code> 내부에서 새로운 연결을 기다립니다. 이후 모든 시스템 파일 액세스는 해커 계정의 홈 디렉터리를 기준으로 이루어집니다.</li><li>결과적으로 이후 root로 로그인할 때 해커가 업로드한 <code>etc/spwd.db</code> 의 root 패스워드 테이블을 참조해 패스워드를 검증하고 해커가 root 계정에 접근할 수 있습니다.</li></ol><p>해당 취약점을 악용하면 리버스쉘을 실행시키는 명령어를 포함한 파일을 업로드해 root 권한으로 쉘을 실행하고, chroot jail을 벗어나 임의의 명령어 또한 실행할 수 있습니다.</p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/lpe/">lpe</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/FreeBSD/">FreeBSD</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/local-privilege-escalation/">local privilege escalation</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/ftpd/">ftpd</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/chroot/">chroot</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/12/29/l0ch/2020-12-29/#disqus_thread</comments>
       
     </item>
     
