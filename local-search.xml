@@ -4,6 +4,39 @@
   
   
   <entry>
+    <title>[하루한줄] CVE-2021-1648: CVE-2020-0986 패치 우회 및 arbitrary address read</title>
+    <link href="/2021/01/14/idioth/2021-01-14/"/>
+    <url>/2021/01/14/idioth/2021-01-14/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://whereisk0shl.top/post/the_story_of_cve_2021_1648">THE STORY OF CVE-2021-1648</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Windows splwow64</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>2021년 1월 patch tuesday에서 <a href="https://hackyboiz.github.io/2020/12/31/idioth/2020-12-31/">CVE-2020-0986</a> 패치를 우회하는 splwow64 서비스 취약점을 패치했습니다.  CVE-2020-0986이 패치된 후 splwow64와 gdi32full에는 두 가지 검사가 추가되었습니다.</p><ol><li>프린터 핸들 검사 함수 <code>FindDriverForCookie</code>와 <code>FindPrinterHandle</code> 추가</li><li>포인터 유효성 검사를 위한 함수 <code>UMPDStringPointerFromOffset</code>과 <code>UMPDPointerFromOffset</code> 추가</li></ol><p>1번의 함수들은 전역 변수에 어떤 프린터 드라이버 핸들이 저장되었는지 확인합니다. 그중 <code>0x6A</code> 커맨드를 호출하면 함수 <code>bAddPrinterHandle</code>가 전역 변수 <code>qword_1800EABA0</code>에 저장된 드라이버 힙에 프린트 핸들을 추가하여 전역 변수에 프린터 핸들 값을 조작해 <code>0x6D</code>에서 호출하는 <code>FindDriverForCookie</code>와 <code>FindPrinterHandle</code>을 우회할 수 있습니다. 또한 <code>0x6D</code>에서 <code>memcpy</code>를 호출할 때 source address를 확인하지 않고 복사를 진행하여 arbitrary address read가 가능합니다.</p><p>2번 함수들은 잘못된 범위 검사로 인해 우회가 가능합니다. splwow64는 x86에 대한 호환성으로 인해 항상 32비트 힙을 할당합니다. 하지만 두 함수들은 offset과 portview+offset이 <code>0x7fffffff</code>보다 작은지만 검사합니다. splwow64에서 힙은 낮은 주소에 할당되므로(ex. <code>0x7d7c70</code>) 검사를 우회할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>windows</tag>
+      
+      <tag>information disclosure</tag>
+      
+      <tag>idioth</tag>
+      
+      <tag>splwow64</tag>
+      
+      <tag>arbitrary read</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[하루한줄] CVE-2020-16875: RCE in MS Office 365</title>
     <link href="/2021/01/13/fabu1ous/2021-01-13/"/>
     <url>/2021/01/13/fabu1ous/2021-01-13/</url>
@@ -1456,9 +1489,9 @@
       
       <tag>cve</tag>
       
-      <tag>L0ch</tag>
-      
       <tag>bypass</tag>
+      
+      <tag>L0ch</tag>
       
       <tag>unserialization</tag>
       
