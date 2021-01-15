@@ -19,14 +19,14 @@
   <meta name="google-site-verification" content="DXkyiaX95-ws53Tyt0m91_umRf4gfV2qJIQZ5zQDIO4">
 
   <meta property="og:type" content="website"> 
-  <meta property="og:title" content="[하루한줄] CVE-2021-1648: CVE-2020-0986 패치 우회 및 arbitrary address read - hackyboiz">
+  <meta property="og:title" content="[하루한줄] Google master token 탈취를 통한 구글 계정 접근 - hackyboiz">
   <meta property="og:description" content="hack &amp; life">
   <meta property="og:image" content="/img/favicon.ico">
   <meta property="og:url" content="https://hackyboiz.github.io/">
 
-  <link rel="canonical" href="https://hackyboiz.github.io/2021/01/14/idioth/2021-01-14/">
+  <link rel="canonical" href="https://hackyboiz.github.io/2021/01/15/l0ch/2021-01-15/">
 
-  <title>[하루한줄] CVE-2021-1648: CVE-2020-0986 패치 우회 및 arbitrary address read - hackyboiz</title>
+  <title>[하루한줄] Google master token 탈취를 통한 구글 계정 접근 - hackyboiz</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
 
@@ -178,8 +178,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2021-01-14 18:00" pubdate>
-      2021년 1월 14일 오후
+    <time datetime="2021-01-15 18:00" pubdate>
+      2021년 1월 15일 오후
     </time>
   </div>
 
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      164 자
+      144 자
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      2
        분
     </span>
   
@@ -231,20 +231,14 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">[하루한줄] CVE-2021-1648: CVE-2020-0986 패치 우회 및 arbitrary address read</h1>
+            <h1 style="display: none">[하루한줄] Google master token 탈취를 통한 구글 계정 접근</h1>
             
             <div class="markdown-body" id="post-body">
-              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://whereisk0shl.top/post/the_story_of_cve_2021_1648">THE STORY OF CVE-2021-1648</a></p>
-<h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul>
-<li>Windows splwow64</li>
-</ul>
-<h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>2021년 1월 patch tuesday에서 <a href="https://hackyboiz.github.io/2020/12/31/idioth/2020-12-31/">CVE-2020-0986</a> 패치를 우회하는 splwow64 서비스 취약점을 패치했습니다.  CVE-2020-0986이 패치된 후 splwow64와 gdi32full에는 두 가지 검사가 추가되었습니다.</p>
-<ol>
-<li>프린터 핸들 검사 함수 <code>FindDriverForCookie</code>와 <code>FindPrinterHandle</code> 추가</li>
-<li>포인터 유효성 검사를 위한 함수 <code>UMPDStringPointerFromOffset</code>과 <code>UMPDPointerFromOffset</code> 추가</li>
-</ol>
-<p>1번의 함수들은 전역 변수에 어떤 프린터 드라이버 핸들이 저장되었는지 확인합니다. 그중 <code>0x6A</code> 커맨드를 호출하면 함수 <code>bAddPrinterHandle</code>가 전역 변수 <code>qword_1800EABA0</code>에 저장된 드라이버 힙에 프린트 핸들을 추가하여 전역 변수에 프린터 핸들 값을 조작해 <code>0x6D</code>에서 호출하는 <code>FindDriverForCookie</code>와 <code>FindPrinterHandle</code>을 우회할 수 있습니다. 또한 <code>0x6D</code>에서 <code>memcpy</code>를 호출할 때 source address를 확인하지 않고 복사를 진행하여 arbitrary address read가 가능합니다.</p>
-<p>2번 함수들은 잘못된 범위 검사로 인해 우회가 가능합니다. splwow64는 x86에 대한 호환성으로 인해 항상 32비트 힙을 할당합니다. 하지만 두 함수들은 offset과 portview+offset이 <code>0x7fffffff</code>보다 작은지만 검사합니다. splwow64에서 힙은 낮은 주소에 할당되므로(ex. <code>0x7d7c70</code>) 검사를 우회할 수 있습니다.</p>
+              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://blog.usejournal.com/how-i-stole-the-data-in-millions-of-peoples-google-accounts-aa1b72dcc075">How I stole the data in millions of people’s Google accounts</a></p>
+<h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Android/iOS<br>Google accounts</p>
+<h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>피싱 앱에서 해커가 Google의 계정과 패스워드를 탈취하는 방법은 일반적으로 앱에서 <code>Google 계정으로 가입</code> 버튼을 통해 해커가 제작한 로그인 페이지에 계정과 패스워드를 입력하도록 유도하는 방법입니다.</p>
+<p>Google은 이전에 로그인한 지역과 거리가 먼 지역에서 로그인 시도가 있을 경우 이를 차단하는 위치 기반 로그인 차단 기능이 있어 해커가 계정과 패스워드를 알아도 피해자의 계정에 접근할 수 없습니다. 그러나 안드로이드 기기의 구글 계정 관리 토큰인 Google master token을 탈취하면 이러한 계정 보호를 우회할 수 있습니다. master token은 사용자가 암호나 2단계 로그인 설정을 변경하지 않는 이상 만료되지 않고 위치 검사의 대상이 아니기 때문에 위치 기반 로그인 차단이 작동하지 않습니다. </p>
+<p>피해자가 해커의 악성 앱을 설치하고 구글 계정으로 가입하도록 유도하면 구글 로그인 페이지를 통해 피해자 계정의 master token을 가져올 수 있고 해커는 이 master token으로 대부분의 구글 서비스에 접근이 가능합니다.</p>
 
             </div>
             <hr>
@@ -262,15 +256,13 @@
                 <div class="post-meta">
                   <i class="iconfont icon-tags"></i>
                   
-                  <a class="hover-with-bg" href="/tags/windows/">windows</a>
+                  <a class="hover-with-bg" href="/tags/android/">android</a>
                   
-                  <a class="hover-with-bg" href="/tags/information-disclosure/">information disclosure</a>
+                  <a class="hover-with-bg" href="/tags/L0ch/">L0ch</a>
                   
-                  <a class="hover-with-bg" href="/tags/idioth/">idioth</a>
+                  <a class="hover-with-bg" href="/tags/google/">google</a>
                   
-                  <a class="hover-with-bg" href="/tags/splwow64/">splwow64</a>
-                  
-                  <a class="hover-with-bg" href="/tags/arbitrary-read/">arbitrary read</a>
+                  <a class="hover-with-bg" href="/tags/google-credential/">google credential</a>
                   
                 </div>
                 
@@ -279,16 +271,16 @@
               <div class="post-metas mb-3">
                 <a class="hover-with-bg" style="display: flex;" href="/author">
                   <div class="link-avatar-page">
-                    <img src="/img/profile_idioth.jpg" srcset="/img/loading.gif" alt="idioth">
+                    <img src="/img/profile_L0ch.jpg" srcset="/img/loading.gif" alt="L0ch">
                   </div>
 
                   <div class="link-text">
-                    <div class="link-title">idioth</div>
+                    <div class="link-title">L0ch</div>
                   </div>
                 </a>
                 <div class="link-text">
                   <div class="link-more">
-                    <a href="/tags/idioth">
+                    <a href="/tags/L0ch">
                       Read more
                       <i class="iconfont icon-arrowdown"></i>
                     </a>
@@ -309,18 +301,12 @@
                 <article class="post-prev col-6">
                   
                   
-                  <a href="/2021/01/15/l0ch/2021-01-15/">
-                    <i class="iconfont icon-arrowleft"></i>
-                    <span class="hidden-mobile">[하루한줄] Google master token 탈취를 통한 구글 계정 접근</span>
-                    <span class="visible-mobile">Previous</span>
-                  </a>
-                  
                 </article>
                 <article class="post-next col-6">
                   
                   
-                  <a href="/2021/01/13/fabu1ous/2021-01-13/">
-                    <span class="hidden-mobile">[하루한줄] CVE-2020-16875: RCE in MS Office 365</span>
+                  <a href="/2021/01/14/idioth/2021-01-14/">
+                    <span class="hidden-mobile">[하루한줄] CVE-2021-1648: CVE-2020-0986 패치 우회 및 arbitrary address read</span>
                     <span class="visible-mobile">Next</span>
                     <i class="iconfont icon-arrowright"></i>
                   </a>
@@ -339,8 +325,8 @@
     <div id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'https://hackyboiz.github.io/2021/01/14/idioth/2021-01-14/';
-        this.page.identifier = '/2021/01/14/idioth/2021-01-14/';
+        this.page.url = 'https://hackyboiz.github.io/2021/01/15/l0ch/2021-01-15/';
+        this.page.identifier = '/2021/01/15/l0ch/2021-01-15/';
       };
       function loadDisqus() {
         (function () {
@@ -486,7 +472,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "[하루한줄] CVE-2021-1648: CVE-2020-0986 패치 우회 및 arbitrary address read&nbsp;",
+        "[하루한줄] Google master token 탈취를 통한 구글 계정 접근&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

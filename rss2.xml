@@ -9,8 +9,40 @@
     <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>hack &amp; life</description>
-    <pubDate>Thu, 14 Jan 2021 08:50:10 GMT</pubDate>
+    <pubDate>Fri, 15 Jan 2021 08:38:49 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] Google master token 탈취를 통한 구글 계정 접근</title>
+      <link>https://hackyboiz.github.io/2021/01/15/l0ch/2021-01-15/</link>
+      <guid>https://hackyboiz.github.io/2021/01/15/l0ch/2021-01-15/</guid>
+      <pubDate>Fri, 15 Jan 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://blog.usejournal.com/how-i-stole-the-data-in-milli</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.usejournal.com/how-i-stole-the-data-in-millions-of-peoples-google-accounts-aa1b72dcc075">How I stole the data in millions of people’s Google accounts</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Android/iOS<br>Google accounts</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>피싱 앱에서 해커가 Google의 계정과 패스워드를 탈취하는 방법은 일반적으로 앱에서 <code>Google 계정으로 가입</code> 버튼을 통해 해커가 제작한 로그인 페이지에 계정과 패스워드를 입력하도록 유도하는 방법입니다.</p><p>Google은 이전에 로그인한 지역과 거리가 먼 지역에서 로그인 시도가 있을 경우 이를 차단하는 위치 기반 로그인 차단 기능이 있어 해커가 계정과 패스워드를 알아도 피해자의 계정에 접근할 수 없습니다. 그러나 안드로이드 기기의 구글 계정 관리 토큰인 Google master token을 탈취하면 이러한 계정 보호를 우회할 수 있습니다. master token은 사용자가 암호나 2단계 로그인 설정을 변경하지 않는 이상 만료되지 않고 위치 검사의 대상이 아니기 때문에 위치 기반 로그인 차단이 작동하지 않습니다. </p><p>피해자가 해커의 악성 앱을 설치하고 구글 계정으로 가입하도록 유도하면 구글 로그인 페이지를 통해 피해자 계정의 master token을 가져올 수 있고 해커는 이 master token으로 대부분의 구글 서비스에 접근이 가능합니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/android/">android</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/google/">google</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/google-credential/">google credential</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/01/15/l0ch/2021-01-15/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>[하루한줄] CVE-2021-1648: CVE-2020-0986 패치 우회 및 arbitrary address read</title>
@@ -646,40 +678,6 @@
       
       
       <comments>https://hackyboiz.github.io/2020/12/29/fabu1ous/oil-system/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[Write-Up] Christmas CTF 2020 - angrforge</title>
-      <link>https://hackyboiz.github.io/2020/12/29/idioth/christmasctf2020-angrforge/</link>
-      <guid>https://hackyboiz.github.io/2020/12/29/idioth/christmasctf2020-angrforge/</guid>
-      <pubDate>Tue, 29 Dec 2020 12:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h1 id=&quot;출제-의도&quot;&gt;&lt;a href=&quot;#출제-의도&quot; class=&quot;headerlink&quot; title=&quot;출제 의도&quot;&gt;&lt;/a&gt;출제 의도&lt;/h1&gt;&lt;p&gt;angr를 통해 입력 값을 뽑아내는 것이 의도인 문제였습니다. 이 문제는 여러 번의 수정을 거쳤습니다. </description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h1 id="출제-의도"><a href="#출제-의도" class="headerlink" title="출제 의도"></a>출제 의도</h1><p>angr를 통해 입력 값을 뽑아내는 것이 의도인 문제였습니다. 이 문제는 여러 번의 수정을 거쳤습니다. 원래 이 문제도 arm 환경에서 angr를 돌리는 문제로 낼 예정이었는데 arm에서 제대로 동작하지 않아서 arm은 포기. 그리고 원래 처음에는 c++로 냈었는데 검수 후 수정을 했더니 simulation manager를 돌려도 값이 제대로 나오지 않아서 c로 옮기는 과정에서 연산 몇 개를 뺐습니다..ㅠ</p><h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><pre><code class="hljs apache"><span class="hljs-attribute">idioth</span>@ubuntu:~/Desktop$ file angrforge<span class="hljs-attribute">angrforge</span>: ELF <span class="hljs-number">64</span>-bit LSB shared object, x<span class="hljs-number">86</span>-<span class="hljs-number">64</span>, version <span class="hljs-number">1</span> (SYSV), dynamically linked,<span class="hljs-attribute">interpreter</span> /lib<span class="hljs-number">64</span>/ld-linux-x<span class="hljs-number">86</span>-<span class="hljs-number">64</span>.so.<span class="hljs-number">2</span>,<span class="hljs-attribute">BuildID</span>[sha<span class="hljs-number">1</span>]=<span class="hljs-number">1162</span>ed<span class="hljs-number">229</span>a<span class="hljs-number">12133</span>d<span class="hljs-number">07</span>de<span class="hljs-number">26301</span>dad<span class="hljs-number">1</span>ada<span class="hljs-number">34</span>a<span class="hljs-number">9</span>c<span class="hljs-number">3</span>ff, for GNU/Linux <span class="hljs-number">3</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span>, stripped</code></pre><p>64bit ELF 파일이며, stripped 되어있습니다.</p><pre><code class="hljs c"><span class="hljs-function">undefined8 <span class="hljs-title">FUN_00103be1</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span><span class="hljs-function"></span><span class="hljs-function"></span>&#123;  <span class="hljs-keyword">int</span> iVar1;  <span class="hljs-keyword">long</span> in_FS_OFFSET;  undefined8 local_58;  undefined8 local_50;  undefined8 local_48;  undefined8 local_40;  undefined8 local_38;  undefined8 local_30;  undefined8 local_28;  undefined local_20;  <span class="hljs-keyword">long</span> local_10;    local_10 = *(<span class="hljs-keyword">long</span> *)(in_FS_OFFSET + <span class="hljs-number">0x28</span>);  local_58 = <span class="hljs-number">0</span>;  local_50 = <span class="hljs-number">0</span>;  local_48 = <span class="hljs-number">0</span>;  local_40 = <span class="hljs-number">0</span>;  local_38 = <span class="hljs-number">0</span>;  local_30 = <span class="hljs-number">0</span>;  local_28 = <span class="hljs-number">0</span>;  local_20 = <span class="hljs-number">0</span>;  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;General Angerforge, the Dark Iron responsible for stealing my computer.&quot;</span>);  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;But I\&#x27;m just a programmer.. so Call me my best warrior friend.&quot;</span>);  <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;If you call my friend, I will give you a good reward.&quot;</span>);  fgets((<span class="hljs-keyword">char</span> *)&amp;local_58,<span class="hljs-number">0x39</span>,<span class="hljs-built_in">stdin</span>);  FUN_00103a48(&amp;local_58);  iVar1 = FUN_001039f7(&amp;local_58);  <span class="hljs-keyword">if</span> (iVar1 == <span class="hljs-number">1</span>) &#123;    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;OMG, Thank you for your good works :)&quot;</span>);  &#125;  <span class="hljs-keyword">else</span> &#123;    FUN_001039d9();  &#125;  <span class="hljs-keyword">if</span> (local_10 != *(<span class="hljs-keyword">long</span> *)(in_FS_OFFSET + <span class="hljs-number">0x28</span>)) &#123;                    <span class="hljs-comment">/* WARNING: Subroutine does not return */</span>    __stack_chk_fail();  &#125;  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><p>ghidra를 통해 디컴파일을 한 후 main을 확인해보면, <code>0x39(57)</code>만큼의 입력 값을 받아서 <code>FUN_00103a48</code>을 호출하고, <code>FUN_001039f7</code>을 통해 문자열을 체크하는 것을 확인할 수 있습니다.</p><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">FUN_00103a48</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *param_1)</span></span><span class="hljs-function"></span><span class="hljs-function"></span>&#123;  <span class="hljs-keyword">size_t</span> sVar1;    sVar1 = <span class="hljs-built_in">strlen</span>(param_1);  <span class="hljs-keyword">if</span> (sVar1 &lt; (ulong)(<span class="hljs-keyword">long</span>)(<span class="hljs-keyword">int</span>)((DAT_00106014 | DAT_00106010) + <span class="hljs-number">5</span>)) &#123;    FUN_001033e9(param_1);    FUN_00103481(param_1);    FUN_00103519(param_1);    FUN_001035b1(param_1);    FUN_00103649(param_1);    FUN_001036e1(param_1);    FUN_00103779(param_1);    FUN_00103811(param_1);    FUN_001038a9(param_1);    FUN_00103941(param_1);  &#125;  <span class="hljs-keyword">else</span> &#123;    FUN_001011c9(param_1);    FUN_00101396(param_1);    FUN_00101563(param_1);    FUN_00101730(param_1);    FUN_001018fd(param_1);    FUN_00101abf(param_1);    FUN_00101bbf(param_1);    FUN_00101cce(param_1);    FUN_00101dce(param_1);    FUN_00101eee(param_1);    FUN_001022cb(param_1);    FUN_00102589(param_1);    FUN_00102847(param_1);    FUN_00102b05(param_1);    FUN_00102dc3(param_1);    FUN_00102ef9(param_1);    FUN_00103035(param_1);    FUN_00103171(param_1);    FUN_001032ad(param_1);  &#125;  <span class="hljs-keyword">return</span>;&#125;</code></pre><p><code>FUN_00103a48</code> 함수는 입력 값을 받아서, 길이에 따라서 여러 가지 다른 sub 함수를 수행합니다. 각 sub 함수의 연산은 서로 다른 바이트에 영향을 미치지 않고 함수가 다른 함수를 호출하는 로직도 있어서 상당히 복잡하게 얽혀있습니다. c++에는 곱 연산 같은 것도 넣었는데 c로 급하게 옮기면서 보니 바이트가 증발하더군요..ㅠ <del>시간 부족으로 인한 역 연산 가능 로직</del></p><pre><code class="hljs c"><span class="hljs-function">undefined8 <span class="hljs-title">FUN_001039f7</span><span class="hljs-params">(<span class="hljs-keyword">long</span> param_1)</span></span><span class="hljs-function"></span>&#123;  <span class="hljs-keyword">int</span> local_c;    local_c = <span class="hljs-number">0</span>;  <span class="hljs-keyword">while</span>( <span class="hljs-literal">true</span> ) &#123;    <span class="hljs-keyword">if</span> (<span class="hljs-number">0x37</span> &lt; local_c) &#123;      <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;    &#125;    <span class="hljs-keyword">if</span> (*(<span class="hljs-keyword">char</span> *)(param_1 + local_c) != (&amp;DAT_00104080)[local_c]) <span class="hljs-keyword">break</span>;    local_c = local_c + <span class="hljs-number">1</span>;  &#125;  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><p><code>FUN_001039f7</code>에서는 0x38만큼 <code>DAT_00104080</code>과 값을 비교하여 맞으면 <code>1</code>, 아닐 시 <code>0</code>을 리턴해줍니다.</p><p><code>\n</code>을 제외한 문자열의 길이는 56이고, <code>stdin</code>을 통해 입력 값이 들어가므로 입력 값 56과 <code>stdin</code>을 처리하는 state를 구성하여 simulation manager를 돌리면 값을 구할 수 있습니다.</p><pre><code class="hljs python"><span class="hljs-keyword">import</span> angr<span class="hljs-keyword">import</span> claripyp = angr.Project(<span class="hljs-string">&#x27;./angrforge&#x27;</span>)flag_chars = [claripy.BVS(<span class="hljs-string">&#x27;flag_%d&#x27;</span> % i, <span class="hljs-number">8</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">56</span>)]flag = claripy.Concat(*flag_chars + [claripy.BVV(<span class="hljs-string">b&#x27;\n&#x27;</span>)])st = p.factory.full_init_state(    stdin = flag,    add_options = angr.options.unicorn,)<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> flag_chars:    st.solver.add(i != <span class="hljs-number">0</span>)    st.solver.add(i != <span class="hljs-number">10</span>)sm = p.factory.simulation_manager(st)sm.run()<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> sm.deadended:    <span class="hljs-keyword">if</span> <span class="hljs-string">b&#x27;OMG&#x27;</span> <span class="hljs-keyword">in</span> i.posix.dumps(<span class="hljs-number">1</span>):        print(i.posix.dumps(<span class="hljs-number">0</span>))</code></pre><pre><code class="hljs apache"><span class="hljs-attribute">idioth</span>@ubuntu:~/Desktop$ python<span class="hljs-number">3</span> solve.py<span class="hljs-attribute">WARNING</span> | <span class="hljs-number">2020</span>-<span class="hljs-number">12</span>-<span class="hljs-number">28</span> <span class="hljs-number">20</span>:<span class="hljs-number">50</span>:<span class="hljs-number">44</span>,<span class="hljs-number">086</span> | cle.loader | The main binary is a position-independent executable.<span class="hljs-attribute">It</span> is being loaded with a base address of <span class="hljs-number">0</span>x<span class="hljs-number">400000</span>.<span class="hljs-attribute">WARNING</span> | <span class="hljs-number">2020</span>-<span class="hljs-number">12</span>-<span class="hljs-number">28</span> <span class="hljs-number">20</span>:<span class="hljs-number">50</span>:<span class="hljs-number">45</span>,<span class="hljs-number">089</span> | angr.simos.simos | stdin is constrained to <span class="hljs-number">57</span> bytes (has_end=True).<span class="hljs-attribute">If</span> you are only providing the first <span class="hljs-number">57</span> bytes instead of the entire stdin,<span class="hljs-attribute">please</span> use stdin=SimFileStream(name=&#x27;stdin&#x27;, content=your_first_n_bytes, has_end=False).<span class="hljs-attribute">b</span>&#x27;XMAS&#123;h<span class="hljs-number">3</span>_<span class="hljs-number">1</span>s_b<span class="hljs-number">1</span>o<span class="hljs-number">0</span>d<span class="hljs-number">3</span>lf_d<span class="hljs-number">3</span>athkni<span class="hljs-number">9</span>ht_wh<span class="hljs-number">0</span>_will_kill_<span class="hljs-number">4</span>ngrf<span class="hljs-number">0</span>rge&#125;\n&#x27;</code></pre><p>Flag : XMAS{h3_1s_b1o0d3lf_d3athkni9ht_wh0_will_kill_4ngrf0rge}</p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/Write-Up/">Write-Up</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/ctf/">ctf</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/reversing/">reversing</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/angr/">angr</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/christmas-ctf-2020/">christmas ctf 2020</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/12/29/idioth/christmasctf2020-angrforge/#disqus_thread</comments>
       
     </item>
     

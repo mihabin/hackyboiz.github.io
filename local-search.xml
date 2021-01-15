@@ -4,6 +4,37 @@
   
   
   <entry>
+    <title>[하루한줄] Google master token 탈취를 통한 구글 계정 접근</title>
+    <link href="/2021/01/15/l0ch/2021-01-15/"/>
+    <url>/2021/01/15/l0ch/2021-01-15/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.usejournal.com/how-i-stole-the-data-in-millions-of-peoples-google-accounts-aa1b72dcc075">How I stole the data in millions of people’s Google accounts</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Android/iOS<br>Google accounts</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>피싱 앱에서 해커가 Google의 계정과 패스워드를 탈취하는 방법은 일반적으로 앱에서 <code>Google 계정으로 가입</code> 버튼을 통해 해커가 제작한 로그인 페이지에 계정과 패스워드를 입력하도록 유도하는 방법입니다.</p><p>Google은 이전에 로그인한 지역과 거리가 먼 지역에서 로그인 시도가 있을 경우 이를 차단하는 위치 기반 로그인 차단 기능이 있어 해커가 계정과 패스워드를 알아도 피해자의 계정에 접근할 수 없습니다. 그러나 안드로이드 기기의 구글 계정 관리 토큰인 Google master token을 탈취하면 이러한 계정 보호를 우회할 수 있습니다. master token은 사용자가 암호나 2단계 로그인 설정을 변경하지 않는 이상 만료되지 않고 위치 검사의 대상이 아니기 때문에 위치 기반 로그인 차단이 작동하지 않습니다. </p><p>피해자가 해커의 악성 앱을 설치하고 구글 계정으로 가입하도록 유도하면 구글 로그인 페이지를 통해 피해자 계정의 master token을 가져올 수 있고 해커는 이 master token으로 대부분의 구글 서비스에 접근이 가능합니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>android</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>google</tag>
+      
+      <tag>google credential</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[하루한줄] CVE-2021-1648: CVE-2020-0986 패치 우회 및 arbitrary address read</title>
     <link href="/2021/01/14/idioth/2021-01-14/"/>
     <url>/2021/01/14/idioth/2021-01-14/</url>
