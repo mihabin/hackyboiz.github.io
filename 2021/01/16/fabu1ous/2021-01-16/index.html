@@ -19,14 +19,14 @@
   <meta name="google-site-verification" content="DXkyiaX95-ws53Tyt0m91_umRf4gfV2qJIQZ5zQDIO4">
 
   <meta property="og:type" content="website"> 
-  <meta property="og:title" content="[하루한줄] CVE-2020-7468: FreeBSD local privilege escalation - hackyboiz">
+  <meta property="og:title" content="[하루한줄] CVE-2020-26233: Git CLI RCE - hackyboiz">
   <meta property="og:description" content="hack &amp; life">
   <meta property="og:image" content="/img/favicon.ico">
   <meta property="og:url" content="https://hackyboiz.github.io/">
 
-  <link rel="canonical" href="https://hackyboiz.github.io/2020/12/29/l0ch/2020-12-29/">
+  <link rel="canonical" href="https://hackyboiz.github.io/2021/01/16/fabu1ous/2021-01-16/">
 
-  <title>[하루한줄] CVE-2020-7468: FreeBSD local privilege escalation - hackyboiz</title>
+  <title>[하루한줄] CVE-2020-26233: Git CLI RCE - hackyboiz</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
 
@@ -178,8 +178,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-12-29 18:00" pubdate>
-      2020년 12월 29일 오후
+    <time datetime="2021-01-16 18:00" pubdate>
+      2021년 1월 16일 오후
     </time>
   </div>
 
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      172 자
+      165 자
     </span>
   
 
@@ -231,23 +231,21 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">[하루한줄] CVE-2020-7468: FreeBSD local privilege escalation</h1>
+            <h1 style="display: none">[하루한줄] CVE-2020-26233: Git CLI RCE</h1>
             
             <div class="markdown-body" id="post-body">
-              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.zerodayinitiative.com/blog/2020/12/21/cve-2020-7468-turning-imprisonment-to-advantage-in-the-freebsd-ftpd-chroot-jail">CVE-2020-7468: TURNING IMPRISONMENT TO ADVANTAGE IN THE FREEBSD FTPD CHROOT JAIL</a></p>
-<h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>FreeBSD ftpd</p>
-<h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>FreeBSD의 ftp 데몬에서 root 로 권한 상승이 가능한 취약점이 발견되었습니다.</p>
-<p>취약점은 <code>chroot</code> 함수의 로그인 처리 부분의 결함으로 인해 발생합니다.</p>
-<p><code>chroot</code> 함수에서 <code>chdir</code>이 실패할 경우 ftpd는 <code>chroot</code>의 jail에서 새로운 로그인 연결을 기다립니다. 이를 이용해 강제로 <code>chdir</code>이 실패하도록 유도하면 해커가 업로드한 파일을 시스템 파일인 것처럼 속일 수 있습니다.</p>
-<p>취약점의 상세 공격 단계는 다음과 같습니다.</p>
+              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://blog.blazeinfosec.com/attack-of-the-clones-2-git-command-client-remote-code-execution-strikes-back/">https://blog.blazeinfosec.com/attack-of-the-clones-2-git-command-client-remote-code-execution-strikes-back/</a></p>
+<h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Git Credential Manager core &lt; 2.0.289</p>
+<h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>악성 repository를 fork 한 피해자의 시스템에 임의의 실행파일을 실행시킬 수 있는 CVE-2020-26233에 대한 세부 정보가 공개되었습니다. 유사한 취약점으로 <a href="https://hackyboiz.github.io/2020/11/06/l0ch/2020-11-06/">CVE-2020-27955</a>가 있습니다.</p>
+<p>git clone은 기본적으로 top-level 디렉터리를 clone 한 후 새로운 git 프로세스를 생성해 재귀적으로 submodule들을 clone 합니다. 만약 repository의 root디렉터리 안에 git.exe라는 이름의 실행파일이 있다면 Git Credential Manager core가 configuration을 읽는 과정에서 해당 파일을 실행하게 됩니다.</p>
+<p>이런 취약점이 발생하는 이유는 다음과 같습니다. 만약 git.exe를 실행하라는 명령어를 받으면 Windows는 우선적으로 현재 디렉터리에 git.exe 실행파일이 있는지 확인하고, 없을 때만 %PATH% 환경 변수를 순회하면서 git.exe를 찾아 실행합니다. </p>
+<p>PoC는 아래와 같습니다.</p>
 <ol>
-<li>해커가 FTP 유저 계정으로 로그인합니다.</li>
-<li><code>etc/spwd.db</code> 에 임의의 root 패스워드를 설정해 업로드합니다.</li>
-<li><code>chmod 0</code> 으로 홈 디렉터리에 대한 권한을 변경하고 유저 계정으로 다시 로그인합니다.</li>
-<li>3번으로 인해 로그인 중 <code>chdir</code>이 실패하고 <code>ftpd chroot jail</code> 내부에서 새로운 연결을 기다립니다. 이후 모든 시스템 파일 액세스는 해커 계정의 홈 디렉터리를 기준으로 이루어집니다.</li>
-<li>결과적으로 이후 root로 로그인할 때 해커가 업로드한 <code>etc/spwd.db</code> 의 root 패스워드 테이블을 참조해 패스워드를 검증하고 해커가 root 계정에 접근할 수 있습니다.</li>
+<li>새로운 Repository생성, 혹은 기존 Repository에 파일 추가할 수 있는 권한 획득</li>
+<li>windows 실행파일의 파일명을 git.exe로 수정해 업로드</li>
+<li>임의의 사용자가 Repository를 fork 하기를 기다림</li>
+<li>RCE 성공</li>
 </ol>
-<p>해당 취약점을 악용하면 리버스쉘을 실행시키는 명령어를 포함한 파일을 업로드해 root 권한으로 쉘을 실행하고, chroot jail을 벗어나 임의의 명령어 또한 실행할 수 있습니다.</p>
 
             </div>
             <hr>
@@ -265,19 +263,13 @@
                 <div class="post-meta">
                   <i class="iconfont icon-tags"></i>
                   
-                  <a class="hover-with-bg" href="/tags/cve/">cve</a>
+                  <a class="hover-with-bg" href="/tags/Fabu1ous/">Fabu1ous</a>
                   
-                  <a class="hover-with-bg" href="/tags/lpe/">lpe</a>
+                  <a class="hover-with-bg" href="/tags/windows/">windows</a>
                   
-                  <a class="hover-with-bg" href="/tags/L0ch/">L0ch</a>
+                  <a class="hover-with-bg" href="/tags/rce/">rce</a>
                   
-                  <a class="hover-with-bg" href="/tags/FreeBSD/">FreeBSD</a>
-                  
-                  <a class="hover-with-bg" href="/tags/local-privilege-escalation/">local privilege escalation</a>
-                  
-                  <a class="hover-with-bg" href="/tags/ftpd/">ftpd</a>
-                  
-                  <a class="hover-with-bg" href="/tags/chroot/">chroot</a>
+                  <a class="hover-with-bg" href="/tags/git/">git</a>
                   
                 </div>
                 
@@ -286,16 +278,16 @@
               <div class="post-metas mb-3">
                 <a class="hover-with-bg" style="display: flex;" href="/author">
                   <div class="link-avatar-page">
-                    <img src="/img/profile_L0ch.jpg" srcset="/img/loading.gif" alt="L0ch">
+                    <img src="/img/profile_Fabu1ous.jpg" srcset="/img/loading.gif" alt="Fabu1ous">
                   </div>
 
                   <div class="link-text">
-                    <div class="link-title">L0ch</div>
+                    <div class="link-title">Fabu1ous</div>
                   </div>
                 </a>
                 <div class="link-text">
                   <div class="link-more">
-                    <a href="/tags/L0ch">
+                    <a href="/tags/Fabu1ous">
                       Read more
                       <i class="iconfont icon-arrowdown"></i>
                     </a>
@@ -316,18 +308,12 @@
                 <article class="post-prev col-6">
                   
                   
-                  <a href="/2020/12/29/l0ch/baby_rudolph/">
-                    <i class="iconfont icon-arrowleft"></i>
-                    <span class="hidden-mobile">[Write-Up] Christmas CTF 2020 - baby-RudOlPh</span>
-                    <span class="visible-mobile">Previous</span>
-                  </a>
-                  
                 </article>
                 <article class="post-next col-6">
                   
                   
-                  <a href="/2020/12/28/idioth/2020-12-28/">
-                    <span class="hidden-mobile">[하루한줄] CVE-2020-35606: Arbitrary Command Execution in Webmin</span>
+                  <a href="/2021/01/15/l0ch/2021-01-15/">
+                    <span class="hidden-mobile">[하루한줄] Google master token 탈취를 통한 구글 계정 접근</span>
                     <span class="visible-mobile">Next</span>
                     <i class="iconfont icon-arrowright"></i>
                   </a>
@@ -346,8 +332,8 @@
     <div id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'https://hackyboiz.github.io/2020/12/29/l0ch/2020-12-29/';
-        this.page.identifier = '/2020/12/29/l0ch/2020-12-29/';
+        this.page.url = 'https://hackyboiz.github.io/2021/01/16/fabu1ous/2021-01-16/';
+        this.page.identifier = '/2021/01/16/fabu1ous/2021-01-16/';
       };
       function loadDisqus() {
         (function () {
@@ -493,7 +479,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "[하루한줄] CVE-2020-7468: FreeBSD local privilege escalation&nbsp;",
+        "[하루한줄] CVE-2020-26233: Git CLI RCE&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
