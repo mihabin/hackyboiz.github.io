@@ -8,8 +8,16 @@
     </url>
 
     <url>
+        <loc>https://hackyboiz.github.io/2021/01/19/l0ch/2021-01-19/</loc>
+        <lastmod>2021-01-19T08:58:16.767Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://hackyboiz.github.io/2021/01/18/idioth/2021-01-18/</loc>
-        <lastmod>2021-01-18T08:56:29.060Z</lastmod>
+        <lastmod>2021-01-19T08:56:18.142Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -17,7 +25,7 @@
 
     <url>
         <loc>https://hackyboiz.github.io/2021/01/17/l0ch/cet-on-windows/</loc>
-        <lastmod>2021-01-18T05:59:11.773Z</lastmod>
+        <lastmod>2021-01-19T08:25:02.679Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -248,7 +256,7 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2020/12/29/l0ch/2020-12-29/</loc>
+        <loc>https://hackyboiz.github.io/2020/12/28/idioth/2020-12-28/</loc>
         <lastmod>2020-12-29T11:46:20.108Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -256,7 +264,7 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2020/12/28/idioth/2020-12-28/</loc>
+        <loc>https://hackyboiz.github.io/2020/12/29/l0ch/2020-12-29/</loc>
         <lastmod>2020-12-29T11:46:20.108Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>

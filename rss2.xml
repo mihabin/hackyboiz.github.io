@@ -9,8 +9,42 @@
     <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>hack &amp; life</description>
-    <pubDate>Mon, 18 Jan 2021 08:56:29 GMT</pubDate>
+    <pubDate>Tue, 19 Jan 2021 08:58:16 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] Windows 커널 하나의 함수에서 발견된 5가지 취약점</title>
+      <link>https://hackyboiz.github.io/2021/01/19/l0ch/2021-01-19/</link>
+      <guid>https://hackyboiz.github.io/2021/01/19/l0ch/2021-01-19/</guid>
+      <pubDate>Tue, 19 Jan 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://blog.br0vvnn.io/pages/blogpost.aspx?id=4&quot;&gt;A Serie</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.br0vvnn.io/pages/blogpost.aspx?id=4">A Series of Windows Kernel Bugs in a Single Function</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Windows kernel</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Windows 커널 함수 중 ETW 구성 요소의 함수인 <code>EtwpNotifyGuid</code> 에 5개 이상의 취약점이 발견되었습니다.</p><p>현재까지 발견된 취약점 중 상세 정보가 공개된 취약점 목록은 다음과 같습니다.</p><ul><li>CVE-2020-1033</li><li><a href="https://hackyboiz.github.io/2020/10/26/idioth/cve-2020-1034/">CVE-2020-1034</a></li><li>CVE-2021-1662</li><li>CVE-2021-1682</li></ul><p>이중 최근에 공개된 취약점은 CVE-2021-1662와 CVE-2021-1668입니다.</p><p>CVE-2021-1662는 잘못된 범위 검증으로 인한 권한 상승 취약점으로,  <code>EtwpNotifyGuid</code> 함수에서 <code>input_buffer_length</code> 가 0x90이고 <code>v10</code>이 0x40이면 범위 검사를 통과해 <code>EtwpValidateTraceControlFilterDescriptors</code> 함수에서 OOB 액세스가 가능합니다.</p><p>CVE-2021-1682 또한 잘못된 범위 검증으로 인한 힙 버퍼 오버플로우 취약점입니다. <code>EtwpNotifyGuid</code> 함수는 <code>EtwpAllocDataBlock</code> 함수를 사용해 입력 버퍼를 복사하고 오프셋 0x50에 액세스 합니다. 버퍼 크기를 검사할 때 0x48보다 큰지는 확인하지만 0x50보다 작은 지를 확인하지 않아 0x50보다 작은 버퍼를 할당하면 오프셋 0x50에 액세스 할 때 다음 풀의 헤더를 덮어쓸 수 있어 이를 악용해 권한 상승이 가능합니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/eop/">eop</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/kernel/">kernel</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/information-disclosure/">information disclosure</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/01/19/l0ch/2021-01-19/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>[하루한줄] CVE-2020-1394 : Windows LockScreen Escalation of Privilege</title>
@@ -303,13 +337,13 @@
       <category domain="https://hackyboiz.github.io/categories/Translation/">Translation</category>
       
       
-      <category domain="https://hackyboiz.github.io/tags/bypass/">bypass</category>
-      
       <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
       
       <category domain="https://hackyboiz.github.io/tags/memfuck/">memfuck</category>
       
       <category domain="https://hackyboiz.github.io/tags/hook/">hook</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/bypass/">bypass</category>
       
       
       <comments>https://hackyboiz.github.io/2021/01/10/idioth/memfuck/#disqus_thread</comments>
@@ -537,11 +571,11 @@
       
       <category domain="https://hackyboiz.github.io/tags/ctf/">ctf</category>
       
-      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
-      
       <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
       
       <category domain="https://hackyboiz.github.io/tags/christmas-ctf-2020/">christmas ctf 2020</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
       
       <category domain="https://hackyboiz.github.io/tags/review/">review</category>
       
@@ -649,40 +683,6 @@
       
       
       <comments>https://hackyboiz.github.io/2020/12/31/idioth/2020-12-31/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] Windows Installer EoP 6th patch bypass</title>
-      <link>https://hackyboiz.github.io/2020/12/30/fabu1ous/2020-12-30/</link>
-      <guid>https://hackyboiz.github.io/2020/12/30/fabu1ous/2020-12-30/</guid>
-      <pubDate>Wed, 30 Dec 2020 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://halove23.blogspot.com/2020/12/oh-so-you-have-anti</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://halove23.blogspot.com/2020/12/oh-so-you-have-antivirus-nameevery-bug.html">Disclosing about 8 0-day vulnerability</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Windows installer</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p><a href="https://hackyboiz.github.io/2020/10/21/fabu1ous/2020-10-21/">CVE-2020-16902</a>에 대한 패치 우회가 공개되었습니다. CVE-2019-1415로 처음 제보된 Windows Installer EoP 취약점의 6번째 패치 우회입니다. </p><p>CVE-2020-16902의 내용은 다음과 같습니다. Windows Installer는 설치 작업 실패를 대비해 설치 작업 중 삭제되는 파일과 롤백 스크립트를<code> C:\Config.Msi</code> 디렉터리에 백업합니다. 백업 전에 <code>C:\Config.Msi</code> 디렉터리를 삭제하고 재생성하는 로직이 있는데 <code>Setsecurity()</code>의 race condition 취약점 패턴이 남아있어 악용이 가능합니다.</p><p>따라서 <code>C:\Config.Msi</code>를 삭제하고 <code>C:\Config.Msi</code>이 여전히 존재한다면(race-con 트리거 조건) <code>C:\Config.Msi</code> 대신 <code>C:\windows\install\config.msi</code>에 롤백 파일을 백업하도록 패치되었습니다. </p><p>하지만 다음과 같은 이유로 우회가 가능합니다. 만약 <code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\Folders\C:\Config.Msi</code> 레지스트리 키가 존재하면 그대로 <code>C:\Config.Msi</code>를 백업에 사용합니다.  <code>C:\Config.Msi</code>를 삭제한 후 <code>C:\Config.Msi</code>의 삭제 여부를 한번 더 체크한 다음 <code>HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\Folders\C:\Config.Msi</code> 레지스트리 키를 삭제합니다.  <code>C:\Config.Msi</code>가 삭제된 직후 <code>C:\Config.Msi</code>를 생성하면 레지스트리 키가 삭제되지 않습니다. Windows Installer는 <code>C:\Config.Msi</code>를 백업에 사용하게 되고 이전 취약점들을 그대로 악용할 수 있습니다.</p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/eop/">eop</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/race-condition/">race condition</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/toctou/">toctou</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2020/12/30/fabu1ous/2020-12-30/#disqus_thread</comments>
       
     </item>
     
