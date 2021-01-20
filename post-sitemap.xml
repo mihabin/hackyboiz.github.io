@@ -8,16 +8,8 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2021/01/19/l0ch/2021-01-19/</loc>
-        <lastmod>2021-01-19T08:58:16.767Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://hackyboiz.github.io/2021/01/18/idioth/2021-01-18/</loc>
-        <lastmod>2021-01-19T08:56:18.142Z</lastmod>
+        <loc>https://hackyboiz.github.io/2021/01/20/fabu1ous/2021-01-20/</loc>
+        <lastmod>2021-01-20T08:50:56.681Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -25,7 +17,23 @@
 
     <url>
         <loc>https://hackyboiz.github.io/2021/01/17/l0ch/cet-on-windows/</loc>
-        <lastmod>2021-01-19T08:25:02.679Z</lastmod>
+        <lastmod>2021-01-20T08:19:00.129Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://hackyboiz.github.io/2021/01/19/l0ch/2021-01-19/</loc>
+        <lastmod>2021-01-20T08:19:00.121Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://hackyboiz.github.io/2021/01/18/idioth/2021-01-18/</loc>
+        <lastmod>2021-01-20T08:19:00.116Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -552,7 +560,7 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2020/11/03/l0ch/11-03_1day1line/</loc>
+        <loc>https://hackyboiz.github.io/2020/11/06/l0ch/2020-11-06/</loc>
         <lastmod>2020-11-22T06:33:02.258Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -560,7 +568,7 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2020/11/06/l0ch/2020-11-06/</loc>
+        <loc>https://hackyboiz.github.io/2020/11/03/l0ch/11-03_1day1line/</loc>
         <lastmod>2020-11-22T06:33:02.258Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -656,7 +664,7 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2020/11/09/idioth/2020-11-09/</loc>
+        <loc>https://hackyboiz.github.io/2020/11/12/idioth/2020-11-12/</loc>
         <lastmod>2020-11-22T06:33:02.230Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -664,7 +672,7 @@
     </url>
 
     <url>
-        <loc>https://hackyboiz.github.io/2020/11/12/idioth/2020-11-12/</loc>
+        <loc>https://hackyboiz.github.io/2020/11/09/idioth/2020-11-09/</loc>
         <lastmod>2020-11-22T06:33:02.230Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
