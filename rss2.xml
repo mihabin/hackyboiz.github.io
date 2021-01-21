@@ -9,8 +9,42 @@
     <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>hack &amp; life</description>
-    <pubDate>Wed, 20 Jan 2021 08:50:56 GMT</pubDate>
+    <pubDate>Thu, 21 Jan 2021 08:43:36 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] CVE-2020-1456 : Unvalidated User Input in MS SharePoint</title>
+      <link>https://hackyboiz.github.io/2021/01/21/idioth/2021-01-21/</link>
+      <guid>https://hackyboiz.github.io/2021/01/21/idioth/2021-01-21/</guid>
+      <pubDate>Thu, 21 Jan 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://slashcrypto.org/2021/01/15/CVE-2020-1456/&quot;&gt;INSERT</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://slashcrypto.org/2021/01/15/CVE-2020-1456/">INSERTION OF MALICIOUS LINKS FOR EXECUTION IN PROFILE PICTURE - UNVALIDATED USER INPUT IN MS SHAREPOINT 2019 (CVE-2020-1456)</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>2020년 7월 14일 패치 이전 버전<ul><li>Microsoft SharePoint Server 2010 Service Pack 2</li><li>Microsoft SharePoint Server 2019</li><li>Microsoft SharePoint Enterprise Server 2013 Service Pack 1</li><li>Microsoft SharePoint Enterprise Server 2016</li></ul></li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Microsoft SharePoint Server에서 유저 프로필 사진에 임의의 링크를 삽입하여 프로필 사진이 삽입된 페이지를 방문하는 사람들을 모두 공격할 수 있는 취약점이 발견되었습니다. SharePoint는 마이크로소프트 오피스 서버 제품군의 웹 애플리케이션 플랫폼으로 기업이나 조직에서 공동 작업, 정보 제공 등의 협업 사이트 구축에 사용됩니다.</p><p>SharePoint의 유저 프로필 설정이 활성화되어 있으면, 사용자는 프로필 사진을 업로드할 수 있습니다. 프로필 사진을 올리고 적용하기 전에 모든 변경 사항을 저장할 수 있습니다. 모든 변경 사항이 저장될 때 POST request로 수행되며 아래와 같이 도메인에 사용자에 대한 변경 사항이 표시됩니다.</p><pre><code class="hljs apache"><span class="hljs-attribute">URL</span>: http://<span class="hljs-number">192.168.0.151</span>/_layouts/<span class="hljs-number">15</span>/EditProfile.aspx?UserSettingsProvider=<span class="hljs-number">234</span>bf<span class="hljs-number">0</span>ed-<span class="hljs-number">70</span>db-<span class="hljs-number">4158</span>-a<span class="hljs-number">332</span>-<span class="hljs-number">4</span>dfd<span class="hljs-number">683</span>b<span class="hljs-number">4148</span>&amp;ReturnUrl=http%<span class="hljs-number">3</span>a%<span class="hljs-number">2</span>f%<span class="hljs-number">2</span>f<span class="hljs-number">192.168.0.151</span>%<span class="hljs-number">2</span>fPerson.aspx%<span class="hljs-number">3</span>faccountname%<span class="hljs-number">3</span>d%<span class="hljs-number">3</span>C span%<span class="hljs-number">20</span>style=%<span class="hljs-number">22</span>background-color:%<span class="hljs-number">20</span>#fcbd<span class="hljs-number">00</span>%<span class="hljs-number">22</span>%<span class="hljs-number">3</span>Epoint%<span class="hljs-number">3</span>C/span%<span class="hljs-number">3</span>E%<span class="hljs-number">255</span>C%<span class="hljs-number">3</span>Cspan%<span class="hljs-number">20</span>style=%<span class="hljs-number">22</span>background-color:%<span class="hljs-number">20</span>#fcbd<span class="hljs-number">00</span>%<span class="hljs-number">22</span>%<span class="hljs-number">3</span>Eshareuser%<span class="hljs-number">3</span>C/span%<span class="hljs-number">3</span>E&amp;changephoto=<span class="hljs-number">1</span></code></pre><p>POST request에는 URL 인코딩 된 형태로 업로드된 프로필 사진의 경로를 포함한 파라미터 <code>ct100$PlaceHolderMain$ProfileEditorEditPricturURL</code>가 포함되어 있습니다.</p><pre><code class="hljs angelscript">URL 인코딩 된 파라미터와 값ctl00%<span class="hljs-number">24</span>PlaceHolderMain%<span class="hljs-number">24</span>ProfileEditorEditPictureURL=http%<span class="hljs-number">3</span>A%<span class="hljs-number">2</span>F%<span class="hljs-number">2</span>F192<span class="hljs-number">.168</span><span class="hljs-number">.0</span><span class="hljs-number">.151</span>%<span class="hljs-number">3</span>A80%<span class="hljs-number">2</span>FUser%<span class="hljs-number">2520</span>Photos%<span class="hljs-number">2</span>FProfilbilder%<span class="hljs-number">2</span>Fpoint_shareuser_Mthumb.jpg수정된 파라미터 값ctl00$PlaceHolderMain$ProfileEditorEditPictureURL=http:<span class="hljs-comment">//123.itsec.de/random.png</span></code></pre><p>POST request를 수정하여 URL 경로를 수정하면 로컬 파일의 경로 대신 수정한 URL 경로가 HTML 이미지 태그의 <code>src</code> 파라미터에 삽입됩니다. 그러면 해당 프로필 사진이 삽입된 페이지를 방문하는 모든 사용자는 백그라운드에서 해당 링크가 열립니다. 해당 취약점을 통해 Denial of Service, Tracking, Internal path disclosure, Obfuscate attacks, Reputation damage 등의 공격을 수행할 수 있습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/xss/">xss</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/microsoft/">microsoft</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/sharepoint/">sharepoint</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/01/21/idioth/2021-01-21/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>[하루한줄] FreakOut : from three CVEs to IRC botnet</title>
@@ -647,40 +681,6 @@
       
       
       <comments>https://hackyboiz.github.io/2021/01/02/fabu1ous/2021-01-02/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2020-17057 : Microsoft Windows Uninitialized Pointer EoP</title>
-      <link>https://hackyboiz.github.io/2021/01/01/l0ch/2021-01-01/</link>
-      <guid>https://hackyboiz.github.io/2021/01/01/l0ch/2021-01-01/</guid>
-      <pubDate>Fri, 01 Jan 2021 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://blogs.360.cn/post/CVE-2020-17057%20detail%20and%2</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blogs.360.cn/post/CVE-2020-17057%20detail%20and%20exploit.html">CVE-2020-17057 Microsoft Windows DirectComposition Uninitialized Pointer Privilege Escalation Vulnerability</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Microsoft Windows</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Microsoft가 2년 전에 발견한 취약점을 패치함으로써 취약점의 세부 정보가 공개되었습니다. 해당 취약점은 Windows 커널 모드의 그래픽 구성 요소인 <code>DirectComposition</code> 에서 발생하는 초기화되지 않은 pool 메모리 참조입니다.</p><p><code>DirectComposition</code> 은 리소스 생성/해제/속성 설정 등의 작업을 수행하는 <code>NtDCompositionProcessChannelBatchBuffer</code> syscall을 사용합니다.</p><p><code>DirectComposition::CInteractionTrackerMarshaler::SetBufferProperty</code> 에서는 한 쌍의 리소스 객체를 처리합니다. 첫 번째 리소스 객체가 초기화되고 두 번째 리소스 객체 타입이 <code>0x57</code>이 아니라면 두 번째 리소스 객체가 초기화되지 않습니다.</p><p>이후 <code>DirectComposition::CInteractionTrackerMarshaler::ReleaseManipulationReferences</code> 에서 할당된 한 쌍의 리소스 객체를 해제하기 위해 별도의 검증 없이<code>DirectComposition::CApplicationChannel::ReleaseResource</code> 을 호출하는데, 이때 초기화되지 않은 두 번째 리소스 객체 포인터를 참조하게 되어 커널 크래시가 발생합니다.</p><p>이를 악용하면 리소스 객체 포인터 테이블을 spray 해 임의 객체를 해제하는 등 해제된 메모리를 조작할 수 있습니다.</p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/eop/">eop</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/uninitialized-pointer/">uninitialized pointer</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2021/01/01/l0ch/2021-01-01/#disqus_thread</comments>
       
     </item>
     

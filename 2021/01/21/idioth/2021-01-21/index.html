@@ -19,14 +19,14 @@
   <meta name="google-site-verification" content="DXkyiaX95-ws53Tyt0m91_umRf4gfV2qJIQZ5zQDIO4">
 
   <meta property="og:type" content="website"> 
-  <meta property="og:title" content="[하루한줄] CVE-2020-5990: NVIDIA GeForce Experience Local Privilege Escalation - hackyboiz">
+  <meta property="og:title" content="[하루한줄] CVE-2020-1456 : Unvalidated User Input in MS SharePoint - hackyboiz">
   <meta property="og:description" content="hack &amp; life">
   <meta property="og:image" content="/img/favicon.ico">
   <meta property="og:url" content="https://hackyboiz.github.io/">
 
-  <link rel="canonical" href="https://hackyboiz.github.io/2020/11/23/idioth/2020-11-23/">
+  <link rel="canonical" href="https://hackyboiz.github.io/2021/01/21/idioth/2021-01-21/">
 
-  <title>[하루한줄] CVE-2020-5990: NVIDIA GeForce Experience Local Privilege Escalation - hackyboiz</title>
+  <title>[하루한줄] CVE-2020-1456 : Unvalidated User Input in MS SharePoint - hackyboiz</title>
 
   <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
 
@@ -178,8 +178,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-11-23 18:00" pubdate>
-      2020년 11월 23일 오후
+    <time datetime="2021-01-21 18:00" pubdate>
+      2021년 1월 21일 오후
     </time>
   </div>
 
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      147 자
+      296 자
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      2
+      5
        분
     </span>
   
@@ -231,17 +231,31 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">[하루한줄] CVE-2020-5990: NVIDIA GeForce Experience Local Privilege Escalation</h1>
+            <h1 style="display: none">[하루한줄] CVE-2020-1456 : Unvalidated User Input in MS SharePoint</h1>
             
             <div class="markdown-body" id="post-body">
-              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.trendmicro.com/en_us/research/20/k/cve-2020-17053-use-after-free-ie-vulnerability.html">CVE-2020-17053: Use-After-Free IE Vulnerability</a></p>
+              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://slashcrypto.org/2021/01/15/CVE-2020-1456/">INSERTION OF MALICIOUS LINKS FOR EXECUTION IN PROFILE PICTURE - UNVALIDATED USER INPUT IN MS SHAREPOINT 2019 (CVE-2020-1456)</a></p>
 <h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul>
-<li>NVIDIA GeForce Experience 3.20.5.70 이전 버전</li>
+<li>2020년 7월 14일 패치 이전 버전<ul>
+<li>Microsoft SharePoint Server 2010 Service Pack 2</li>
+<li>Microsoft SharePoint Server 2019</li>
+<li>Microsoft SharePoint Enterprise Server 2013 Service Pack 1</li>
+<li>Microsoft SharePoint Enterprise Server 2016</li>
 </ul>
-<h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>NVDIA GeForce Experience의 GeForce 그래픽카드가 설치된 장비로 원격 게임을 지원하는 GAMESTREAM 기능에서 Local Privilege Escalation 취약점이 발견되었습니다.</p>
-<p>nvcontainer.exe 프로세스는 user impersonation 없이 <code>C:\\ProgramData\\NVIDIA Corporation\\ShadowPlay\\</code> 디렉터리에 <code>CaptureCore.log</code> 파일을 쓰거나 생성합니다. 이때 상위 폴더 상속으로 인해 모든 사용자는 해당 파일과 파일이 있는 폴더에 모든 권한을 갖습니다. 하지만 <code>CaptureCore.log</code> 파일을 삭제한 후 GAMESTREAM을 재시작하면 <code>nvspapi64.dll</code>에서 소프트 링크와 하드 링크에 대한 검사를 진행하여 심볼릭 링크 파일을 삭제합니다. 이 작업은 <code>nvspapi64.dll</code>에서 수행되는데 검사를 진행한 후 <code>CaptureCore.log</code>에 대한 핸들을 닫고 최종 경로를 가져와 작업을 수행하기 위해 다시 핸들을 엽니다.</p>
-<p><img src="/2020/11/23/idioth/2020-11-23/image.png" srcset="/img/loading.gif"></p>
-<p>이를 활용하여 특정 파일에 대한 access event를 catch 하는 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.microsoft.com/en-us/windows/win32/fileio/opportunistic-locks">OpLock</a>을 CaptureCore.log에 설정한 후 검사를 진행하면 OpLock이 트리거 되어 C:\Windows\System32 폴더에 arbitrary file creation이 가능합니다.</p>
+</li>
+</ul>
+<h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Microsoft SharePoint Server에서 유저 프로필 사진에 임의의 링크를 삽입하여 프로필 사진이 삽입된 페이지를 방문하는 사람들을 모두 공격할 수 있는 취약점이 발견되었습니다. SharePoint는 마이크로소프트 오피스 서버 제품군의 웹 애플리케이션 플랫폼으로 기업이나 조직에서 공동 작업, 정보 제공 등의 협업 사이트 구축에 사용됩니다.</p>
+<p>SharePoint의 유저 프로필 설정이 활성화되어 있으면, 사용자는 프로필 사진을 업로드할 수 있습니다. 프로필 사진을 올리고 적용하기 전에 모든 변경 사항을 저장할 수 있습니다. 모든 변경 사항이 저장될 때 POST request로 수행되며 아래와 같이 도메인에 사용자에 대한 변경 사항이 표시됩니다.</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">URL</span>: http://<span class="hljs-number">192.168.0.151</span>/_layouts/<span class="hljs-number">15</span>/EditProfile.aspx?UserSettingsProvider=<span class="hljs-number">234</span>bf<span class="hljs-number">0</span>ed-<span class="hljs-number">70</span>db-<span class="hljs-number">4158</span>-a<span class="hljs-number">332</span>-<span class="hljs-number">4</span>dfd<span class="hljs-number">683</span>b<span class="hljs-number">4148</span>&amp;ReturnUrl=http%<span class="hljs-number">3</span>a%<span class="hljs-number">2</span>f%<span class="hljs-number">2</span>f<span class="hljs-number">192.168.0.151</span>%<span class="hljs-number">2</span>fPerson.aspx%<span class="hljs-number">3</span>faccountname%<span class="hljs-number">3</span>d%<span class="hljs-number">3</span>C span%<span class="hljs-number">20</span>style=%<span class="hljs-number">22</span>background-color:%<span class="hljs-number">20</span>#fcbd<span class="hljs-number">00</span>%<span class="hljs-number">22</span>%<span class="hljs-number">3</span>Epoint%<span class="hljs-number">3</span>C/span%<span class="hljs-number">3</span>E%<span class="hljs-number">255</span>C%<span class="hljs-number">3</span>Cspan%<span class="hljs-number">20</span>style=%<span class="hljs-number">22</span>background-color:%<span class="hljs-number">20</span>#fcbd<span class="hljs-number">00</span>%<span class="hljs-number">22</span>%<span class="hljs-number">3</span>Eshareuser%<span class="hljs-number">3</span>C/span%<span class="hljs-number">3</span>E&amp;changephoto=<span class="hljs-number">1</span></code></pre>
+
+<p>POST request에는 URL 인코딩 된 형태로 업로드된 프로필 사진의 경로를 포함한 파라미터 <code>ct100$PlaceHolderMain$ProfileEditorEditPricturURL</code>가 포함되어 있습니다.</p>
+<pre><code class="hljs angelscript">URL 인코딩 된 파라미터와 값
+ctl00%<span class="hljs-number">24</span>PlaceHolderMain%<span class="hljs-number">24</span>ProfileEditorEditPictureURL=http%<span class="hljs-number">3</span>A%<span class="hljs-number">2</span>F%<span class="hljs-number">2</span>F192<span class="hljs-number">.168</span><span class="hljs-number">.0</span><span class="hljs-number">.151</span>%<span class="hljs-number">3</span>A80%<span class="hljs-number">2</span>FUser%<span class="hljs-number">2520</span>Photos%<span class="hljs-number">2</span>FProfilbilder%<span class="hljs-number">2</span>Fpoint_shareuser_Mthumb.jpg
+
+수정된 파라미터 값
+ctl00$PlaceHolderMain$ProfileEditorEditPictureURL=http:<span class="hljs-comment">//123.itsec.de/random.png</span></code></pre>
+
+<p>POST request를 수정하여 URL 경로를 수정하면 로컬 파일의 경로 대신 수정한 URL 경로가 HTML 이미지 태그의 <code>src</code> 파라미터에 삽입됩니다. 그러면 해당 프로필 사진이 삽입된 페이지를 방문하는 모든 사용자는 백그라운드에서 해당 링크가 열립니다. 해당 취약점을 통해 Denial of Service, Tracking, Internal path disclosure, Obfuscate attacks, Reputation damage 등의 공격을 수행할 수 있습니다.</p>
 
             </div>
             <hr>
@@ -261,15 +275,13 @@
                   
                   <a class="hover-with-bg" href="/tags/cve/">cve</a>
                   
-                  <a class="hover-with-bg" href="/tags/lpe/">lpe</a>
-                  
-                  <a class="hover-with-bg" href="/tags/toctou/">toctou</a>
-                  
-                  <a class="hover-with-bg" href="/tags/race-condition/">race condition</a>
+                  <a class="hover-with-bg" href="/tags/xss/">xss</a>
                   
                   <a class="hover-with-bg" href="/tags/idioth/">idioth</a>
                   
-                  <a class="hover-with-bg" href="/tags/geforce-experience/">geforce experience</a>
+                  <a class="hover-with-bg" href="/tags/microsoft/">microsoft</a>
+                  
+                  <a class="hover-with-bg" href="/tags/sharepoint/">sharepoint</a>
                   
                 </div>
                 
@@ -299,23 +311,21 @@
 
               <script data-ad-client="ca-pub-3672652207808168" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
               
+              <!--  -->
+              <p class="note note-warning">본 글은 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.ko" rel="external nofollow noopener noreferrer">CC BY-SA 4.0</a> 라이선스로 배포됩니다. 공유 또는 변경 시 반드시 출처를 남겨주시기 바랍니다.</p>
+              
+              
               
               <div class="post-prevnext row">
                 <article class="post-prev col-6">
                   
                   
-                  <a href="/2020/11/24/l0ch/2020-11-24/">
-                    <i class="iconfont icon-arrowleft"></i>
-                    <span class="hidden-mobile">[하루한줄] Access token stealing in playstation</span>
-                    <span class="visible-mobile">Previous</span>
-                  </a>
-                  
                 </article>
                 <article class="post-next col-6">
                   
                   
-                  <a href="/2020/11/22/idioth/av_evasion_part1/">
-                    <span class="hidden-mobile">[Translation] Engineering Antivirus evasion Part.1</span>
+                  <a href="/2021/01/20/fabu1ous/2021-01-20/">
+                    <span class="hidden-mobile">[하루한줄] FreakOut : from three CVEs to IRC botnet</span>
                     <span class="visible-mobile">Next</span>
                     <i class="iconfont icon-arrowright"></i>
                   </a>
@@ -334,8 +344,8 @@
     <div id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'https://hackyboiz.github.io/2020/11/23/idioth/2020-11-23/';
-        this.page.identifier = '/2020/11/23/idioth/2020-11-23/';
+        this.page.url = 'https://hackyboiz.github.io/2021/01/21/idioth/2021-01-21/';
+        this.page.identifier = '/2021/01/21/idioth/2021-01-21/';
       };
       function loadDisqus() {
         (function () {
@@ -481,7 +491,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "[하루한줄] CVE-2020-5990: NVIDIA GeForce Experience Local Privilege Escalation&nbsp;",
+        "[하루한줄] CVE-2020-1456 : Unvalidated User Input in MS SharePoint&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
