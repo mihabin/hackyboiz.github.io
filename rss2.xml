@@ -9,8 +9,42 @@
     <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>hack &amp; life</description>
-    <pubDate>Thu, 21 Jan 2021 08:43:36 GMT</pubDate>
+    <pubDate>Fri, 22 Jan 2021 08:40:41 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] CVE-2020-15994 : Chrome WebAssembly Engine UAF 취약점</title>
+      <link>https://hackyboiz.github.io/2021/01/22/l0ch/2021-01-22/</link>
+      <guid>https://hackyboiz.github.io/2021/01/22/l0ch/2021-01-22/</guid>
+      <pubDate>Fri, 22 Jan 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://blog.br0vvnn.io/pages/blogpost.aspx?id=5&quot;&gt;Exploit</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.br0vvnn.io/pages/blogpost.aspx?id=5">Exploiting CVE-2020-15994 Chrome WebAssembly Engine UAF Vulnerability</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Google Chrome WebAssembly</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Google Chrome의 V8 WebAssembly 엔진에서 발견된 UAF 취약점에 대한 상세 정보가 공개되었습니다. WebAssembly는 JS의 단점을 보완하기 위해 브라우저에서 저수준 언어로 작성된 코드를 컴파일해 네이티브로 동작할 수 있도록 하는 기술 표준입니다.</p><p>WebAssembly의 <code>AsyncCompileJob</code> 객체는 <code>WebAssembly.instantiateStreaming</code> 함수에서 사용되는 기본 V8 객체이며 WebAssembly의 비동기 컴파일을 지원합니다. </p><p>취약점을 트리거하는 데 사용되는 함수는 다음과 같습니다.</p><p><code>AsyncCompileJob::FinishModule</code> - 컴파일된 WebAssembly 코드를 Javascript 객체로 인스턴스 화함<br><code>AsyncCompileJob::Abort</code> - WebAssembly 코드 다운로드 실패 시 호출되며 모든 컴파일 프로세스를 취소함<br>위 두 함수는 모두 <code>AsyncCompileJob</code> 객체를 해제하는 기능이 있습니다.</p><p><code>WebAssembly.instantiateStreaming</code> 함수를 이용하여 WebAssembly 코드를 컴파일하는 경우 WebAssembly 코드에서 Javascript 함수 및 객체에 접근하기 위한 인터페이스로 <code>importObject</code>를 사용합니다. 이때 <code>importObject</code>에 Getter를 정의하면 <code>InstanceBuilder::SanitizeImports</code> 함수는 Getter 함수를 콜백으로 호출합니다.</p><p>Getter를  <code>AsyncCompileJob::Abort</code> 로 정의해 콜백 함수로 호출하면 <code>AsyncCompileJob::FinishModule</code> 함수 이후 해제된 <code>AsyncCompileJob</code> 객체에 접근할 수 있어 UAF를 트리거할 수 있습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/chrome/">chrome</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/uaf/">uaf</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/webassembly/">webassembly</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/01/22/l0ch/2021-01-22/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>[하루한줄] CVE-2020-1456 : Unvalidated User Input in MS SharePoint</title>
@@ -649,38 +683,6 @@
       
       
       <comments>https://hackyboiz.github.io/2021/01/03/idioth/christmasctf2020-review/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2020-10148: SolarWinds Orion API auth bypass to RCE</title>
-      <link>https://hackyboiz.github.io/2021/01/02/fabu1ous/2021-01-02/</link>
-      <guid>https://hackyboiz.github.io/2021/01/02/fabu1ous/2021-01-02/</guid>
-      <pubDate>Sat, 02 Jan 2021 09:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://nvd.nist.gov/vuln/detail/CVE-2020-10148&quot;&gt;CVE-2020</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://nvd.nist.gov/vuln/detail/CVE-2020-10148">CVE-2020-10148</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>2019.4 HF 6 이전 버전</li><li>2020.2.1 HF 2 이전 버전</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>SolarWinds Orion platform에서 API 인증 우회를 통한 원격 코드 실행 취약점이 패치되었습니다. FireEye가 작년 12월 공개한 Sunburst backdoor로 인해 SolarWinds Orion platform은 큰 이슈가 되었습니다. 그 후 SolarWinds Orion platform에 대한 깊은 분석이 진행되면서 발견된 취약점 중 하나가 CVE-2020-10148입니다.</p><p>SolarWinds Orion platform은 시스템 모니터링 및 관리 목적으로 만들어진 infrastructure입니다. 사용자는 Orion Website를 통해 서버에 설치된 Orion에 접근해 서버를 관리할 수 있으며 SolarWinds Orion API를 요청해 SolarWinds Orion platform을 사용할 수 있습니다.</p><p>URI를 통해 Orion 서버에 요청을 보낼 때 <code>Request.PathInfo</code> 파라미터에 <code>WebResource.adx</code>, <code>ScriptResource.adx</code>, <code>i18n.ashx</code>, <code>Skipi18n</code>등의 값을 지정하면 SolarWinds가 <a href="https://docs.microsoft.com/en-us/dotnet/api/system.web.httpcontext.skipauthorization?view=netframework-4.8">SkipAuthorization</a> flag를 설정합니다. 이로 인해 해커가 인증 절차를 건너뛰고 API 커멘드를 실행할 수 있게 됩니다.</p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/rce/">rce</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/authentication-bypass/">authentication bypass</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2021/01/02/fabu1ous/2021-01-02/#disqus_thread</comments>
       
     </item>
     

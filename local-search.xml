@@ -4,6 +4,39 @@
   
   
   <entry>
+    <title>[하루한줄] CVE-2020-15994 : Chrome WebAssembly Engine UAF 취약점</title>
+    <link href="/2021/01/22/l0ch/2021-01-22/"/>
+    <url>/2021/01/22/l0ch/2021-01-22/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.br0vvnn.io/pages/blogpost.aspx?id=5">Exploiting CVE-2020-15994 Chrome WebAssembly Engine UAF Vulnerability</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>Google Chrome WebAssembly</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Google Chrome의 V8 WebAssembly 엔진에서 발견된 UAF 취약점에 대한 상세 정보가 공개되었습니다. WebAssembly는 JS의 단점을 보완하기 위해 브라우저에서 저수준 언어로 작성된 코드를 컴파일해 네이티브로 동작할 수 있도록 하는 기술 표준입니다.</p><p>WebAssembly의 <code>AsyncCompileJob</code> 객체는 <code>WebAssembly.instantiateStreaming</code> 함수에서 사용되는 기본 V8 객체이며 WebAssembly의 비동기 컴파일을 지원합니다. </p><p>취약점을 트리거하는 데 사용되는 함수는 다음과 같습니다.</p><p><code>AsyncCompileJob::FinishModule</code> - 컴파일된 WebAssembly 코드를 Javascript 객체로 인스턴스 화함<br><code>AsyncCompileJob::Abort</code> - WebAssembly 코드 다운로드 실패 시 호출되며 모든 컴파일 프로세스를 취소함<br>위 두 함수는 모두 <code>AsyncCompileJob</code> 객체를 해제하는 기능이 있습니다.</p><p><code>WebAssembly.instantiateStreaming</code> 함수를 이용하여 WebAssembly 코드를 컴파일하는 경우 WebAssembly 코드에서 Javascript 함수 및 객체에 접근하기 위한 인터페이스로 <code>importObject</code>를 사용합니다. 이때 <code>importObject</code>에 Getter를 정의하면 <code>InstanceBuilder::SanitizeImports</code> 함수는 Getter 함수를 콜백으로 호출합니다.</p><p>Getter를  <code>AsyncCompileJob::Abort</code> 로 정의해 콜백 함수로 호출하면 <code>AsyncCompileJob::FinishModule</code> 함수 이후 해제된 <code>AsyncCompileJob</code> 객체에 접근할 수 있어 UAF를 트리거할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>chrome</tag>
+      
+      <tag>uaf</tag>
+      
+      <tag>webassembly</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[하루한줄] CVE-2020-1456 : Unvalidated User Input in MS SharePoint</title>
     <link href="/2021/01/21/idioth/2021-01-21/"/>
     <url>/2021/01/21/idioth/2021-01-21/</url>
@@ -742,9 +775,9 @@
       
       <tag>windows</tag>
       
-      <tag>toctou</tag>
-      
       <tag>race condition</tag>
+      
+      <tag>toctou</tag>
       
     </tags>
     
@@ -1689,9 +1722,9 @@
       
       <tag>cve</tag>
       
-      <tag>lpe</tag>
-      
       <tag>toctou</tag>
+      
+      <tag>lpe</tag>
       
     </tags>
     
@@ -1819,13 +1852,13 @@
       
       <tag>cve</tag>
       
-      <tag>toctou</tag>
-      
       <tag>razer</tag>
       
       <tag>chroma</tag>
       
       <tag>race condition</tag>
+      
+      <tag>toctou</tag>
       
     </tags>
     
@@ -1978,11 +2011,11 @@
       
       <tag>cve</tag>
       
-      <tag>lpe</tag>
+      <tag>race condition</tag>
       
       <tag>toctou</tag>
       
-      <tag>race condition</tag>
+      <tag>lpe</tag>
       
       <tag>idioth</tag>
       
